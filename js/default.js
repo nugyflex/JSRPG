@@ -313,7 +313,11 @@ walkright.src = './Images/walk_right.png';
 var walkdown = new Image();
 walkdown.src = './Images/walk_down.png';
 var swordswing = new Image();
-swordswing.src = './Images/sword_stab.png';
+swordswing.src = './Images/sword_swing.png';
+var swordstab = new Image();
+swordstab.src = './Images/sword_stab.png';
+var standing = new Image();
+standing.src = './Images/standing_sword.png';
 function Player(_x, _y)
 {
 	this.x = _x;
@@ -324,6 +328,7 @@ function Player(_x, _y)
 	this.yVel = 0;
 	this.frame = 0;
 	this.timer = 0;
+	this.xlatch = true;
 	this.update = function()
 	{
 		this.inputs();
@@ -345,7 +350,7 @@ function Player(_x, _y)
 		//ctx.fillStyle = "white";
 		//ctx.fillRect(this.x, this.y-50, this.width, this.height+50);
 		this.timer++;
-		if (this.timer>10)
+		if (this.timer>6)
 		{
 			this.timer = 0
 		}
@@ -353,12 +358,33 @@ function Player(_x, _y)
 		{
 			this.frame++;
 		}
-		if (this.frame>2)
+		if (this.frame<3)
 		{
-			this.frame = 0;
+			if (keypressed.z)
+			{
+				ctx.drawImage(swordstab, this.frame * 19, 0, 19, 24, this.x, this.y, 19, 24);
+			}
+			else
+			{
+			ctx.drawImage(swordswing, this.frame * 19, 0, 19, 24, this.x, this.y, 19, 24);
+			}
 		}
-		//ctx.drawImage(walkright, this.frame * 12, 0, 12, 25, this.x, this.y, 12, 25);
-		ctx.drawImage(swordswing, this.frame * 19, 0, 19, 24, this.x, this.y, 19, 24);
+		else
+		{
+			ctx.drawImage(standing, this.x, this.y);
+		}
+		if (keypressed.x)
+		{
+			if (this.xlatch)
+			{
+				this.frame = 0;
+			}
+			this.xlatch = false
+		}
+		else
+		{
+			this.xlatch = true;
+		}
 	}
 	this.shoot = function()
 	{
