@@ -164,7 +164,6 @@ function platforms() {
 		for (i = 0; i < this.count(); i++)
 		{
 			this.array[i].drawShadow();
-			console.log("Asd");
 		}		
 	}
     this.remove = function (index) {
@@ -316,19 +315,42 @@ var swordswing = new Image();
 swordswing.src = './Images/sword_swing.png';
 var swordstab = new Image();
 swordstab.src = './Images/sword_stab.png';
-var standing = new Image();
-standing.src = './Images/standing_sword.png';
+var standingdown = new Image();
+standingdown.src = './Images/standing_sword_down.png';
+var standingup = new Image();
+standingup.src = './Images/standing_sword_up.png';
+var standingleft = new Image();
+standingleft.src = './Images/standing_sword_left.png';
+var standingright = new Image();
+standingright.src = './Images/standing_sword_right.png';
+var walkrightsword = new Image();
+walkrightsword.src = './Images/walk_right_sword.png';
+var walkleftsword = new Image();
+walkleftsword.src = './Images/walk_left_sword.png';
+var walkdownsword = new Image();
+walkdownsword.src = './Images/walk_down_sword.png';
+var walkupsword = new Image();
+walkupsword.src = './Images/walk_up_sword.png';
 function Player(_x, _y)
 {
 	this.x = _x;
 	this.y = _y;
-	this.width = 20;
-	this.height = 20;
+	this.width = 10;
+	this.height = 10;
 	this.xVel = 0;
 	this.yVel = 0;
 	this.frame = 0;
 	this.timer = 0;
 	this.xlatch = true;
+	this.currentSheet;
+	this.fheight = 0;
+	this.fwidth = 0;
+	this.fn = 0;
+	this.freset = false;
+	this.currentSheetName;
+	this.lastDir;
+	this.foffsetx = 0;
+	this.foffsety = 0;
 	this.update = function()
 	{
 		this.inputs();
@@ -344,35 +366,140 @@ function Player(_x, _y)
 		this.x += this.xVel;
 		this.y += this.yVel;
 	}
-
 	this.draw = function()
 	{
-		//ctx.fillStyle = "white";
-		//ctx.fillRect(this.x, this.y-50, this.width, this.height+50);
-		this.timer++;
-		if (this.timer>4)
+		if (this.xVel>0)
 		{
-			this.timer = 0
-		}
-		if (this.timer == 2)
-		{
-			this.frame++;
-		}
-		if (this.frame<6)
-		{
-			if (keypressed.z)
+			if (this.yVel > 0)
 			{
-				ctx.drawImage(swordstab, this.frame * 19, 0, 19, 24, this.x, this.y, 19, 24);
+					if (this.lastDir == "down")
+					{
+						this.changeAnimation("walk_down_sword")
+					}
+					else
+					{
+						if (this.lastDir == "right")
+						{
+							this.changeAnimation("walk_right_sword")
+						}
+						else
+						{
+							this.changeAnimation("walk_down_sword")
+						}
+					}
 			}
 			else
 			{
-			ctx.drawImage(swordswing, this.frame * 21, 0, 21, 24, this.x, this.y, 21, 24);
-			}
+				if (this.yVel == 0)
+				{
+					this.changeAnimation("walk_right_sword")
+					this.lastDir = "right";
+				}
+				else
+				{
+					if (this.lastDir == "up")
+					{
+						this.changeAnimation("walk_up_sword")
+					}
+					else
+					{
+						if (this.lastDir == "right")
+						{
+							this.changeAnimation("walk_right_sword")
+						}
+						else
+						{
+							this.changeAnimation("walk_up_sword")
+						}
+					}				
+				}					
+			}	
 		}
 		else
 		{
-			ctx.drawImage(standing, this.x, this.y);
+			if (this.xVel==0)
+			{
+				if (this.yVel > 0)
+				{
+					this.changeAnimation("walk_down_sword")
+					this.lastDir = "down";
+				}
+				else
+				{
+					if (this.yVel == 0)
+					{
+						switch(this.lastDir)
+						{
+							case "up":
+								this.changeAnimation("standing_sword_up");
+								break;
+							case "down":
+								this.changeAnimation("standing_sword_down");
+								break;
+							case "left":
+								this.changeAnimation("standing_sword_left");
+								break;
+							case "right":
+								this.changeAnimation("standing_sword_right");
+								break;
+						}
+					}
+					else
+					{
+						this.changeAnimation("walk_up_sword")
+						this.lastDir = "up";					
+					}					
+				}	
+			}
+			else
+			{
+				if (this.yVel > 0)
+				{
+					if (this.lastDir == "down")
+					{
+						this.changeAnimation("walk_down_sword")
+					}
+					else
+					{
+						if (this.lastDir == "left")
+						{
+							this.changeAnimation("walk_left_sword")
+						}
+						else
+						{
+							this.changeAnimation("walk_down_sword")
+						}
+					}
+				}
+				else
+				{
+					if (this.yVel == 0)
+					{
+						this.lastDir = "left";
+						this.changeAnimation("walk_left_sword")
+					}
+					else
+					{
+						if (this.lastDir == "up")
+						{
+							this.changeAnimation("walk_up_sword")
+						}
+						else
+						{
+							if (this.lastDir == "left")
+							{
+								this.changeAnimation("walk_left_sword")
+							}
+							else
+							{
+								this.changeAnimation("walk_up_sword")
+							}
+						}
+					}					
+				}				
+			}
 		}
+		this.runAnimations();
 		if (keypressed.x)
 		{
 			if (this.xlatch)
@@ -385,6 +512,131 @@ function Player(_x, _y)
 		{
 			this.xlatch = true;
 		}
+	}
+	this.changeAnimation = function(x)
+	{
+		if (x == "default")
+		{
+			x = "standing";
+		}
+		if (x !== this.currentSheetName)
+		{
+		switch (x)
+		{
+			case "walk_right_sword":
+				this.currentSheet = walkrightsword;
+				this.fn = 4
+				this.fwidth = 34;
+				this.fheight = 50;
+				this.freset = false;
+				this.foffsetx = -6;
+				this.foffsety = -40;
+				break;
+			case "walk_left_sword":
+				this.currentSheet = walkleftsword;
+				this.fn = 4
+				this.fwidth = 34;
+				this.fheight = 50;
+				this.freset = false;
+				this.foffsetx = -18;
+				this.foffsety = -40;
+				break;
+			case "walk_down_sword":
+				this.currentSheet = walkdownsword;
+				this.fn = 4
+				this.fwidth = 24;
+				this.fheight = 50;
+				this.freset = false;
+				this.foffsetx = -4;
+				this.foffsety = -40;
+				break;
+			case "walk_up_sword":
+				this.currentSheet = walkupsword;
+				this.fn = 4
+				this.fwidth = 24;
+				this.fheight = 50;
+				this.freset = false;
+				this.foffsetx = -10;
+				this.foffsety = -40;
+				break;
+			case "sword_stab":
+				this.currentSheet = swordstab;
+				this.fn = 6;
+				this.fwidth = 46;
+				this.fheight = 46;
+				this.freset = true;
+				break;
+			case "sword_swing":
+				this.currentSheet = swordswing;
+				this.fn = 6;
+				this.fwidth = 42;
+				this.fheight = 48;
+				this.freset = true;
+				break;
+			case "standing_sword_down":
+				this.currentSheet = standingdown;
+				this.fn = 1;
+				this.fwidth = 34;
+				this.fheight = 50;
+				this.freset = false;
+				this.foffsetx = -2;
+				this.foffsety = -40;
+				break;
+			case "standing_sword_up":
+				this.currentSheet = standingup;
+				this.fn = 1;
+				this.fwidth = 22;
+				this.fheight = 50;
+				this.freset = false;
+				this.foffsetx = -10;
+				this.foffsety = -40;
+				break;
+			case "standing_sword_left":
+				this.currentSheet = standingleft;
+				this.fn = 1;
+				this.fwidth = 34;
+				this.fheight = 46;
+				this.freset = false;
+				this.foffsetx = -18;
+				this.foffsety = -36;
+				break;
+			case "standing_sword_right":
+				this.currentSheet = standingright;
+				this.fn = 1;
+				this.fwidth = 34;
+				this.fheight = 46;
+				this.freset = false;
+				this.foffsetx = -6;
+				this.foffsety = -36;
+				break;
+		}
+		this.currentSheetName = x;
+		this.frame = 0;
+		}
+		
+	}
+	this.runAnimations = function()
+	{
+
+		this.timer++;
+		if (this.timer>6)
+		{
+			this.timer = 0
+		}
+		if (this.timer == 2)
+		{
+			this.frame++;
+		}
+		if (this.frame > this.fn-1)
+		{
+			if (this.freset == true)
+			{
+				this.changeAnimation("default");
+			}
+			this.frame = 0;
+		}
+		ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.foffsety, this.fwidth, this.fheight)
+		//console.log(this.frame + "," + this.fwidth + "," + this.fheight);
 	}
 	this.shoot = function()
 	{
