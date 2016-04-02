@@ -350,7 +350,7 @@ function Player(_x, _y)
 		//ctx.fillStyle = "white";
 		//ctx.fillRect(this.x, this.y-50, this.width, this.height+50);
 		this.timer++;
-		if (this.timer>6)
+		if (this.timer>4)
 		{
 			this.timer = 0
 		}
@@ -358,7 +358,7 @@ function Player(_x, _y)
 		{
 			this.frame++;
 		}
-		if (this.frame<3)
+		if (this.frame<6)
 		{
 			if (keypressed.z)
 			{
@@ -366,7 +366,7 @@ function Player(_x, _y)
 			}
 			else
 			{
-			ctx.drawImage(swordswing, this.frame * 19, 0, 19, 24, this.x, this.y, 19, 24);
+			ctx.drawImage(swordswing, this.frame * 21, 0, 21, 24, this.x, this.y, 21, 24);
 			}
 		}
 		else
