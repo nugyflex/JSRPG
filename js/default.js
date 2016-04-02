@@ -136,20 +136,13 @@ function platforms() {
     this.array = [];
     this.add = function (x, y, width, height, type) {
         var i = this.count();
-		if (type == "diagonalWall")
+		if (type == "box50x50")
 		{
-			this.array[i] = new diagonalWall(x, y, width, height);
+			this.array[i] = new platform(x, y, 50, 50, box5050, 0, -34);
 		}
 		else
 		{
-		if (type == "pillar")
-		{
-			this.array[i] = new pillar(x, y);
-		}
-		else
-		{
-            this.array[i] = new platform(x, y, width, height);
-		}
+            this.array[i] = new platform(x, y, width, height, 0, 0, 0);
 		}
 	}
 	this.update = function()
@@ -331,6 +324,10 @@ var walkdownsword = new Image();
 walkdownsword.src = './Images/walk_down_sword.png';
 var walkupsword = new Image();
 walkupsword.src = './Images/walk_up_sword.png';
+var box5050 = new Image();
+box5050.src = './Images/scenery/box50x50.png';
+var grass1 = new Image();
+grass1.src = './Images/scenery/grass1.png';
 function Player(_x, _y)
 {
 	this.x = _x;
@@ -351,6 +348,7 @@ function Player(_x, _y)
 	this.lastDir;
 	this.foffsetx = 0;
 	this.foffsety = 0;
+	this.inAction = false;
 	this.update = function()
 	{
 		this.inputs();
@@ -366,117 +364,45 @@ function Player(_x, _y)
 		this.x += this.xVel;
 		this.y += this.yVel;
 	}
+	this.attack = function(x)
+	{
+		this.inAction = true;
+		switch (x)
+		{
+			case "sword_swing":
+				
+		}
+	}
 	this.draw = function()
 	{
-		if (this.xVel>0)
+		if (!this.inAction)
 		{
-			if (this.yVel > 0)
-			{
-					if (this.lastDir == "down")
-					{
-						this.changeAnimation("walk_down_sword")
-					}
-					else
-					{
-						if (this.lastDir == "right")
-						{
-							this.changeAnimation("walk_right_sword")
-						}
-						else
-						{
-							this.changeAnimation("walk_down_sword")
-						}
-					}
-			}
-			else
-			{
-				if (this.yVel == 0)
-				{
-					this.changeAnimation("walk_right_sword")
-					this.lastDir = "right";
-				}
-				else
-				{
-					if (this.lastDir == "up")
-					{
-						this.changeAnimation("walk_up_sword")
-					}
-					else
-					{
-						if (this.lastDir == "right")
-						{
-							this.changeAnimation("walk_right_sword")
-						}
-						else
-						{
-							this.changeAnimation("walk_up_sword")
-						}
-					}				
-				}					
-			}	
-		}
-		else
-		{
-			if (this.xVel==0)
+			if (this.xVel>0)
 			{
 				if (this.yVel > 0)
 				{
-					this.changeAnimation("walk_down_sword")
-					this.lastDir = "down";
+						if (this.lastDir == "down")
+						{
+							this.changeAnimation("walk_down_sword")
+						}
+						else
+						{
+							if (this.lastDir == "right")
+							{
+								this.changeAnimation("walk_right_sword")
+							}
+							else
+							{
+								this.changeAnimation("walk_down_sword")
+							}
+						}
 				}
 				else
 				{
 					if (this.yVel == 0)
 					{
-						switch(this.lastDir)
-						{
-							case "up":
-								this.changeAnimation("standing_sword_up");
-								break;
-							case "down":
-								this.changeAnimation("standing_sword_down");
-								break;
-							case "left":
-								this.changeAnimation("standing_sword_left");
-								break;
-							case "right":
-								this.changeAnimation("standing_sword_right");
-								break;
-						}
-					}
-					else
-					{
-						this.changeAnimation("walk_up_sword")
-						this.lastDir = "up";					
-					}					
-				}	
-			}
-			else
-			{
-				if (this.yVel > 0)
-				{
-					if (this.lastDir == "down")
-					{
-						this.changeAnimation("walk_down_sword")
-					}
-					else
-					{
-						if (this.lastDir == "left")
-						{
-							this.changeAnimation("walk_left_sword")
-						}
-						else
-						{
-							this.changeAnimation("walk_down_sword")
-						}
-					}
-				}
-				else
-				{
-					if (this.yVel == 0)
-					{
-						this.lastDir = "left";
-						this.changeAnimation("walk_left_sword")
+						this.changeAnimation("walk_right_sword")
+						this.lastDir = "right";
 					}
 					else
 					{
@@ -486,17 +412,101 @@ function Player(_x, _y)
 						}
 						else
 						{
+							if (this.lastDir == "right")
+							{
+								this.changeAnimation("walk_right_sword")
+							}
+							else
+							{
+								this.changeAnimation("walk_up_sword")
+							}
+						}				
+					}					
+				}	
+			}
+			else
+			{
+				if (this.xVel==0)
+				{
+					if (this.yVel > 0)
+					{
+						this.changeAnimation("walk_down_sword")
+						this.lastDir = "down";
+					}
+					else
+					{
+						if (this.yVel == 0)
+						{
+							switch(this.lastDir)
+							{
+								case "up":
+									this.changeAnimation("standing_sword_up");
+									break;
+								case "down":
+									this.changeAnimation("standing_sword_down");
+									break;
+								case "left":
+									this.changeAnimation("standing_sword_left");
+									break;
+								case "right":
+									this.changeAnimation("standing_sword_right");
+									break;
+							}
+						}
+						else
+						{
+							this.changeAnimation("walk_up_sword")
+							this.lastDir = "up";					
+						}					
+					}	
+				}
+				else
+				{
+					if (this.yVel > 0)
+					{
+						if (this.lastDir == "down")
+						{
+							this.changeAnimation("walk_down_sword")
+						}
+						else
+						{
 							if (this.lastDir == "left")
 							{
 								this.changeAnimation("walk_left_sword")
 							}
 							else
 							{
-								this.changeAnimation("walk_up_sword")
+								this.changeAnimation("walk_down_sword")
 							}
 						}
-					}					
-				}				
+					}
+					else
+					{
+						if (this.yVel == 0)
+						{
+							this.lastDir = "left";
+							this.changeAnimation("walk_left_sword")
+						}
+						else
+						{
+							if (this.lastDir == "up")
+							{
+								this.changeAnimation("walk_up_sword")
+							}
+							else
+							{
+								if (this.lastDir == "left")
+								{
+									this.changeAnimation("walk_left_sword")
+								}
+								else
+								{
+									this.changeAnimation("walk_up_sword")
+								}
+							}
+						}					
+					}				
+				}
 			}
 		}
 		this.runAnimations();
@@ -644,27 +654,30 @@ function Player(_x, _y)
 	}
 	this.inputs = function()
 	{
-		this.xVel = 0;
-		this.yVel = 0;
-		if (keypressed.w )
+		if (!this.inAction)
 		{
-			this.yVel = -2;
-		}
-		else
-		{
-			this.jumpLatch = true;
-		}
-		if (keypressed.a)
-		{
-			this.xVel = -2;
-		}	
-		if (keypressed.s)
-		{
-			this.yVel = 2;
-		}
-		if (keypressed.d)
-		{
-			this.xVel = 2;
+			this.xVel = 0;
+			this.yVel = 0;
+			if (keypressed.w )
+			{
+				this.yVel = -2;
+			}
+			else
+			{
+				this.jumpLatch = true;
+			}
+			if (keypressed.a)
+			{
+				this.xVel = -2;
+			}
+			if (keypressed.s)
+			{
+				this.yVel = 2;
+			}
+			if (keypressed.d)
+			{
+				this.xVel = 2;
+			}	
 		}		
 	}
 }
@@ -708,19 +721,29 @@ function enemy(_x, _y)
 		ctx.fillRect(this.x, this.y-20, this.health, 10);	
 	}
 }
-function platform(_x, _y, _width, _height)
+function platform(_x, _y, _width, _height, image, ioffsetx, ioffsety)
 {
 	this.x = _x;
 	this.y = _y;
 	this.width = _width;
 	this.height = _height;
 	this.type;
+	this.image = image;
+	this.ioffsetx = ioffsetx;
+	this.ioffsety = ioffsety;
 	this.update = function()
 	{
 		
 	}
 	this.draw = function()
 	{
+		if (this.image !== 0)
+		{
+			console.log("ASdasd")
+			ctx.drawImage(this.image, this.x + this.ioffsetx, this.y + this.ioffsety)
+		}
+		else
+		{
 		ctx.fillStyle = "grey";
 		ctx.fillRect(this.x, this.y-40, this.width, 40 + this.height);
 		ctx.fillStyle = "rgb(100, 100, 100)";
@@ -728,25 +751,15 @@ function platform(_x, _y, _width, _height)
 		ctx.fillStyle = "rgb(80, 80, 80)";
 		ctx.fillRect(this.x, this.y-40, 2, this.height+40);
 		ctx.fillRect(this.x+this.width-2, this.y-40, 2, this.height+40);
-		ctx.fillRect(this.x, this.y+this.width-2, this.width, 2);
+		ctx.fillRect(this.x, this.y+this.height-2, this.width, 2);
 		ctx.fillRect(this.x, this.y-40, this.width, 2);
-		ctx.fillRect(this.x, this.y+this.width-40, this.width, 2);
+		ctx.fillRect(this.x, this.y+this.height-40, this.width, 2);
+		}
 	}
 	this.drawShadow = function()
 	{
 		ctx.fillStyle = "rgba(15,165, 65, 1)";
 		ctx.fillRect(this.x-3, this.y-3, this.width + 6, this.height + 6);		
-	}
-}
-function pillar(_x, _y)
-{
-	platform.call(this, _x, _y, 10, 10);
-	this.draw = function()
-	{
-		ctx.fillStyle = "grey";
-		ctx.fillRect(this.x, this.y-100, 10, 110);
-		ctx.fillStyle = "rgb(100, 100, 100)";
-		ctx.fillRect(this.x, this.y-100, 10, 10);
 	}
 }
 function diagonalWall(_x, _y, _x2, _y2)
@@ -820,18 +833,16 @@ function camera(_x, _y)
 		Camera.setTranslate();
         }, 1000 / fps);
     }
-pillar.prototype = Object.create(platform.prototype);
 diagonalWall.prototype = Object.create(platform.prototype);
 collisionDetection = new collisiondetection();
 Renderer = new renderer();
 enemyCollection = new enemies();
 platformCollection = new platforms();
-platformCollection.add(100, 100, 100, 100, 0);
+platformCollection.add(300, 100, 100, 100, "box50x50");
 platformCollection.add(100, 100, 100, 100, 0);
 platformCollection.add(0, 500, 74, 6, 0);
 platformCollection.add(74, 500, 74, 6, 0);
 platformCollection.add(148, 500, 74, 6, 0);
-platformCollection.add(260, 500, 0, 0, "pillar");
 enemyCollection.add(0,0);
 projectileCollection = new projectiles();
 projectileCollection.add("fireBall", 30, 30);
