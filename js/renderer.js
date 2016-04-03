@@ -50,6 +50,10 @@ function renderer() {
                     case "scenery":
                         sceneryCollection.array[this.drawarray[currentmini].index].draw();
                         break;
+						
+                  case "enemy":
+                        enemyCollection.array[this.drawarray[currentmini].index].draw();
+                        break;
 
                     case "player":
                             player1.draw();
@@ -75,6 +79,9 @@ function renderer() {
         }
         for (i = 0; i < sceneryCollection.count() ; i++) {
             this.add(i, "scenery", sceneryCollection.array[i].y, sceneryCollection.array[i].height);
+        }
+        for (i = 0; i < enemyCollection.count() ; i++) {
+            this.add(i, "enemy", enemyCollection.array[i].y, enemyCollection.array[i].height);
         }
         this.add(i, "player", player1.y, player1.height);
 

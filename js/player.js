@@ -419,6 +419,14 @@ function Player(_x, _y)
 				this.foffsety = -116.2/2;
 				this.fs = 2;
 				break;
+			case "spider":
+				this.currentSheet = spider;
+				this.fn = 2;
+				this.fwidth = 20;
+				this.fheight = 14;
+				this.freset = false;
+				this.fs = 6;
+				break;
 		}
 		this.currentSheetName = x;
 		this.frame = 0;
@@ -482,7 +490,7 @@ function Player(_x, _y)
 			}	
 			if (keypressed.x)
 			{
-				this.attack("whirl_wind");
+				this.attack("half_spin");
 			}	
 			if (keypressed.z)
 			{

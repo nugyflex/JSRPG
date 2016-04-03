@@ -130,6 +130,16 @@ function enemy(_x, _y)
 	this.nextPoint = 0;
 	this.vel = 1;
 	this.health = 110;
+	this.currentSheet;
+	this.fheight = 0;
+	this.fwidth = 0;
+	this.fn = 0;
+	this.freset = false;
+	this.currentSheetName;
+	this.lastDir;
+	this.foffsetx = 0;
+	this.foffsety = 0;
+	this.fs = 0;
 	this.moveToPoint = function(_point)
 	{
 		this.theta = Math.atan(-(_point.y - this.y) / (_point.x - this.x));
@@ -153,10 +163,69 @@ function enemy(_x, _y)
 	}
 	this.draw = function()
 	{
-		ctx.fillStyle = "red";
-		ctx.fillRect(this.x, this.y, this.width, this.height);
-		ctx.fillStyle = "white";
-		ctx.fillRect(this.x, this.y-20, this.health, 10);	
+		if (this.xVel > 0)
+		{
+			this.changeAnimation("down");
+		}
+		else if (this.xVel < 0)
+		{
+			this.changeAnimation("up");
+		}
+		else
+		{
+			this.changeAnimation("down");
+		}
+		this.runAnimations();
+	}
+	this.changeAnimation = function(x)
+	{
+		switch (x)
+		{
+			case "down":
+				this.currentSheet = spiderdown;
+				this.fn = 2;
+				this.fwidth = 20;
+				this.fheight = 14;
+				this.freset = false;
+				this.fs = 6;
+				break;
+			case "up":
+				this.currentSheet = spiderup;
+				this.fn = 2;
+				this.fwidth = 20;
+				this.fheight = 14;
+				this.freset = false;
+				this.fs = 6;
+				break;
+		}
+		
+		this.currentSheetName = x;
+		this.frame = 0;
+		this.timer = 1;
+		
+	}
+	this.runAnimations = function()
+	{
+
+		this.timer++;
+		if (this.timer>this.fs)
+		{
+			this.timer = 0
+		}
+		if (this.timer == 0)
+		{
+			this.frame++;
+		}
+		if (this.frame > this.fn-1)
+		{
+			if (this.freset == true)
+			{
+				this.changeAnimation("default");
+				this.inAction = false;
+			}
+			this.frame = 0;
+		}
+		ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.foffsety, this.fwidth, this.fheight)
 	}
 }
 function platform(_x, _y, _width, _height, image, ioffsetx, ioffsety)
@@ -244,13 +313,27 @@ function camera(_x, _y)
 	this.y = _y;
 	this.follow = function(object)
 	{
-		this.x = object.x + object.xVel;
-		this.y = object.y + object.yVel;
+        this.theta = Math.atan(-(object.y - game.canvastranslatey) / ((object.x - c.width / 2) - game.canvastranslatex));
+        if (this.x < object.x) {
+            this.xvel = (object.x - this.x) / 25;
+        }
+        if (this.x > object.x) {
+            this.xvel = (this.x - object.x) / -25;
+        }
+        if (this.y < object.y) {
+            this.yvel = ((object.y - 10) - this.y) / 15;
+        }
+        if (this.y > object.y) {
+            this.yvel = (this.y - (object.y - 10)) / -15;
+        }
+        //adding the velosity to the x/y position    
+        this.x = this.x + this.xvel;
+        this.y = this.y + this.yvel;
 	}
 	this.setTranslate = function()
 	{
-		Game.canvastranslatex = this.x - Math.floor(c.width/2);
-		Game.canvastranslatey = this.y - Math.floor(c.height/2);
+		Game.canvastranslatex = Math.floor(this.x) - Math.floor(c.width/2);
+		Game.canvastranslatey = Math.floor(this.y) - Math.floor(c.height/2);
 	}
 }
     var fps = 60;
@@ -292,6 +375,7 @@ projectileCollection.add("fireBall", 30, 30);
 player1 = new Player(10, 10);
 collisionDetection = new collisiondetection();
 fireCollection = new fires();
+enemyCollection.add(0,0);
 Game.addExitToArray();
 var cheight = c.height;
 var keypressed =

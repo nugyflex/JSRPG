@@ -38,3 +38,7 @@ var halfspinleft = new Image();
 halfspinleft.src = './Images/half_spin_left.png';
 var whirlwind = new Image();
 whirlwind.src = './Images/whirl_wind.png';
+var spiderup = new Image();
+spiderup.src = './Images/spider_up.png';
+var spiderdown = new Image();
+spiderdown.src = './Images/spider_down.png';
