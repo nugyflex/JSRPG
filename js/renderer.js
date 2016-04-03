@@ -46,6 +46,10 @@ function renderer() {
                     case "miscobject":
                         miscobjectcollection.array[this.drawarray[currentmini].index].draw();
                         break;
+						
+                    case "scenery":
+                        sceneryCollection.array[this.drawarray[currentmini].index].draw();
+                        break;
 
                     case "player":
                             player1.draw();
@@ -68,6 +72,9 @@ function renderer() {
         }
         for (i = 0; i < projectileCollection.count() ; i++) {
             this.add(i, "projectile", projectileCollection.array[i].y, projectileCollection.array[i].height);
+        }
+        for (i = 0; i < sceneryCollection.count() ; i++) {
+            this.add(i, "scenery", sceneryCollection.array[i].y, sceneryCollection.array[i].height);
         }
         this.add(i, "player", player1.y, player1.height);
 
