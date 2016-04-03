@@ -293,7 +293,7 @@ function Player(_x, _y)
 				this.freset = false;
 				this.foffsetx = -4;
 				this.foffsety = -40;
-				this.fs = 6;
+				this.fs = 12;
 				break;
 			case "walk_up_sword":
 				this.currentSheet = walkupsword;
@@ -303,7 +303,7 @@ function Player(_x, _y)
 				this.freset = false;
 				this.foffsetx = -10;
 				this.foffsety = -40;
-				this.fs = 6;
+				this.fs = 12;
 				break;
 			case "sword_stab":
 				this.currentSheet = swordstab;
@@ -482,7 +482,7 @@ function Player(_x, _y)
 			}	
 			if (keypressed.x)
 			{
-				this.attack("half_spin");
+				this.attack("whirl_wind");
 			}	
 			if (keypressed.z)
 			{
