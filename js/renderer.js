@@ -55,9 +55,9 @@ function renderer() {
                         enemyCollection.array[this.drawarray[currentmini].index].draw();
                         break;
 
-                    case "player":
-                            player1.draw();
-							break;
+				  case "player":
+						player1.draw();
+						break;
 
                 }
 
@@ -71,27 +71,23 @@ function renderer() {
         this.drawarray.length = 0;
     }
     this.load = function () {
-        for (i = 0; i < platformCollection.count() ; i++) {
+        for (i = 0; i < platformCollection.count(); i++) {
             this.add(i, "platform", platformCollection.array[i].y, platformCollection.array[i].height);
         }
-        for (i = 0; i < projectileCollection.count() ; i++) {
+        for (i = 0; i < projectileCollection.count(); i++) {
             this.add(i, "projectile", projectileCollection.array[i].y, projectileCollection.array[i].height);
         }
-        for (i = 0; i < sceneryCollection.count() ; i++) {
+        for (i = 0; i < sceneryCollection.count(); i++) {
             this.add(i, "scenery", sceneryCollection.array[i].y, sceneryCollection.array[i].height);
         }
-        for (i = 0; i < enemyCollection.count() ; i++) {
+        for (i = 0; i < enemyCollection.count(); i++) {
             this.add(i, "enemy", enemyCollection.array[i].y, enemyCollection.array[i].height);
         }
         this.add(i, "player", player1.y, player1.height);
-
     }
     this.execute = function () {
-
         this.load();
         this.draw();
         this.finish();
-		
-
     }
 }
