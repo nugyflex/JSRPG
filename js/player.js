@@ -243,16 +243,16 @@ function Player(_x, _y)
 			switch(this.lastDir)
 			{
 				case "up":
-					x = "sword_swing_left";
+					x = "standing_sword_up";
 					break;
 				case "down":
-					x = "sword_swing_right";
+					x = "standing_sword_down";
 					break;
 				case "left":
-					x = "sword_swing_left";
+					x = "standing_sword_left";
 					break;
 				case "right":
-					x = "sword_swing_right";
+					x = "standing_sword_right";
 					break;
 			}
 		}
@@ -330,11 +330,11 @@ function Player(_x, _y)
 				break;
 			case "sword_swing_down":
 				this.currentSheet = swordswingdown;
-				this.fn = 4;
+				this.fn = 6;
 				this.fwidth = 36;
 				this.fheight = 50;
 				this.freset = true;
-				this.fs = 2;
+				this.fs = 4;
 				this.foffsetx = -16;
 				this.foffsety = -40;
 				break;
@@ -397,7 +397,7 @@ function Player(_x, _y)
 		}
 		this.currentSheetName = x;
 		this.frame = 0;
-		this.timer = 0;
+		this.timer = 1;
 		}
 		
 	}
@@ -409,7 +409,7 @@ function Player(_x, _y)
 		{
 			this.timer = 0
 		}
-		if (this.timer == this.fs)
+		if (this.timer == 0)
 		{
 			this.frame++;
 		}
