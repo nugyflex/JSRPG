@@ -128,7 +128,7 @@ function enemy(_x, _y)
 	this.width = 10;
 	this.height = 10;
 	this.nextPoint = 0;
-	this.vel = 0.75;
+	this.vel = 0.65;
 	this.health = 110;
 	this.currentSheet;
 	this.fheight = 0;
@@ -191,11 +191,11 @@ function enemy(_x, _y)
 		{
 			this.vheight = 0;
 		}
-		if (this.xVel > 0)
+		if (this.yvel > 0)
 		{
 			this.changeAnimation("down");
 		}
-		else if (this.xVel < 0)
+		else if (this.yvel < 0)
 		{
 			this.changeAnimation("up");
 		}
