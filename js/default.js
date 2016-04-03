@@ -246,7 +246,6 @@ function platform(_x, _y, _width, _height, image, ioffsetx, ioffsety)
 	{
 		if (this.image !== 0)
 		{
-			console.log("ASdasd")
 			ctx.drawImage(this.image, this.x + this.ioffsetx, this.y + this.ioffsety)
 		}
 		else
@@ -350,7 +349,7 @@ function camera(_x, _y)
 		platformCollection.drawShadows();
 		Renderer.execute();
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
-		Camera.follow(player1);
+		//Camera.follow(player1);
 		Camera.setTranslate();
         }, 1000 / fps);
     }

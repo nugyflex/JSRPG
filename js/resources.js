@@ -1,3 +1,5 @@
+var walkSkelDown = new Image();
+walkSkelDown.src = './Images/skeleton_files/skeleton_sprite_sheet.png';
 var walkright = new Image();
 walkright.src = './Images/walk_right.png';
 var walkdown = new Image();

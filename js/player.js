@@ -41,6 +41,9 @@ function Player(_x, _y)
 
 		switch (x)
 		{
+			case "skeleton_sprite":
+				this.changeAnimation("walk_skel_down");
+				break;
 			case "half_spin":
 				switch(this.lastDir)
 				{
@@ -265,6 +268,16 @@ function Player(_x, _y)
 		{
 		switch (x)
 		{
+			case "walk_skel_down":
+				this.currentSheet = walkSkelDown;
+				this.fn = 8;
+				this.fwidth = 70;
+				this.fheight = 70;
+				this.freset = false;
+				this.foffsetx = -35;
+				this.foffsety = -35;
+				this.fs = 5;
+				break;
 			case "walk_right_sword":
 				this.currentSheet = walkrightsword;
 				this.fn = 4
@@ -455,7 +468,7 @@ function Player(_x, _y)
 			}
 			this.frame = 0;
 		}
-		ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.foffsety, this.fwidth, this.fheight)
+		ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.foffsety, this.fwidth, this.fheight);
 		//console.log(this.frame + "," + this.fwidth + "," + this.fheight);
 	}
 	this.shoot = function()
@@ -495,7 +508,10 @@ function Player(_x, _y)
 			if (keypressed.z)
 			{
 				this.attack("sword_swing");
-			}	
+			}
+			if (keypressed.r){
+				this.attack("skeleton_sprite");
+			}
 		}		
 	}
 }
