@@ -68,7 +68,7 @@ function Player(_x, _y)
 				switch(this.lastDir)
 				{
 					case "up":
-						this.changeAnimation("sword_swing_left");
+						this.changeAnimation("sword_swing_up");
 						break;
 					case "down":
 						this.changeAnimation("sword_swing_down");
@@ -83,6 +83,11 @@ function Player(_x, _y)
 				this.xVel = 0;
 				this.yVel = 0;
 				break;				
+			case "whirl_wind":
+				this.changeAnimation("whirl_wind");
+				this.xVel = 0;
+				this.yVel = 0;
+				break;			
 		}
 	}
 	this.draw = function()
@@ -314,7 +319,7 @@ function Player(_x, _y)
 				this.fwidth = 42;
 				this.fheight = 48;
 				this.freset = true;
-				this.fs = 2;
+				this.fs = 3;
 				this.foffsetx = -22;
 				this.foffsety = -38;
 				break;
@@ -324,7 +329,7 @@ function Player(_x, _y)
 				this.fwidth = 42;
 				this.fheight = 48;
 				this.freset = true;
-				this.fs = 2;
+				this.fs = 3;
 				this.foffsetx = -10;
 				this.foffsety = -38;
 				break;
@@ -336,6 +341,16 @@ function Player(_x, _y)
 				this.freset = true;
 				this.fs = 4;
 				this.foffsetx = -16;
+				this.foffsety = -40;
+				break;
+			case "sword_swing_up":
+				this.currentSheet = swordswingup;
+				this.fn = 6;
+				this.fwidth = 36;
+				this.fheight = 50;
+				this.freset = true;
+				this.fs = 4;
+				this.foffsetx = -10;
 				this.foffsety = -40;
 				break;
 			case "standing_sword_down":
@@ -392,6 +407,16 @@ function Player(_x, _y)
 				this.freset = true;
 				this.foffsetx = -26;
 				this.foffsety = -38;
+				this.fs = 2;
+				break;
+			case "whirl_wind":
+				this.currentSheet = whirlwind;
+				this.fn = 8;
+				this.fwidth = 116.3;
+				this.fheight = 116.3;
+				this.freset = true;
+				this.foffsetx = -116.2/2;
+				this.foffsety = -116.2/2;
 				this.fs = 2;
 				break;
 		}
