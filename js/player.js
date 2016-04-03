@@ -314,7 +314,7 @@ function Player(_x, _y)
 				this.fwidth = 42;
 				this.fheight = 48;
 				this.freset = true;
-				this.fs = 3;
+				this.fs = 2;
 				this.foffsetx = -22;
 				this.foffsety = -38;
 				break;
@@ -324,7 +324,7 @@ function Player(_x, _y)
 				this.fwidth = 42;
 				this.fheight = 48;
 				this.freset = true;
-				this.fs = 3;
+				this.fs = 2;
 				this.foffsetx = -10;
 				this.foffsety = -38;
 				break;
