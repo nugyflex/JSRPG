@@ -243,7 +243,7 @@ function enemy(_x, _y)
 		{
 			this.timer = 0
 		}
-		if (this.timer == 0)
+		if (this.timer == 0 && this.vheight == 0)
 		{
 			this.frame++;
 		}
@@ -256,11 +256,14 @@ function enemy(_x, _y)
 			}
 			this.frame = 0;
 		}
-		if (this.vheight < 0)
-		{
+		//if (this.vheight < 0)
+		//{
+			//ctx.fillRect(this.x, this.y, 10, 10);
+			ctx.beginPath();
+			ctx.arc(this.x + this.width/2 + 5, this.y + this.height/2 + 5, this.vheight/-10 + 6, 0, 2 * Math.PI, false);
 			ctx.fillStyle = "rgba(0,0,0,0.25)"
-			ctx.fillRect(this.x, this.y, 10, 10);
-		}
+			ctx.fill();
+		//}
 		ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.vheight + this.foffsety, this.fwidth, this.fheight)
 	}
 }
@@ -406,6 +409,9 @@ platformCollection.add(0, 500, 74, 6, 0);
 platformCollection.add(74, 500, 74, 6, 0);
 platformCollection.add(148, 500, 74, 6, 0);
 enemyCollection.add(0,0);
+enemyCollection.add(400,0);
+enemyCollection.add(0,400);
+enemyCollection.add(400,400);
 projectileCollection = new projectiles();
 projectileCollection.add("fireBall", 30, 30);
 player1 = new Player(10, 10);
