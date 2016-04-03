@@ -113,6 +113,8 @@ var swordswingright = new Image();
 swordswingright.src = './Images/sword_swing_right.png';
 var swordswingleft = new Image();
 swordswingleft.src = './Images/sword_swing_left.png';
+var swordswingdown = new Image();
+swordswingdown.src = './Images/sword_swing_down.png';
 var swordstab = new Image();
 swordstab.src = './Images/sword_stab.png';
 var standingdown = new Image();
@@ -139,6 +141,7 @@ var halfspinright = new Image();
 halfspinright.src = './Images/half_spin_right.png';
 var halfspinleft = new Image();
 halfspinleft.src = './Images/half_spin_left.png';
+
 function grass(_x, _y)
 {
 	this.colidable = false;

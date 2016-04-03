@@ -71,7 +71,7 @@ function Player(_x, _y)
 						this.changeAnimation("sword_swing_left");
 						break;
 					case "down":
-						this.changeAnimation("sword_swing_right");
+						this.changeAnimation("sword_swing_down");
 						break;
 					case "left":
 						this.changeAnimation("sword_swing_left");
@@ -328,6 +328,16 @@ function Player(_x, _y)
 				this.foffsetx = -10;
 				this.foffsety = -38;
 				break;
+			case "sword_swing_down":
+				this.currentSheet = swordswingdown;
+				this.fn = 4;
+				this.fwidth = 36;
+				this.fheight = 50;
+				this.freset = true;
+				this.fs = 2;
+				this.foffsetx = -16;
+				this.foffsety = -40;
+				break;
 			case "standing_sword_down":
 				this.currentSheet = standingdown;
 				this.fn = 1;
@@ -387,6 +397,7 @@ function Player(_x, _y)
 		}
 		this.currentSheetName = x;
 		this.frame = 0;
+		this.timer = 0;
 		}
 		
 	}
@@ -398,7 +409,7 @@ function Player(_x, _y)
 		{
 			this.timer = 0
 		}
-		if (this.timer == 2)
+		if (this.timer == this.fs)
 		{
 			this.frame++;
 		}
