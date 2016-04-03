@@ -18,6 +18,7 @@ function Player(_x, _y)
 	this.lastDir;
 	this.foffsetx = 0;
 	this.foffsety = 0;
+	this.fs = 0;
 	this.inAction = false;
 	this.update = function()
 	{
@@ -41,11 +42,47 @@ function Player(_x, _y)
 		switch (x)
 		{
 			case "half_spin":
-			this.changeAnimation("half_spin")	
-			this.xVel = 0;
-			this.yVel = 0;	
-			this.lastDir = "left";
-			break;
+				switch(this.lastDir)
+				{
+					case "up":
+						this.changeAnimation("half_spin_left");
+						this.lastDir = "right";
+						break;
+					case "down":
+						this.changeAnimation("half_spin_right");
+						this.lastDir = "left";
+						break;
+					case "left":
+						this.changeAnimation("half_spin_left");
+						this.lastDir = "right";
+						break;
+					case "right":
+						this.changeAnimation("half_spin_right");
+						this.lastDir = "left";
+						break;
+				}	
+				this.xVel = 0;
+				this.yVel = 0;
+				break;
+			case "sword_swing":
+				switch(this.lastDir)
+				{
+					case "up":
+						this.changeAnimation("sword_swing_left");
+						break;
+					case "down":
+						this.changeAnimation("sword_swing_right");
+						break;
+					case "left":
+						this.changeAnimation("sword_swing_left");
+						break;
+					case "right":
+						this.changeAnimation("sword_swing_right");
+						break;
+				}
+				this.xVel = 0;
+				this.yVel = 0;
+				break;				
 		}
 	}
 	this.draw = function()
@@ -203,7 +240,21 @@ function Player(_x, _y)
 	{
 		if (x == "default")
 		{
-			x = "standing_sword_left";
+			switch(this.lastDir)
+			{
+				case "up":
+					x = "sword_swing_left";
+					break;
+				case "down":
+					x = "sword_swing_right";
+					break;
+				case "left":
+					x = "sword_swing_left";
+					break;
+				case "right":
+					x = "sword_swing_right";
+					break;
+			}
 		}
 		if (x !== this.currentSheetName)
 		{
@@ -217,6 +268,7 @@ function Player(_x, _y)
 				this.freset = false;
 				this.foffsetx = -6;
 				this.foffsety = -40;
+				this.fs = 6;
 				break;
 			case "walk_left_sword":
 				this.currentSheet = walkleftsword;
@@ -226,6 +278,7 @@ function Player(_x, _y)
 				this.freset = false;
 				this.foffsetx = -18;
 				this.foffsety = -40;
+				this.fs = 6;
 				break;
 			case "walk_down_sword":
 				this.currentSheet = walkdownsword;
@@ -235,6 +288,7 @@ function Player(_x, _y)
 				this.freset = false;
 				this.foffsetx = -4;
 				this.foffsety = -40;
+				this.fs = 6;
 				break;
 			case "walk_up_sword":
 				this.currentSheet = walkupsword;
@@ -244,6 +298,7 @@ function Player(_x, _y)
 				this.freset = false;
 				this.foffsetx = -10;
 				this.foffsety = -40;
+				this.fs = 6;
 				break;
 			case "sword_stab":
 				this.currentSheet = swordstab;
@@ -251,13 +306,27 @@ function Player(_x, _y)
 				this.fwidth = 46;
 				this.fheight = 46;
 				this.freset = true;
+				this.fs = 6; 
 				break;
-			case "sword_swing":
-				this.currentSheet = swordswing;
+			case "sword_swing_left":
+				this.currentSheet = swordswingleft;
 				this.fn = 6;
 				this.fwidth = 42;
 				this.fheight = 48;
 				this.freset = true;
+				this.fs = 3;
+				this.foffsetx = -22;
+				this.foffsety = -38;
+				break;
+			case "sword_swing_right":
+				this.currentSheet = swordswingright;
+				this.fn = 6;
+				this.fwidth = 42;
+				this.fheight = 48;
+				this.freset = true;
+				this.fs = 3;
+				this.foffsetx = -10;
+				this.foffsety = -38;
 				break;
 			case "standing_sword_down":
 				this.currentSheet = standingdown;
@@ -295,14 +364,25 @@ function Player(_x, _y)
 				this.foffsetx = -6;
 				this.foffsety = -36;
 				break;
-			case "half_spin":
-				this.currentSheet = halfspin;
+			case "half_spin_left":
+				this.currentSheet = halfspinleft;
 				this.fn = 9;
 				this.fwidth = 62;
 				this.fheight = 48;
 				this.freset = true;
 				this.foffsetx = -26;
 				this.foffsety = -38;
+				this.fs = 2;
+				break;
+			case "half_spin_right":
+				this.currentSheet = halfspinright;
+				this.fn = 9;
+				this.fwidth = 62;
+				this.fheight = 48;
+				this.freset = true;
+				this.foffsetx = -26;
+				this.foffsety = -38;
+				this.fs = 2;
 				break;
 		}
 		this.currentSheetName = x;
@@ -314,7 +394,7 @@ function Player(_x, _y)
 	{
 
 		this.timer++;
-		if (this.timer>6)
+		if (this.timer>this.fs)
 		{
 			this.timer = 0
 		}
@@ -367,6 +447,10 @@ function Player(_x, _y)
 			if (keypressed.x)
 			{
 				this.attack("half_spin");
+			}	
+			if (keypressed.z)
+			{
+				this.attack("sword_swing");
 			}	
 		}		
 	}

@@ -109,8 +109,10 @@ var walkright = new Image();
 walkright.src = './Images/walk_right.png';
 var walkdown = new Image();
 walkdown.src = './Images/walk_down.png';
-var swordswing = new Image();
-swordswing.src = './Images/sword_swing.png';
+var swordswingright = new Image();
+swordswingright.src = './Images/sword_swing_right.png';
+var swordswingleft = new Image();
+swordswingleft.src = './Images/sword_swing_left.png';
 var swordstab = new Image();
 swordstab.src = './Images/sword_stab.png';
 var standingdown = new Image();
@@ -133,9 +135,10 @@ var box5050 = new Image();
 box5050.src = './Images/scenery/box50x50.png';
 var grass1 = new Image();
 grass1.src = './Images/scenery/grass1.png';
-var halfspin = new Image();
-halfspin.src = './Images/half_spin.png';
-
+var halfspinright = new Image();
+halfspinright.src = './Images/half_spin_right.png';
+var halfspinleft = new Image();
+halfspinleft.src = './Images/half_spin_left.png';
 function grass(_x, _y)
 {
 	this.colidable = false;
