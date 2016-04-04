@@ -6,6 +6,7 @@ function Player(_x, _y)
 	this.height = 10;
 	this.xVel = 0;
 	this.yVel = 0;
+	this.vel = 3;
 	this.frame = 0;
 	this.timer = 0;
 	this.xlatch = true;
@@ -91,6 +92,13 @@ function Player(_x, _y)
 				this.xVel = 0;
 				this.yVel = 0;
 				break;			
+		}
+		for (i = 0; i < enemyCollection.array.length; i++)
+		{
+			if (collisionDetection.testcollision(this, enemyCollection.array[i]))
+			{
+				enemyCollection.array[i].health -= 6;
+			}
 		}
 	}
 	this.draw = function()
@@ -306,7 +314,7 @@ function Player(_x, _y)
 				this.freset = false;
 				this.foffsetx = -4;
 				this.foffsety = -40;
-				this.fs = 12;
+				this.fs = 10;
 				break;
 			case "walk_up_sword":
 				this.currentSheet = walkupsword;
@@ -316,7 +324,7 @@ function Player(_x, _y)
 				this.freset = false;
 				this.foffsetx = -10;
 				this.foffsety = -40;
-				this.fs = 12;
+				this.fs = 10;
 				break;
 			case "sword_stab":
 				this.currentSheet = swordstab;
@@ -332,7 +340,7 @@ function Player(_x, _y)
 				this.fwidth = 42;
 				this.fheight = 48;
 				this.freset = true;
-				this.fs = 3;
+				this.fs = 2;
 				this.foffsetx = -22;
 				this.foffsety = -38;
 				break;
@@ -342,7 +350,7 @@ function Player(_x, _y)
 				this.fwidth = 42;
 				this.fheight = 48;
 				this.freset = true;
-				this.fs = 3;
+				this.fs = 2;
 				this.foffsetx = -10;
 				this.foffsety = -38;
 				break;
@@ -468,13 +476,17 @@ function Player(_x, _y)
 			}
 			this.frame = 0;
 		}
+		ctx.beginPath();
+		ctx.arc(this.x + this.width/2, this.y + this.height/2, 10, 0, 2 * Math.PI, false);
+        ctx.fillStyle = "rgba(0,0,0,0.25)"
+        ctx.fill();
 		ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.foffsety, this.fwidth, this.fheight);
-		//console.log(this.frame + "," + this.fwidth + "," + this.fheight);
 	}
 	this.shoot = function()
 	{
 		
 	}
+	this.changeAnimation("standing_sword_right");
 	this.inputs = function()
 	{
 		if (!this.inAction)
@@ -483,7 +495,7 @@ function Player(_x, _y)
 			this.yVel = 0;
 			if (keypressed.w )
 			{
-				this.yVel = -2;
+				this.yVel = -this.vel;
 			}
 			else
 			{
@@ -491,16 +503,44 @@ function Player(_x, _y)
 			}
 			if (keypressed.a)
 			{
-				this.xVel = -2;
+				this.xVel = -this.vel;
 			}
 			if (keypressed.s)
 			{
-				this.yVel = 2;
+				this.yVel = this.vel;
 			}
 			if (keypressed.d)
 			{
-				this.xVel = 2;
+				this.xVel = this.vel;
+			}
+			if (keypressed.d && keypressed.s)
+			{
+				this.xVel = Math.sqrt(this.vel);
+				this.yVel = Math.sqrt(this.vel);
 			}	
+			if (keypressed.d && keypressed.w)
+			{
+				this.xVel = Math.sqrt(this.vel);
+				this.yVel = -Math.sqrt(this.vel);
+			}	
+			if (keypressed.a && keypressed.s)
+			{
+				this.xVel = -Math.sqrt(this.vel);
+				this.yVel = Math.sqrt(this.vel);
+			}	
+			if (keypressed.w && keypressed.a)
+			{
+				this.xVel = -Math.sqrt(this.vel);
+				this.yVel = -Math.sqrt(this.vel);
+			}	
+			if (keypressed.d && keypressed.a)
+			{
+				this.xVel = 0;
+			}
+			if (keypressed.w && keypressed.s)
+			{
+				this.yVel = 0;
+			}		
 			if (keypressed.x)
 			{
 				this.attack("half_spin");

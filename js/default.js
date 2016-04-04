@@ -119,153 +119,203 @@ function grass(_x, _y)
 		ctx.drawImage(grass1, this.x, this.y);
 	}
 }
-function enemy(_x, _y)
+function blood(_x, _y, _yvel, _xvel, _size)
 {
 	this.x = _x;
 	this.y = _y;
-	this.xvel = 0;
-	this.yvel = 0;
-	this.width = 10;
-	this.height = 10;
-	this.nextPoint = 0;
-	this.vel = 0.65;
-	this.health = 110;
-	this.currentSheet;
-	this.fheight = 0;
-	this.fwidth = 0;
-	this.fn = 0;
-	this.freset = false;
-	this.currentSheetName;
-	this.lastDir;
-	this.foffsetx = 0;
-	this.foffsety = 0;
-	this.fs = 0;
-	this.vheight = 0;
-	this.vyvel = 0;
-	this.moveToPoint = function(_point)
-	{
-		this.theta = Math.atan(-(_point.y - this.y) / (_point.x - this.x));
-        if (_point.x > this.x) {
-            this.yvel = Math.sin(this.theta) * -this.vel;
-            this.xvel = Math.cos(this.theta) * this.vel;
-        }
-        else {
-            this.yvel = Math.sin(this.theta) * this.vel;
-            this.xvel = Math.cos(this.theta) * -this.vel;
-        }
-	}
-	this.calcNewPos = function()
-	{
-		this.x+=this.xvel;
-		this.y+=this.yvel;
-	}
-	this.update = function()
-	{
-		this.ai(player1);
-		this.calcNewPos();
-	}
-	this.ai = function(player)
-	{
-    this.theta = Math.atan(-(player.y - this.y) / (player.x - this.x));
-            if (player.x > this.x) {
-                this.yvel = Math.sin(this.theta) * -this.vel;
-                this.xvel = Math.cos(this.theta) * this.vel;
-            }
-            else {
-                this.yvel = Math.sin(this.theta) * this.vel;
-                this.xvel = Math.cos(this.theta) * -this.vel;
-            }
-        //adding the velosity to the x/y position    
-        this.x = this.x + this.xvel;
-        this.y = this.y + this.yvel;
-		if (collisionDetection.finddistance(this, player) < 40 && this.vheight == 0)
-		{
-			this.vyvel = -2;
-		}
-	}
+	this.xvel = _xvel;
+	this.yvel = _yvel;
+	this.size = _size;
+	this.vheight =-2;
+	this.vyvel = -3;
 	this.draw = function()
 	{
-		this.vyvel+=0.05;
-		this.vheight += this.vyvel;
-		if (this.vheight > 0)
+		if (this.vheight == 0)
 		{
-			this.vheight = 0;
-		}
-		if (this.yvel > 0)
-		{
-			this.changeAnimation("down");
-		}
-		else if (this.yvel < 0)
-		{
-			this.changeAnimation("up");
+			ctx.fillStyle = "rgb(180, 30, 30)";
+			drawEllipse(this.x + this.size/2, this.y + this.size/2, this.size*2, this.size);
 		}
 		else
 		{
-			this.changeAnimation("down");
+			ctx.fillStyle = "rgb(200, 50, 50)";
+			drawEllipse(this.x + this.size/2, this.y + this.vheight + this.size/2, this.size, this.size);	
+			ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+			drawEllipse(this.x + this.size/2, this.y + this.size/2, this.size/2, this.size/2);				
 		}
-		this.runAnimations();
 	}
-	this.changeAnimation = function(x)
+	this.update = function()
 	{
-		if (x !== this.currentSheetName)
+		this.x += this.xvel;
+		this.y += this.yvel;
+		this.vheight+=this.vyvel;
+		this.vyvel += .09;
+		if (this.vheight>0)
 		{
-			switch (x)
+			this.vheight = 0;
+		}
+		if (this.vheight == 0)
+		{
+			this.xvel = 0;
+			this.yvel = 0;
+		}
+	}
+}
+function enemy(_x, _y)
+{
+    this.x = _x;
+    this.y = _y;
+    this.xvel = 0;
+    this.yvel = 0;
+    this.width = 10;
+    this.height = 10;
+    this.nextPoint = 0;
+    this.vel = 0.65;
+    this.velDefault = this.vel;
+    this.health = 10;
+    this.currentSheet;
+    this.fheight = 0;
+    this.fwidth = 0;
+    this.fn = 0;
+    this.freset = false;
+    this.currentSheetName;
+    this.lastDir;
+    this.foffsetx = 0;
+    this.foffsety = 0;
+    this.fs = 0;
+    this.vheight = 0;
+    this.vyvel = 0;
+    this.calcNewPos = function()
+    {
+        this.x+=this.xvel;
+        this.y+=this.yvel;
+    }
+    this.update = function()
+    {
+		this.ai(player1);
+		this.calcNewPos();
+    }
+        this.ai = function(player)
+        {
+			this.theta = Math.atan(-(player.y - this.y) / (player.x - this.x));
+			if (player.x > this.x) {
+			   this.yvel = Math.sin(this.theta) * -this.vel;
+			   this.xvel = Math.cos(this.theta) * this.vel;
+			}
+			else {
+				this.yvel = Math.sin(this.theta) * this.vel;
+				this.xvel = Math.cos(this.theta) * -this.vel;
+			}
+			//adding the velosity to the x/y position   
+			this.x = this.x + this.xvel;
+			this.y = this.y + this.yvel;
+			if (collisionDetection.finddistance(this, player) < 50 && collisionDetection.finddistance(this, player) > 10 && this.vheight == 0)
 			{
-				case "down":
+				this.vyvel = -5;
+			}
+			else
+			{	      
+				this.vel = this.velDefault;
+			}
+			if (this.vheight != 0){
+				this.vel = 1;
+			}
+        }
+        this.draw = function()
+        {
+            this.vyvel+=0.3;
+            this.vheight += this.vyvel;
+            if (this.vheight > 0)
+            {
+                this.vheight = 0;
+            }
+            if (this.yvel > 0)
+            {
+                this.changeAnimation("down");
+            }
+            else if (this.yvel < 0)
+            {
+				this.changeAnimation("up");
+			}
+			else
+			{
+				this.changeAnimation("down");
+			}
+			this.runAnimations();
+		}
+		this.changeAnimation = function(x)
+        {
+            if (x !== this.currentSheetName)
+            {
+                switch (x)
+				{
+                    case "down":
 					this.currentSheet = spiderdown;
-					this.fn = 2;
-					this.fwidth = 20;
+                    this.fn = 2;
+                    this.fwidth = 20;
 					this.fheight = 14;
-					this.freset = false;
-					this.fs = 6;
-					break;
-				case "up":
-					this.currentSheet = spiderup;
-					this.fn = 2;
-					this.fwidth = 20;
-					this.fheight = 14;
-					this.freset = false;
-					this.fs = 6;
-					break;
-			}
-			
-			this.currentSheetName = x;
-			this.frame = 0;
-			this.timer = 1;
-		}
-	}
-	this.runAnimations = function()
-	{
+                    this.freset = false;
+                    this.fs = 6;
+                    break;
+                case "up":
+                    this.currentSheet = spiderup;
+                    this.fn = 2;
+                    this.fwidth = 20;
+                    this.fheight = 14;
+                    this.freset = false;
+                    this.fs = 6;
+                    break;
+                }                               
+            this.currentSheetName = x;
+            this.frame = 0;
+            this.timer = 1;
+            }
+        }
+        this.runAnimations = function()
+        {
+			this.timer++;
+            console.log(this.fs + "," + this.timer);
+            if (this.timer>this.fs)
+            {
+				this.timer = 0
+            }
+            if (this.timer == 0 && this.vheight == 0)
+            {
+                this.frame++;
+            }
+            if (this.frame > this.fn-1)
+            {
+				if (this.freset == true)
+				{
+					this.changeAnimation("default");
+					this.inAction = false;
+				}
+				this.frame = 0;
+            }
+            ctx.beginPath();
+            ctx.arc(this.x + this.width/2 + 5, this.y + this.height/2 + 5, this.vheight/-10 + 6, 0, 2 * Math.PI, false);
+            ctx.fillStyle = "rgba(0,0,0,0.25)"
+            ctx.fill();
+            ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.vheight + this.foffsety, this.fwidth, this.fheight)
+        }
+}
+function drawEllipse(centerX, centerY, width, height) {
+	
+  ctx.beginPath();
+  
+  ctx.moveTo(centerX, centerY - height/2); // A1
+  
+  ctx.bezierCurveTo(
+    centerX + width/2, centerY - height/2, // C1
+    centerX + width/2, centerY + height/2, // C2
+    centerX, centerY + height/2); // A2
 
-		this.timer++;
-		console.log(this.fs + "," + this.timer);
-		if (this.timer>this.fs)
-		{
-			this.timer = 0
-		}
-		if (this.timer == 0 && this.vheight == 0)
-		{
-			this.frame++;
-		}
-		if (this.frame > this.fn-1)
-		{
-			if (this.freset == true)
-			{
-				this.changeAnimation("default");
-				this.inAction = false;
-			}
-			this.frame = 0;
-		}
-		//if (this.vheight < 0)
-		//{
-			//ctx.fillRect(this.x, this.y, 10, 10);
-			ctx.beginPath();
-			ctx.arc(this.x + this.width/2 + 5, this.y + this.height/2 + 5, this.vheight/-10 + 6, 0, 2 * Math.PI, false);
-			ctx.fillStyle = "rgba(0,0,0,0.25)"
-			ctx.fill();
-		//}
-		ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.vheight + this.foffsety, this.fwidth, this.fheight)
-	}
+  ctx.bezierCurveTo(
+    centerX - width/2, centerY + height/2, // C3
+    centerX - width/2, centerY - height/2, // C4
+    centerX, centerY - height/2); // A1
+
+  ctx.fill();
+  ctx.closePath();	
 }
 function platform(_x, _y, _width, _height, image, ioffsetx, ioffsety)
 {
@@ -387,10 +437,11 @@ function camera(_x, _y)
 			collisionDetection.stopplayer(player1, platformCollection.array[i]);
 		}
 		platformCollection.drawShadows();
+		bloodCollection.draw();
 		Renderer.execute();
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
-		Camera.setTranslate();
+		//Camera.setTranslate();
         }, 1000 / fps);
     }
 diagonalWall.prototype = Object.create(platform.prototype);
@@ -403,6 +454,7 @@ sceneryCollection.add(Math.floor(Math.random()*500), Math.floor(Math.random()*50
 }
 enemyCollection = new enemies();
 platformCollection = new platforms();
+bloodCollection = new bloods();
 platformCollection.add(300, 100, 100, 100, "box50x50");
 platformCollection.add(100, 100, 100, 100, 0);
 platformCollection.add(0, 500, 74, 6, 0);
@@ -453,6 +505,6 @@ function gameLoop() {
 		enemyCollection.update();
 		player1.update();
 		projectileCollection.update();
-
+		bloodCollection.update();
 	}
 }

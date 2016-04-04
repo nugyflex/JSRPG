@@ -309,10 +309,10 @@ function collisiondetection() {
         this.object1 = object1;
         this.object2 = object2;
          if (object1.x + object1.width > object2.x && object1.x < object2.x + object2.width && object1.y + object1.height > object2.y && object1.y < object2.y + object2.height) {
-            return 1;
+            return true;
         }
         else {
-            return 0;
+            return false;
         }
     }
     this.testcollisionenemy = function (object1, object2) {

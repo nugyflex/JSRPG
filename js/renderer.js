@@ -32,8 +32,7 @@ function renderer() {
                 switch (this.drawarray[currentmini].type) {
                     case "platform":
                         platformCollection.array[this.drawarray[currentmini].index].draw();
-						
-                        break;
+                        break;						
 
                     case "projectile":
                         projectileCollection.array[this.drawarray[currentmini].index].draw();

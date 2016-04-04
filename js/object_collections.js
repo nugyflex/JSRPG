@@ -12,6 +12,55 @@ function enemies() {
 		for (i = 0; i < this.count(); i++)
 		{
 			this.array[i].update();
+			if (this.array[i].health <= 0)
+			{
+				for (j = 0; j < 10; j++)
+				{
+					bloodCollection.add(this.array[i].x,this.array[i].y);
+				}
+				this.remove(i);
+			}
+		}
+	}
+	this.draw = function()
+	{
+		for (i = 0; i < this.count(); i++)
+		{
+			this.array[i].draw();
+		}		
+	}
+    this.remove = function (index) {
+        var initialcount = this.array.length;
+        for (i = index; i < initialcount; i++) {
+
+            if (i < initialcount - 1) {
+                this.array[i] = this.array[i + 1];
+                this.array[i].index = this.array[i].index - 1;
+            }
+            if (i == initialcount - 1) {
+                this.array.length = this.array.length - 1;
+            }
+
+        }
+    }
+}
+function bloods() {
+    this.count = function () {
+        return this.array.length;
+    }
+    this.array = [];
+    this.add = function (x, y) {
+        var i = this.count();
+		var randsize = 2+Math.random()*2;
+		var v1 = (Math.random()*1) -0.5;
+		var v2 = (Math.random()*1) -0.5;
+        this.array[i] = new blood(x, y, v1, v2, randsize, randsize);
+    }
+	this.update = function()
+	{
+		for (i = 0; i < this.count(); i++)
+		{
+			this.array[i].update();
 		}
 	}
 	this.draw = function()
