@@ -106,7 +106,13 @@ function Point(_x, _y)
 	this.y = _y;
 }
 
-
+function rectangle(x, y, width, height)
+{
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+}
 function grass(_x, _y)
 {
 	this.colidable = false;
@@ -196,14 +202,17 @@ function enemy(_x, _y)
     }
         this.ai = function(player)
         {
-			this.theta = Math.atan(-(player.y - this.y) / (player.x - this.x));
-			if (player.x > this.x) {
-			   this.yvel = Math.sin(this.theta) * -this.vel;
-			   this.xvel = Math.cos(this.theta) * this.vel;
-			}
-			else {
-				this.yvel = Math.sin(this.theta) * this.vel;
-				this.xvel = Math.cos(this.theta) * -this.vel;
+			if (this.vheight == 0)
+			{
+				this.theta = Math.atan(-(player.y - this.y) / (player.x - this.x));
+				if (player.x > this.x) {
+				   this.yvel = Math.sin(this.theta) * -this.vel;
+				   this.xvel = Math.cos(this.theta) * this.vel;
+				}
+				else {
+					this.yvel = Math.sin(this.theta) * this.vel;
+					this.xvel = Math.cos(this.theta) * -this.vel;
+				}
 			}
 			//adding the velosity to the x/y position   
 			this.x = this.x + this.xvel;
@@ -273,7 +282,6 @@ function enemy(_x, _y)
         this.runAnimations = function()
         {
 			this.timer++;
-            console.log(this.fs + "," + this.timer);
             if (this.timer>this.fs)
             {
 				this.timer = 0
@@ -432,16 +440,12 @@ function camera(_x, _y)
 		ctx.clearRect(-10000, -10000,100000,100000);
 		ctx.fillStyle = "rgba(50,200,100, 1)";
 		ctx.fillRect(-10000, -10000,100000,100000);
-		for (i = 0; i < platformCollection.count(); i++)
-		{
-			collisionDetection.stopplayer(player1, platformCollection.array[i]);
-		}
 		platformCollection.drawShadows();
 		bloodCollection.draw();
 		Renderer.execute();
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
-		//Camera.setTranslate();
+		Camera.setTranslate();
         }, 1000 / fps);
     }
 diagonalWall.prototype = Object.create(platform.prototype);
@@ -506,5 +510,9 @@ function gameLoop() {
 		player1.update();
 		projectileCollection.update();
 		bloodCollection.update();
+		for (i = 0; i < platformCollection.count(); i++)
+		{
+			collisionDetection.stopplayer(player1, platformCollection.array[i]);
+		}
 	}
 }

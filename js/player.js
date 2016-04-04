@@ -29,7 +29,6 @@ function Player(_x, _y)
 		{
 			this.shoot();
 		}
-		this.onGround = false;
 	}
 	this.calcNewPos = function()
 	{
@@ -64,26 +63,14 @@ function Player(_x, _y)
 						this.changeAnimation("half_spin_right");
 						this.lastDir = "left";
 						break;
-				}	
+				}
+				this.inflictDamage(25, 5);
 				this.xVel = 0;
 				this.yVel = 0;
 				break;
 			case "sword_swing":
-				switch(this.lastDir)
-				{
-					case "up":
-						this.changeAnimation("sword_swing_up");
-						break;
-					case "down":
-						this.changeAnimation("sword_swing_down");
-						break;
-					case "left":
-						this.changeAnimation("sword_swing_left");
-						break;
-					case "right":
-						this.changeAnimation("sword_swing_right");
-						break;
-				}
+				this.changeAnimation(this.getSheetByDirection(this.lastDir, "sword_swing"));
+				this.inflictDamage(10, 11);
 				this.xVel = 0;
 				this.yVel = 0;
 				break;				
@@ -91,15 +78,25 @@ function Player(_x, _y)
 				this.changeAnimation("whirl_wind");
 				this.xVel = 0;
 				this.yVel = 0;
+	
 				break;			
 		}
+
+	}
+	this.getSheetByDirection = function(dir, string)
+	{
+		result = string + "_" + dir;
+		return result;
+	}
+	this.inflictDamage = function(range, damage)
+	{
 		for (i = 0; i < enemyCollection.array.length; i++)
 		{
-			if (collisionDetection.testcollision(this, enemyCollection.array[i]))
+			if (collisionDetection.finddistance(this, enemyCollection.array[i]) < range)
 			{
-				enemyCollection.array[i].health -= 6;
+				enemyCollection.array[i].health -= damage;
 			}
-		}
+		}	
 	}
 	this.draw = function()
 	{
@@ -515,23 +512,23 @@ function Player(_x, _y)
 			}
 			if (keypressed.d && keypressed.s)
 			{
-				this.xVel = Math.sqrt(this.vel);
-				this.yVel = Math.sqrt(this.vel);
+				this.xVel = 2;
+				this.yVel = 2;
 			}	
 			if (keypressed.d && keypressed.w)
 			{
-				this.xVel = Math.sqrt(this.vel);
-				this.yVel = -Math.sqrt(this.vel);
+				this.xVel = 2;
+				this.yVel = -2;
 			}	
 			if (keypressed.a && keypressed.s)
 			{
-				this.xVel = -Math.sqrt(this.vel);
-				this.yVel = Math.sqrt(this.vel);
+				this.xVel = -2;
+				this.yVel = 2;
 			}	
 			if (keypressed.w && keypressed.a)
 			{
-				this.xVel = -Math.sqrt(this.vel);
-				this.yVel = -Math.sqrt(this.vel);
+				this.xVel = -2;
+				this.yVel = -2;
 			}	
 			if (keypressed.d && keypressed.a)
 			{

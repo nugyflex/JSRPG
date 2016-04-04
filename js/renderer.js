@@ -53,7 +53,11 @@ function renderer() {
                   case "enemy":
                         enemyCollection.array[this.drawarray[currentmini].index].draw();
                         break;
-
+						
+                  case "blood":
+                        enemyCollection.array[this.drawarray[currentmini].index].draw();
+                        break;
+						
 				  case "player":
 						player1.draw();
 						break;
@@ -81,6 +85,12 @@ function renderer() {
         }
         for (i = 0; i < enemyCollection.count(); i++) {
             this.add(i, "enemy", enemyCollection.array[i].y, enemyCollection.array[i].height);
+        }
+        for (i = 0; i < bloodCollection.count(); i++) {
+			if (bloodCollection.array[i].vheight >= 0)
+			{
+				this.add(i, "blood", bloodCollection.array[i].y, bloodCollection.array[i].height);
+			}
         }
         this.add(i, "player", player1.y, player1.height);
     }

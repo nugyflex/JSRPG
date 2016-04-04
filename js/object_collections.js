@@ -11,6 +11,13 @@ function enemies() {
 	{
 		for (i = 0; i < this.count(); i++)
 		{
+			for (j = 0; j < this.count(); j++)
+			{
+				if (i !== j)
+				{
+					collisionDetection.stopplayer(this.array[i], this.array[j]);
+				}
+			}
 			this.array[i].update();
 			if (this.array[i].health <= 0)
 			{
