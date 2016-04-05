@@ -87,9 +87,9 @@ function renderer() {
             this.add(i, "enemy", enemyCollection.array[i].y, enemyCollection.array[i].height);
         }
         for (i = 0; i < bloodCollection.count(); i++) {
-			if (bloodCollection.array[i].vheight >= 0)
+			if (bloodCollection.array[i].vheight !== 0)
 			{
-				this.add(i, "blood", bloodCollection.array[i].y, bloodCollection.array[i].height);
+				this.add(i, "blood", bloodCollection.array[i].y, bloodCollection.array[i].size);
 			}
         }
         this.add(i, "player", player1.y, player1.height);

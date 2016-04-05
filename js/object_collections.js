@@ -59,8 +59,18 @@ function bloods() {
     this.add = function (x, y) {
         var i = this.count();
 		var randsize = 2+Math.random()*4;
-		var v1 = (Math.random()*1) -0.5;
-		var v2 = (Math.random()*1) -0.5;
+		var vel = (Math.random()*1) -0.5;
+		var v1;
+		var v2;
+		var theta = (Math.random()*2*Math.PI);
+		if ((Math.random()*2) -1 > 0) {
+				v1 = Math.sin(theta) * -vel;
+				v2 = Math.cos(theta) * vel;
+		}
+		else {
+			v1 = Math.sin(theta) * vel;
+			v2 = Math.cos(theta) * -vel;
+		}
         this.array[i] = new blood(x, y, v1, v2, randsize, randsize);
     }
 	this.update = function()
