@@ -134,12 +134,19 @@ function blood(_x, _y, _yvel, _xvel, _size)
 	this.size = _size;
 	this.vheight =-2;
 	this.vyvel = -3;
+	this.alpha = 1;
+	this.decreaseAlpha = Math.random()*0.008;
+	if (this.decreaseAlpha<0.003)
+	{
+		this.decreaseAlpha = 0.003;
+	}
 	this.draw = function()
 	{
 		if (this.vheight == 0)
 		{
-			ctx.fillStyle = "rgb(180, 30, 30)";
+			ctx.fillStyle = "rgba(180, 30, 30," + this.alpha + ")";
 			drawEllipse(this.x + this.size/2, this.y + this.size/2, this.size*2, this.size);
+			this.alpha-=this.decreaseAlpha;
 		}
 		else
 		{
