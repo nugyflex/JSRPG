@@ -202,8 +202,7 @@ function enemy(_x, _y)
     }
         this.ai = function(player)
         {
-			if (this.vheight == 0)
-			{
+			var distfromplayer = collisionDetection.finddistance(this, player);
 				this.theta = Math.atan(-(player.y - this.y) / (player.x - this.x));
 				if (player.x > this.x) {
 				   this.yvel = Math.sin(this.theta) * -this.vel;
@@ -213,20 +212,19 @@ function enemy(_x, _y)
 					this.yvel = Math.sin(this.theta) * this.vel;
 					this.xvel = Math.cos(this.theta) * -this.vel;
 				}
-			}
 			//adding the velosity to the x/y position   
 			this.x = this.x + this.xvel;
 			this.y = this.y + this.yvel;
-			if (collisionDetection.finddistance(this, player) < 50 && collisionDetection.finddistance(this, player) > 10 && this.vheight == 0)
+			if (distfromplayer < 70 && distfromplayer > 10 && this.vheight == 0)
 			{
-				this.vyvel = -5;
+				this.vyvel = -4;
 			}
 			else
 			{	      
 				this.vel = this.velDefault;
 			}
 			if (this.vheight != 0){
-				this.vel = 1;
+				this.vel = 1.4;
 			}
         }
         this.draw = function()
@@ -514,5 +512,6 @@ function gameLoop() {
 		{
 			collisionDetection.stopplayer(player1, platformCollection.array[i]);
 		}
+		bloodCollection.add(0,0);
 	}
 }

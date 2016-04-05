@@ -21,7 +21,7 @@ function enemies() {
 			this.array[i].update();
 			if (this.array[i].health <= 0)
 			{
-				for (j = 0; j < 10; j++)
+				for (j = 0; j < 15; j++)
 				{
 					bloodCollection.add(this.array[i].x,this.array[i].y);
 				}
@@ -58,7 +58,7 @@ function bloods() {
     this.array = [];
     this.add = function (x, y) {
         var i = this.count();
-		var randsize = 2+Math.random()*2;
+		var randsize = 2+Math.random()*4;
 		var v1 = (Math.random()*1) -0.5;
 		var v2 = (Math.random()*1) -0.5;
         this.array[i] = new blood(x, y, v1, v2, randsize, randsize);

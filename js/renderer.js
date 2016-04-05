@@ -55,7 +55,7 @@ function renderer() {
                         break;
 						
                   case "blood":
-                        enemyCollection.array[this.drawarray[currentmini].index].draw();
+                        bloodCollection.array[this.drawarray[currentmini].index].draw();
                         break;
 						
 				  case "player":

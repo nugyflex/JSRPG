@@ -64,13 +64,13 @@ function Player(_x, _y)
 						this.lastDir = "left";
 						break;
 				}
-				this.inflictDamage(25, 5);
+				this.inflictDamage(30, 5);
 				this.xVel = 0;
 				this.yVel = 0;
 				break;
 			case "sword_swing":
 				this.changeAnimation(this.getSheetByDirection(this.lastDir, "sword_swing"));
-				this.inflictDamage(10, 11);
+				this.inflictDamage(20, 11);
 				this.xVel = 0;
 				this.yVel = 0;
 				break;				
@@ -475,7 +475,7 @@ function Player(_x, _y)
 		}
 		ctx.beginPath();
 		ctx.arc(this.x + this.width/2, this.y + this.height/2, 10, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "rgba(0,0,0,0.25)"
+        ctx.fillStyle = "rgba(0,0,0,0.35)"
         ctx.fill();
 		ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.foffsety, this.fwidth, this.fheight);
 	}
