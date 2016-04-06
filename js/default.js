@@ -133,7 +133,7 @@ function blood(_x, _y, _yvel, _xvel, _size)
 	this.yvel = _yvel;
 	this.size = _size;
 	this.vheight =-2;
-	this.vyvel = -3;
+	this.vyvel = Math.random() + -4;
 	this.alpha = 1;
 	this.decreaseAlpha = Math.random()*0.008;
 	if (this.decreaseAlpha<0.003)
