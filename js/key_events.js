@@ -1,4 +1,20 @@
-
+var keypressed =
+{
+    w: false,
+    s: false,
+    a: false,
+    d: false,
+    space: false,
+    z: false,
+    shootcooldown: false,
+    x: false,
+    e: false,
+    f: false,
+    mouse: false,
+    k: false,
+    q: false,
+    r: false
+};
 function mouseDown(event) {
 keypressed.mouse = 1;	
 }
