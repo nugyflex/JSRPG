@@ -71,18 +71,18 @@ function light(x, y, z, intensity){
 		*/
 		this.takenVerts = [];
 		
-		this.xDest1 = this.vert1.x + -(this.intensity*200)/distance(this, this.vert1)*(this.x - this.vert1.x);
-		this.yDest1 = this.vert1.y + -(this.intensity*200)/distance(this, this.vert1)*(this.y - this.vert1.y);
+		this.xDest1 = this.vert1.x + -(this.intensity*150)/distance(this, this.vert1)*(this.x - this.vert1.x);
+		this.yDest1 = this.vert1.y + -(this.intensity*150)/distance(this, this.vert1)*(this.y - this.vert1.y);
 		ctx.fillStyle = 'rgba(255, 0, 0, 1)';
 		//ctx.fillRect(this.xDest1 - 5, this.yDest1 - 5, 10, 10);
 		
-		this.xDest2 = this.vert1.x + -(this.intensity*200)/distance(this, this.vert1)*(this.x - this.vert1.x) - (this.vert1.x - this.vert2.x);
-		this.yDest2 = this.vert1.y + -(this.intensity*200)/distance(this, this.vert1)*(this.y - this.vert1.y) - (this.vert1.y - this.vert2.y);
+		this.xDest2 = this.vert1.x + -(this.intensity*150)/distance(this, this.vert1)*(this.x - this.vert1.x) - (this.vert1.x - this.vert2.x);
+		this.yDest2 = this.vert1.y + -(this.intensity*150)/distance(this, this.vert1)*(this.y - this.vert1.y) - (this.vert1.y - this.vert2.y);
 		ctx.fillStyle = 'rgba(255, 255, 255, 1)';
 		//ctx.fillRect(this.xDest2 - 2, this.yDest2 - 2, 4, 4);
 		
-		this.xDest3 = this.vert1.x + -(this.intensity*200)/distance(this, this.vert1)*(this.x - this.vert1.x) - (this.vert1.x - this.vert3.x);
-		this.yDest3 = this.vert1.y + -(this.intensity*200)/distance(this, this.vert1)*(this.y - this.vert1.y) - (this.vert1.y - this.vert3.y);
+		this.xDest3 = this.vert1.x + -(this.intensity*150)/distance(this, this.vert1)*(this.x - this.vert1.x) - (this.vert1.x - this.vert3.x);
+		this.yDest3 = this.vert1.y + -(this.intensity*150)/distance(this, this.vert1)*(this.y - this.vert1.y) - (this.vert1.y - this.vert3.y);
 		ctx.fillStyle = 'rgba(0, 0, 255, 1)';
 		//ctx.fillRect(this.xDest3 - 2, this.yDest3 - 2, 4, 4);
 		
