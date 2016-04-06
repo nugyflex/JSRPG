@@ -88,7 +88,7 @@ function bloods() {
 		}		
 	}
     this.remove = function (index) {
-        var initialcount = this.array.length;
+        /*var initialcount = this.array.length;
         for (i = index; i < initialcount; i++) {
 
             if (i < initialcount - 1) {
@@ -99,7 +99,8 @@ function bloods() {
                 this.array.length = this.array.length - 1;
             }
 
-        }
+        }*/
+		this.array.splice(i, 1);
     }
 }
 function projectiles() {

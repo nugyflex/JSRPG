@@ -171,6 +171,10 @@ function blood(_x, _y, _yvel, _xvel, _size)
 			this.xvel = 0;
 			this.yvel = 0;
 		}
+		//Removing the bloods when they are invisible, just so the performance is still goat
+		if (this.alpha <= 0){
+			bloodCollection.remove(bloodCollection.array.indexOf(this));
+		}
 	}
 }
 function enemy(_x, _y)
