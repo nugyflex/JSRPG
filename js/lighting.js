@@ -20,11 +20,6 @@ function light(x, y, z, intensity){
 		this.firstKey = 'undefined';
 		this.secondKey = 'undefined';
 		this.thirdKey = 'undefined';
-		/*
-		return {tL: {x: tLx, y: tLy}, 
-			tR: {x: tRx, y: tRy}, 
-			bR: {x: bRx, y: bRy}, 
-			bL: {x: bLx, y: bLy}};*/
 		
 		//A medium-rare, well-seasoned, porterhouse tumor:
 		/*this.vert4 = {x: this.vert1.x, y: this.vert1.y - 40};
@@ -59,7 +54,7 @@ function light(x, y, z, intensity){
 		//this.vert1.y -= 40;
 		//this.vert2.y -= 40;
 		//this.vert3.y -= 40;
-		
+		/*
 		ctx.fillStyle = 'rgba(0, 0, 255, 1)';
 		ctx.fillRect(this.vert3.x - 5, this.vert3.y - 5, 10, 10);
 		
@@ -73,23 +68,23 @@ function light(x, y, z, intensity){
 		ctx.moveTo(this.x, this.y);
 		ctx.lineTo(this.vert1.x, this.vert1.y);
 		ctx.stroke();
-		
+		*/
 		this.takenVerts = [];
 		
 		this.xDest1 = this.vert1.x + -(this.intensity*200)/distance(this, this.vert1)*(this.x - this.vert1.x);
 		this.yDest1 = this.vert1.y + -(this.intensity*200)/distance(this, this.vert1)*(this.y - this.vert1.y);
 		ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-		ctx.fillRect(this.xDest1 - 5, this.yDest1 - 5, 10, 10);
+		//ctx.fillRect(this.xDest1 - 5, this.yDest1 - 5, 10, 10);
 		
 		this.xDest2 = this.vert1.x + -(this.intensity*200)/distance(this, this.vert1)*(this.x - this.vert1.x) - (this.vert1.x - this.vert2.x);
 		this.yDest2 = this.vert1.y + -(this.intensity*200)/distance(this, this.vert1)*(this.y - this.vert1.y) - (this.vert1.y - this.vert2.y);
 		ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-		ctx.fillRect(this.xDest2 - 2, this.yDest2 - 2, 4, 4);
+		//ctx.fillRect(this.xDest2 - 2, this.yDest2 - 2, 4, 4);
 		
 		this.xDest3 = this.vert1.x + -(this.intensity*200)/distance(this, this.vert1)*(this.x - this.vert1.x) - (this.vert1.x - this.vert3.x);
 		this.yDest3 = this.vert1.y + -(this.intensity*200)/distance(this, this.vert1)*(this.y - this.vert1.y) - (this.vert1.y - this.vert3.y);
 		ctx.fillStyle = 'rgba(0, 0, 255, 1)';
-		ctx.fillRect(this.xDest3 - 2, this.yDest3 - 2, 4, 4);
+		//ctx.fillRect(this.xDest3 - 2, this.yDest3 - 2, 4, 4);
 		
 		ctx.beginPath();
 		ctx.moveTo(this.vert3.x, this.vert3.y);
@@ -103,14 +98,6 @@ function light(x, y, z, intensity){
 		//ctx.stroke();
 		ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
 		ctx.fill();
-		//check furthest corner
-		//find exact translation from this corner to second and third
-		//translate first, then translate second and third keeping them the same distance from first
-		//connect dots with actual corners using line
-		//fill shape
-	}
-	this.cast = function(obj){
-		
 	}
 }
 function distance(obj1, obj2, centre){

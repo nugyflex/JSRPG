@@ -57,7 +57,6 @@ function draw() {
 	bloodCollection.draw();
 	sun.castShadows(platformCollection.array[0]);
 	Renderer.execute();
-	//sun.castShadows();
 	ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 	Camera.follow(player1);
 	Camera.setTranslate();
@@ -102,14 +101,11 @@ draw()
 Camera = new camera(0,0);
 setInterval(gameLoop, 15);
 
-sun = new light(c.width, 0, 100, 0.4);
+sun = new light(10000, -10000, 100, 0.4);
 
 function gameLoop() {
 	if (!Game.paused)
-	{
-		sun.x = mouse.X;
-		sun.y = mouse.Y;
-		
+	{		
 		enemyCollection.update();
 		player1.update();
 		projectileCollection.update();
