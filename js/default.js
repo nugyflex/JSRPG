@@ -18,8 +18,8 @@ var mouse =
 window.onmousemove = function (e) {
     var bbox = c.getBoundingClientRect();
 
-    mouse.X = e.clientX - bbox.left * (c.width / bbox.width) - 10;
-    mouse.Y = e.clientY - bbox.top * (c.height / bbox.height) - 10;
+    mouse.X = e.clientX + Game.canvastranslatex// - bbox.left * (c.width / bbox.width) - 10;
+    mouse.Y = e.clientY + Game.canvastranslatey// - bbox.top * (c.height / bbox.height) - 10;
 }
 
 
@@ -53,9 +53,11 @@ function draw() {
 	ctx.clearRect(-10000, -10000,100000,100000);
 	ctx.fillStyle = "rgba(50,200,100, 1)";
 	ctx.fillRect(-10000, -10000,100000,100000);
-	platformCollection.drawShadows();
+	//platformCollection.drawShadows();
 	bloodCollection.draw();
+	sun.castShadows(platformCollection.array[0]);
 	Renderer.execute();
+	//sun.castShadows();
 	ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 	Camera.follow(player1);
 	Camera.setTranslate();
@@ -67,20 +69,20 @@ Renderer = new renderer();
 sceneryCollection = new scenery();
 for (i=0;i<20;i++)
 {
-sceneryCollection.add(Math.floor(Math.random()*500), Math.floor(Math.random()*500), 0, 0, "grass");
+	sceneryCollection.add(Math.floor(Math.random()*500), Math.floor(Math.random()*500), 0, 0, "grass");
 }
 enemyCollection = new enemies();
 platformCollection = new platforms();
 bloodCollection = new bloods();
-platformCollection.add(300, 100, 100, 100, "box50x50");
+//platformCollection.add(300, 100, 100, 100, "box50x50");
 platformCollection.add(100, 100, 100, 100, 0);
 platformCollection.add(0, 500, 74, 6, 0);
 platformCollection.add(74, 500, 74, 6, 0);
 platformCollection.add(148, 500, 74, 6, 0);
-enemyCollection.add(0,0);
+/*enemyCollection.add(0,0);
 enemyCollection.add(400,0);
 enemyCollection.add(0,400);
-enemyCollection.add(400,400);
+enemyCollection.add(400,400);*/
 projectileCollection = new projectiles();
 projectileCollection.add("fireBall", 30, 30);
 player1 = new Player(10, 10);
@@ -99,10 +101,15 @@ platformside = {
 draw()
 Camera = new camera(0,0);
 setInterval(gameLoop, 15);
+
+sun = new light(c.width, 0, 100, 0.4);
+
 function gameLoop() {
 	if (!Game.paused)
 	{
-
+		sun.x = mouse.X;
+		sun.y = mouse.Y;
+		
 		enemyCollection.update();
 		player1.update();
 		projectileCollection.update();
@@ -111,6 +118,6 @@ function gameLoop() {
 		{
 			collisionDetection.stopplayer(player1, platformCollection.array[i]);
 		}
-		bloodCollection.add(0,0);
+		//bloodCollection.add(0,0);
 	}
 }

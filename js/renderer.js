@@ -31,7 +31,8 @@ function renderer() {
             if (currentmini > -1) {
                 switch (this.drawarray[currentmini].type) {
                     case "platform":
-                        platformCollection.array[this.drawarray[currentmini].index].draw();
+                        sun.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
+						platformCollection.array[this.drawarray[currentmini].index].draw();
                         break;						
 
                     case "projectile":
