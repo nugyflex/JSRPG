@@ -18,8 +18,8 @@ var mouse =
 window.onmousemove = function (e) {
     var bbox = c.getBoundingClientRect();
 
-    mouse.X = e.clientX + Game.canvastranslatex// - bbox.left * (c.width / bbox.width) - 10;
-    mouse.Y = e.clientY + Game.canvastranslatey// - bbox.top * (c.height / bbox.height) - 10;
+    mouse.x = e.clientX + Game.canvastranslatex - bbox.left * (c.width / bbox.width) - 10;
+    mouse.y = e.clientY + Game.canvastranslatey - bbox.top * (c.height / bbox.height) - 10;
 }
 
 
@@ -49,17 +49,19 @@ var fps = 60;
 function draw() {
 	setTimeout(function () {
 		requestAnimationFrame(draw);
-	ctx.translate(Game.canvastranslatex * -1, Game.canvastranslatey * -1);
-	ctx.clearRect(-10000, -10000,100000,100000);
-	ctx.fillStyle = "rgba(50,200,100, 1)";
-	ctx.fillRect(-10000, -10000,100000,100000);
-	//platformCollection.drawShadows();
-	bloodCollection.draw();
-	sun.castShadows(platformCollection.array[0]);
-	Renderer.execute();
-	ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
-	Camera.follow(player1);
-	Camera.setTranslate();
+		ctx.translate(Game.canvastranslatex * -1, Game.canvastranslatey * -1);
+		ctx.clearRect(-10000, -10000,100000,100000);
+		ctx.fillStyle = "rgba(50,200,100, 1)";
+		ctx.fillRect(-10000, -10000,100000,100000);
+		
+		//platformCollection.drawShadows();
+		bloodCollection.draw();
+		Renderer.execute();
+		ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
+		ctx.fillRect(-10000, -10000,100000,100000);
+		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
+		Camera.follow(player1);
+		Camera.setTranslate(); 
 	}, 1000 / fps);
 }
 diagonalWall.prototype = Object.create(platform.prototype);
@@ -105,7 +107,9 @@ sun = new light(10000, -10000, 100, 0.4);
 
 function gameLoop() {
 	if (!Game.paused)
-	{		
+	{
+		sun.x = mouse.x;
+		sun.y = mouse.y;
 		enemyCollection.update();
 		player1.update();
 		projectileCollection.update();

@@ -33,6 +33,7 @@ function renderer() {
                     case "platform":
                         sun.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
 						platformCollection.array[this.drawarray[currentmini].index].draw();
+						//sun.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
                         break;						
 
                     case "projectile":
