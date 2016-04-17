@@ -6,8 +6,18 @@ function light(x, y, z, intensity){
 	this.height = 1;
 	this.intensity = intensity;
 	this.colours = ['red', 'white', 'blue', 'black'];
+	this.draw = function()
+	{
+		if (this.z > 0)
+		{
+		ctx.fillStyle = "yellow";
+		ctx.fillRect(this.x, this.y - this.z, 5, 5);
+		}
+	}
 	//Later restrict the objects it loops through to those encompassed within the radius determined by its intensity
 	this.castShadows = function(object){
+		if (this.z > 0)
+		{//SO IT DOESNT CAST SHADOWS WHHEN IN THE GROUND
 		this.verts = trans(object, 'default', 'default');
 		this.vArray = [];
 		for (key in this.verts){
@@ -64,7 +74,7 @@ function light(x, y, z, intensity){
 		
 		for (v = 0; v < this.vArray.length; v++){
 			//shitty var name soz
-			var offset = collisionDetection.finddistance(this.vArray[v], this) / 2;
+			var offset = collisionDetection.finddistance(this.vArray[v], this) / (100/this.z);
 			this.vArray[v].dest = {x: this.vArray[v].x + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.y - this.vArray[v].y)}
 			this.vArray[v].deg = Math.atan2((this.vArray[v].y - this.y), (this.vArray[v].x - this.x));
 			this.vArray[v].dest.deg= this.vArray[v].deg;
@@ -154,6 +164,7 @@ function light(x, y, z, intensity){
 		//NOTES FOR IMPROVEMENT OF REALISM
 		//when there is no point collision the lines should be straight
 		//After using the hypotenuse to calculate the distance of the shadow this should be fixed to some extent
+		}
 	}
 }
 function pointCollide(p, a){

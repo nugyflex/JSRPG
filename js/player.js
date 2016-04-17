@@ -545,10 +545,10 @@ function Player(_x, _y)
 			if (keypressed.z)
 			{
 				this.attack("sword_swing");
-			}
+			}/*
 			if (keypressed.r){
 				this.attack("skeleton_sprite");
-			}
+			}*/
 		}		
 	}
 }

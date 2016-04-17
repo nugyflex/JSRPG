@@ -57,6 +57,7 @@ function draw() {
 		//platformCollection.drawShadows();
 		bloodCollection.draw();
 		Renderer.execute();
+		sun.draw();
 		ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
 		ctx.fillRect(-10000, -10000,100000,100000);
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
@@ -120,6 +121,14 @@ function gameLoop() {
 		for (i = 0; i < platformCollection.count(); i++)
 		{
 			collisionDetection.stopplayer(player1, platformCollection.array[i]);
+		}
+		if (keypressed.r)
+		{
+			sun.z++;
+		}
+		if (keypressed.q)
+		{
+			sun.z--;
 		}
 		//bloodCollection.add(0,0);
 	}
