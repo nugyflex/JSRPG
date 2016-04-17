@@ -80,6 +80,8 @@ platformCollection.add(100, 100, 100, 100, 0);
 platformCollection.add(0, 500, 74, 6, 0);
 platformCollection.add(74, 500, 74, 6, 0);
 platformCollection.add(148, 500, 74, 6, 0);
+platformCollection.add(500, 500, 74*3, 6, 0);
+platformCollection.add(-100, 500, 74, 6, 0);
 /*enemyCollection.add(0,0);
 enemyCollection.add(400,0);
 enemyCollection.add(0,400);

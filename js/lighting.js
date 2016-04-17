@@ -49,13 +49,28 @@ function light(x, y, z, intensity){
 		}
 		//Calculate distance to project the shadow
 		//this.hypotDi00st = Math.sqrt(Math.pow(this.x - this.vArray[0].x, 2) + Math.pow(this.y - this.vArray[1].y, 2) + Math.pow(this.z, 2));
+		
+		//OLD CODE
+		
+		/*
 		for (v = 0; v < this.vArray.length; v++){
 			this.vArray[v].dest = {x: this.vArray[v].x + -(this.intensity*150)/distance(this, this.vArray[v])*(this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.intensity*150)/distance(this, this.vArray[v])*(this.y - this.vArray[v].y)}
 			this.vArray[v].deg = Math.atan2((this.vArray[v].y - this.y), (this.vArray[v].x - this.x));
 			this.vArray[v].dest.deg= this.vArray[v].deg;
 			this.vArray[v].dest.pNum = v;
-		}
+		}*/
 		
+		//NEW CODE
+		
+		for (v = 0; v < this.vArray.length; v++){
+			//shitty var name soz
+			var offset = collisionDetection.finddistance(this.vArray[v], this) / 2;
+			this.vArray[v].dest = {x: this.vArray[v].x + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.y - this.vArray[v].y)}
+			this.vArray[v].deg = Math.atan2((this.vArray[v].y - this.y), (this.vArray[v].x - this.x));
+			this.vArray[v].dest.deg= this.vArray[v].deg;
+			this.vArray[v].dest.pNum = v;
+		}
+				
 		//Fix this shitty piece of code, it's honestly disgraceful
 		this.vArraySorted = this.vArray.slice(0);
 		if (!(this.x > object.x + object.width && this.y > object.y && this.y < object.y + object.height)){
