@@ -72,12 +72,18 @@ function onKeyDown(event) {
             break;
             
         case 27:
-            if (debug == 1){
-				debug = 0;
-			}
-			else {
-				debug = 1;
-			}
+            if (game2.running == false && game2.pausecounter > 20) {
+                game2.running = true;
+                game2.pausecounter = 0;
+                game2.paused = false
+            }
+
+
+            if (game2.running && game2.pausecounter > 20) {
+                game2.running = false;
+                game2.pausecounter = 0;
+                game2.paused = 1;
+            }
             break;
 
         case 69:
