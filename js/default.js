@@ -104,6 +104,7 @@ Camera = new camera(0,0);
 setInterval(gameLoop, 15);
 
 sun = new light(10000, -10000, 100, 0.4);
+debug = 1;
 
 function gameLoop() {
 	if (!Game.paused)

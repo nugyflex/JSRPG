@@ -14,39 +14,39 @@ function light(x, y, z, intensity){
 			this.vArray.push(this.verts[key]);
 		}
 		//Replace all instances of the array with references to the correct labelled key variable (vert1, vert2, etc.)
-		/*
-		ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-		ctx.strokeStyle = 'black';
-		ctx.fillRect(this.vArray[3].x - 5, this.vArray[3].y - 5, 10, 10);
-		ctx.beginPath();
-		ctx.moveTo(this.x, this.y);
-		ctx.lineTo(this.vArray[3].x, this.vArray[3].y);
-		ctx.stroke();
-		
-		ctx.fillStyle = 'rgba(0, 0, 255, 1)';
-		ctx.strokeStyle = 'blue';
-		ctx.fillRect(this.vArray[2].x - 5, this.vArray[2].y - 5, 10, 10);
-		ctx.beginPath();
-		ctx.moveTo(this.x, this.y);
-		ctx.lineTo(this.vArray[2].x, this.vArray[2].y);
-		ctx.stroke();
-		
-		ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-		ctx.strokeStyle = 'white';
-		ctx.fillRect(this.vArray[1].x - 5, this.vArray[1].y - 5, 10, 10);
-		ctx.beginPath();
-		ctx.moveTo(this.x, this.y);
-		ctx.lineTo(this.vArray[1].x, this.vArray[1].y);
-		ctx.stroke();
-		
-		ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-		ctx.strokeStyle = 'red';
-		ctx.fillRect(this.vArray[0].x - 5, this.vArray[0].y - 5, 10, 10);
-		ctx.beginPath();
-		ctx.moveTo(this.x, this.y);
-		ctx.lineTo(this.vArray[0].x, this.vArray[0].y);
-		ctx.stroke();
-		*/
+		if (debug == 1){
+			ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+			ctx.strokeStyle = 'black';
+			ctx.fillRect(this.vArray[3].x - 5, this.vArray[3].y - 5, 10, 10);
+			ctx.beginPath();
+			ctx.moveTo(this.x, this.y);
+			ctx.lineTo(this.vArray[3].x, this.vArray[3].y);
+			ctx.stroke();
+			
+			ctx.fillStyle = 'rgba(0, 0, 255, 1)';
+			ctx.strokeStyle = 'blue';
+			ctx.fillRect(this.vArray[2].x - 5, this.vArray[2].y - 5, 10, 10);
+			ctx.beginPath();
+			ctx.moveTo(this.x, this.y);
+			ctx.lineTo(this.vArray[2].x, this.vArray[2].y);
+			ctx.stroke();
+			
+			ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+			ctx.strokeStyle = 'white';
+			ctx.fillRect(this.vArray[1].x - 5, this.vArray[1].y - 5, 10, 10);
+			ctx.beginPath();
+			ctx.moveTo(this.x, this.y);
+			ctx.lineTo(this.vArray[1].x, this.vArray[1].y);
+			ctx.stroke();
+			
+			ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+			ctx.strokeStyle = 'red';
+			ctx.fillRect(this.vArray[0].x - 5, this.vArray[0].y - 5, 10, 10);
+			ctx.beginPath();
+			ctx.moveTo(this.x, this.y);
+			ctx.lineTo(this.vArray[0].x, this.vArray[0].y);
+			ctx.stroke();
+		}
 		//Calculate distance to project the shadow
 		//this.hypotDi00st = Math.sqrt(Math.pow(this.x - this.vArray[0].x, 2) + Math.pow(this.y - this.vArray[1].y, 2) + Math.pow(this.z, 2));
 		for (v = 0; v < this.vArray.length; v++){
@@ -78,7 +78,9 @@ function light(x, y, z, intensity){
 				this.collFlag = i;
 			}
 			ctx.fillStyle = 'orange';
-			//ctx.fillRect(this.vArray[i].dest.x - 3, this.vArray[i].dest.y - 3, 6, 6);
+			if (debug == 1){
+				ctx.fillRect(this.vArray[i].dest.x - 3, this.vArray[i].dest.y - 3, 6, 6);
+			}
 		}
 		if (this.collFlag == -1 && !pointCollide(this, object)){
 			ctx.beginPath();
@@ -86,7 +88,9 @@ function light(x, y, z, intensity){
 			ctx.lineTo(this.vArraySorted[3].dest.x, this.vArraySorted[3].dest.y);
 			ctx.lineTo(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y);
 			ctx.lineTo(this.vArraySorted[0].x, this.vArraySorted[0].y);
-			//ctx.stroke();
+			if (debug == 1){
+				ctx.stroke();
+			}
 			ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
 			ctx.fill();
 		}
@@ -116,19 +120,22 @@ function light(x, y, z, intensity){
 		if (this.collFlag >= 0){
 			ctx.lineTo(this.vArraySorted[3].x, this.vArraySorted[3].y);
 		}
-		//ctx.stroke();
+		if (debug == 1){
+			ctx.stroke();
+		}
+		
 		ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
 		ctx.fill();
-		/*
-		fillCircle(this.vArraySorted[1].dest.x, this.vArraySorted[1].dest.y, 3, 'grey');
-		fillCircle(this.vArraySorted[2].dest.x, this.vArraySorted[2].dest.y, 3, 'grey');
-		fillCircle(this.vArraySorted[3].dest.x, this.vArraySorted[3].dest.y, 3, 'grey');
-		fillCircle(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y, 3, 'yellow');
-		
-		if (this.collFlag >= 0){
-			fillCircle(this.vArray[this.collFlag].dest.x, this.vArray[this.collFlag].dest.y, 3, 'cyan');
+		if (debug == 1){
+			fillCircle(this.vArraySorted[1].dest.x, this.vArraySorted[1].dest.y, 3, 'grey');
+			fillCircle(this.vArraySorted[2].dest.x, this.vArraySorted[2].dest.y, 3, 'grey');
+			fillCircle(this.vArraySorted[3].dest.x, this.vArraySorted[3].dest.y, 3, 'grey');
+			fillCircle(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y, 3, 'yellow');
+			
+			if (this.collFlag >= 0){
+				fillCircle(this.vArray[this.collFlag].dest.x, this.vArray[this.collFlag].dest.y, 3, 'cyan');
+			}
 		}
-		*/
 		//NOTES FOR IMPROVEMENT OF REALISM
 		//when there is no point collision the lines should be straight
 		//After using the hypotenuse to calculate the distance of the shadow this should be fixed to some extent

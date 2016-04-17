@@ -31,9 +31,14 @@ function renderer() {
             if (currentmini > -1) {
                 switch (this.drawarray[currentmini].type) {
                     case "platform":
-                        sun.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
-						platformCollection.array[this.drawarray[currentmini].index].draw();
-						//sun.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
+						if (debug == 1){
+							platformCollection.array[this.drawarray[currentmini].index].draw();
+							sun.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
+						}
+						else {
+							sun.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
+							platformCollection.array[this.drawarray[currentmini].index].draw();
+						}						
                         break;						
 
                     case "projectile":
