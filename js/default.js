@@ -28,6 +28,10 @@ function game(){
 	this.paused = false;
 	this.canvastranslatex = 0;
 	this.canvastranslatey = 0;
+	this.screenShakex = 0;
+	this.screenShakey = 0;
+	this.shakeIntensity = 0;
+	this.shakeDecrementAmount = 0.2;
 	this.addToPointArray = function(_x, _y)
 	{
 		this.pointArray[this.pointArray.length] = new Point(_x, _y);
@@ -36,6 +40,31 @@ function game(){
 	this.addExitToArray = function()
 	{
 		this.addToPointArray(this.exit.x, this.exit.y);
+	}
+	this.setScreenshake = function(_intensity)
+	{
+		this.shakeIntensity = _intensity;
+	}
+	this.manageScreenshake = function()
+	{
+		this.screenShakex = -this.shakeIntensity/2 + Math.random()*this.shakeIntensity;
+		this.screenShakey = -this.shakeIntensity/2 + Math.random()*this.shakeIntensity;		
+		this.settleScreenshake();
+	}
+	this.settleScreenshake = function()
+	{
+		if (this.shakeIntensity > 0)
+		{
+			this.shakeIntensity-=this.shakeDecrementAmount;
+		}
+		else
+		{
+			this.shakeIntensity+=this.shakeDecrementAmount;
+		}
+		if (this.shakeIntensity > -this.shakeDecrementAmount && this.shakeIntensity < this.shakeDecrementAmount)
+		{
+			this.shakeIntensity = 0;
+		}
 	}
 }
 Game = new game;
@@ -49,18 +78,24 @@ var fps = 60;
 function draw() {
 	setTimeout(function () {
 		requestAnimationFrame(draw);
-		ctx.translate(Game.canvastranslatex * -1, Game.canvastranslatey * -1);
+		ctx.translate((Game.canvastranslatex) * -1, (Game.canvastranslatey) * -1);
 		ctx.clearRect(-10000, -10000,100000,100000);
 		ctx.fillStyle = "rgba(50,200,100, 1)";
 		ctx.fillRect(-10000, -10000,100000,100000);
 		bloodCollection.draw();
 		Renderer.execute();
 		sun.draw();
+		Game.manageScreenshake();
 		if (night == 1){
 			ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
 			ctx.fillRect(-10000, -10000,100000,100000);
 		}
+<<<<<<< HEAD
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
+=======
+		sun.draw();
+		ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
+>>>>>>> origin/global-lighting
 		Camera.follow(player1);
 		Camera.setTranslate(); 
 	}, 1000 / fps);
