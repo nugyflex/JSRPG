@@ -55,17 +55,12 @@ function draw() {
 		ctx.fillRect(-10000, -10000,100000,100000);
 		bloodCollection.draw();
 		Renderer.execute();
-<<<<<<< HEAD
 		sun.draw();
 		if (night == 1){
 			ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
 			ctx.fillRect(-10000, -10000,100000,100000);
 		}
-=======
-		ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
-		ctx.fillRect(-10000, -10000,100000,100000);
 		sun.draw();
->>>>>>> origin/global-lighting
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
 		Camera.setTranslate(); 
