@@ -10,8 +10,17 @@ function light(x, y, z, intensity){
 	{
 		if (this.z > 0)
 		{
+
+		ctx.shadowColor = 'yellow';
+		ctx.shadowBlur = 60;
+		ctx.shadowOffsetX = 0;
+		ctx.shadowOffsetY = 0;
 		ctx.fillStyle = "yellow";
-		ctx.fillRect(this.x, this.y - this.z, 5, 5);
+		ctx.fillRect(this.x, this.y - this.z, 10, 10);
+		ctx.shadowColor = '#000000';
+		ctx.shadowBlur = 0;
+		ctx.shadowOffsetX = 0;
+		ctx.shadowOffsetY = 0;
 		}
 	}
 	//Later restrict the objects it loops through to those encompassed within the radius determined by its intensity
