@@ -57,9 +57,9 @@ function draw() {
 		//platformCollection.drawShadows();
 		bloodCollection.draw();
 		Renderer.execute();
-		sun.draw();
 		ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
 		ctx.fillRect(-10000, -10000,100000,100000);
+		sun.draw();
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
 		Camera.setTranslate(); 
