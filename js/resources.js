@@ -1,9 +1,6 @@
 var walkSkelDown = new Image();
 walkSkelDown.src = './Images/skeleton_files/skeleton_sprite_sheet.png';
 var walkright = new Image();
-walkright.src = './Images/walk_right.png';
-var walkdown = new Image();
-walkdown.src = './Images/walk_down.png';
 var swordswingright = new Image();
 swordswingright.src = './Images/sword_swing_right.png';
 var swordswingleft = new Image();

@@ -60,7 +60,6 @@ function draw() {
 			ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
 			ctx.fillRect(-10000, -10000,100000,100000);
 		}
-		sun.draw();
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
 		Camera.setTranslate(); 
@@ -79,11 +78,11 @@ platformCollection = new platforms();
 bloodCollection = new bloods();
 //platformCollection.add(300, 100, 100, 100, "box50x50");
 platformCollection.add(100, 100, 100, 100, 0);
-platformCollection.add(0, 500, 74, 6, 0);
-platformCollection.add(74, 500, 74, 6, 0);
-platformCollection.add(148, 500, 74, 6, 0);
-platformCollection.add(500, 500, 74*3, 6, 0);
-platformCollection.add(-100, 500, 74, 6, 0);
+//platformCollection.add(0, 500, 74, 6, 0);
+//platformCollection.add(74, 500, 74, 6, 0);
+//platformCollection.add(148, 500, 74, 6, 0);
+//platformCollection.add(500, 500, 74*3, 6, 0);
+//platformCollection.add(-100, 500, 74, 6, 0);
 /*enemyCollection.add(0,0);
 enemyCollection.add(400,0);
 enemyCollection.add(0,400);
@@ -132,6 +131,5 @@ function gameLoop() {
 		{
 			sun.z--;
 		}
-		//bloodCollection.add(0,0);
 	}
 }

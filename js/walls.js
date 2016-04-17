@@ -8,6 +8,7 @@ function platform(_x, _y, _width, _height, image, ioffsetx, ioffsety)
 	this.image = image;
 	this.ioffsetx = ioffsetx;
 	this.ioffsety = ioffsety;
+	this.vHeight = 40;
 	this.update = function()
 	{
 		

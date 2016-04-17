@@ -64,22 +64,10 @@ function light(x, y, z, intensity){
 				ctx.lineTo(this.vArray[0].x, this.vArray[0].y);
 				ctx.stroke();
 			}
-			
-			//OLD CODE
-			
-			/*
-			for (v = 0; v < this.vArray.length; v++){
-				this.vArray[v].dest = {x: this.vArray[v].x + -(this.intensity*150)/distance(this, this.vArray[v])*(this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.intensity*150)/distance(this, this.vArray[v])*(this.y - this.vArray[v].y)}
-				this.vArray[v].deg = Math.atan2((this.vArray[v].y - this.y), (this.vArray[v].x - this.x));
-				this.vArray[v].dest.deg= this.vArray[v].deg;
-				this.vArray[v].dest.pNum = v;
-			}
-			*/
-			//NEW CODE
 			for (v = 0; v < this.vArray.length; v++){
 				var offset = distance(this.vArray[v], this) / (100/this.z);
 				this.vArray[v].dest = {x: this.vArray[v].x + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.y - this.vArray[v].y)}
-				this.vArray[v].deg = angle(this, this.vArray[v]);
+				this.vArray[v].deg = angle(this, this.vArray[v], this);
 				this.vArray[v].dest.deg= this.vArray[v].deg;
 				this.vArray[v].dest.pNum = v;
 			}
@@ -96,17 +84,40 @@ function light(x, y, z, intensity){
 				this.vArray[v].dest.deg= this.vArray[v].deg;
 				this.vArray[v].dest.pNum = v;
 			}*/
-			//Fix this shitty piece of code, it's honestly disgraceful
-			this.vArraySorted = this.vArray.slice(0);
-				this.vArraySorted.sort(function(a, b){ return a.deg - b.deg} );
-			//}
-			//else {
-			//	this.temp = this.vArraySorted.slice(0, 1);
-			//	this.vArraySorted[0] = this.vArray[2];
-			//	this.vArraySorted[2] = this.temp[0];
-			//}
 			
-			this.collFlag = -1;
+			//NOTE - This is unecessary, once the closest point in terms of angle is found it just loops through the dot array like normal and that is the sorted thing
+			//NOTE ON THE NOTE - However for shapes that have vertices which go "inside" themselves (like a star) it is important to actually use this method, but for rectangles this is unecessary and so inefficient
+			this.vArraySorted = this.vArray.slice(0);
+			this.vArraySorted.sort(function(a, b){ return a.deg - b.deg} );
+			if ((this.x < this.vArraySorted[0].x && this.x > this.vArraySorted[this.vArraySorted.length - 1].x) && this.y > this.vArraySorted[0].y){
+				this.vArraySorted.sort(
+					function(a, b){
+						result = a.x - b.x;
+						if (result == 0){
+							result = a.deg - b.deg;
+						}
+						return result;
+					}
+				)
+			}
+			this.tempV = this.vArraySorted.splice(0, 1);
+			for (vs = 0; vs < this.vArraySorted.length; vs++){
+				this.vArraySorted[vs].deg = angle(this.tempV[0], this.vArraySorted[vs], this);
+				this.vArraySorted[vs].dest.deg = this.vArraySorted[vs].deg;
+			}
+			this.vArraySorted.sort(function(a, b){ return a.deg - b.deg} );
+			this.vArraySorted.splice(0, 0, this.tempV[0]);
+			
+			this.currIndex = 0;
+			
+			ctx.beginPath()
+			ctx.moveTo(this.vArraySorted[0].x, this.vArraySorted[0].y);
+			ctx.lineTo(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y);
+			for (i = 0; i < 3; i++){
+				//ctx.moveTo()
+			}
+			ctx.stroke();
+			/*this.collFlag = -1;
 			for (i = 0; i < this.vArray.length; i++){
 				if (pointCollide(this.vArray[i].dest, object)){
 					this.index = i + 1;
@@ -120,8 +131,8 @@ function light(x, y, z, intensity){
 				if (debug == 1){
 					ctx.fillRect(this.vArray[i].dest.x - 3, this.vArray[i].dest.y - 3, 6, 6);
 				}
-			}
-			this.posFlag = 0;
+			}*/
+			/*this.posFlag = 0;
 			if (this.collFlag == -1 && !pointCollide(this, object)){
 				ctx.beginPath();
 				if (this.y > object.y + object.height && (this.x > object.x && this.x < object.x + object.width)){
@@ -174,18 +185,18 @@ function light(x, y, z, intensity){
 				}
 				this.nextIndex = 1;
 				this.cap = 3;
-				if (this.posFlag == 0){
-					this.cap = 2;
-				}
+				//if (this.posFlag == 0){
+				//	this.cap = 2;
+				//}
 			}
 			//make the first in arraySorted the reference point for the other angles
 			for (n = 0; n < this.cap; n++){
-				if (this.collFlag >= 0 || pointCollide(this, object) || this.posFlag == 1){
+				//if (this.collFlag >= 0 || pointCollide(this, object) || this.posFlag == 1){
 					ctx.lineTo(this.vArray[this.nextIndex].dest.x, this.vArray[this.nextIndex].dest.y);
-				}
-				else {
-					ctx.lineTo(this.vArraySorted[this.nextIndex].dest.x, this.vArraySorted[this.nextIndex].dest.y);
-				}
+				//}
+				//else {
+				//	ctx.lineTo(this.vArraySorted[this.nextIndex].dest.x, this.vArraySorted[this.nextIndex].dest.y);
+				//}
 				this.nextIndex++;
 				if (this.nextIndex > 3){
 					this.nextIndex = 0;
@@ -200,16 +211,18 @@ function light(x, y, z, intensity){
 			
 			ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
 			ctx.fill();
+			*/
 			if (debug == 1){
-				fillCircle(this.vArraySorted[1].dest.x, this.vArraySorted[1].dest.y, 3, 'grey');
-				fillCircle(this.vArraySorted[2].dest.x, this.vArraySorted[2].dest.y, 3, 'grey');
-				fillCircle(this.vArraySorted[3].dest.x, this.vArraySorted[3].dest.y, 3, 'grey');
 				fillCircle(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y, 3, 'yellow');
+				fillCircle(this.vArraySorted[1].dest.x, this.vArraySorted[1].dest.y, 3, 'cyan');
+				fillCircle(this.vArraySorted[2].dest.x, this.vArraySorted[2].dest.y, 3, 'magenta');
+				fillCircle(this.vArraySorted[3].dest.x, this.vArraySorted[3].dest.y, 3, 'green');
 				
-				if (this.collFlag >= 0){
-					fillCircle(this.vArray[this.collFlag].dest.x, this.vArray[this.collFlag].dest.y, 3, 'cyan');
-				}
+				//if (this.collFlag >= 0){
+				//	fillCircle(this.vArray[this.collFlag].dest.x, this.vArray[this.collFlag].dest.y, 3, 'cyan');
+				//}
 			}
+			
 			//console.log(angle(mouse, this.vArray[0]));
 		//NOTES FOR IMPROVEMENT OF REALISM
 		//when there is no point collision the lines should be straight
@@ -245,9 +258,12 @@ function fillCircle(cx, cy, r, colour){
 	ctx.fill();
 	ctx.closePath();
 }
-function angle(from, to) {
-  var dy = from.y - to.y;
-  var dx = from.x - to.x;
-  var theta = 180 + 180 / Math.PI * Math.atan2(dx, -dy);
-  return theta;
+function angle(from, to, light) {
+	var dy = from.y - to.y;
+	var dx = from.x - to.x;
+	var theta = 180 + 180 / Math.PI * Math.atan2(dx, -dy);
+	if (light.y > from.y && theta == 360){
+		theta = 0;
+	}
+	return theta;
 }
