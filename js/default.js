@@ -53,13 +53,13 @@ function draw() {
 		ctx.clearRect(-10000, -10000,100000,100000);
 		ctx.fillStyle = "rgba(50,200,100, 1)";
 		ctx.fillRect(-10000, -10000,100000,100000);
-		
-		//platformCollection.drawShadows();
 		bloodCollection.draw();
 		Renderer.execute();
 		sun.draw();
-		ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
-		ctx.fillRect(-10000, -10000,100000,100000);
+		if (night == 1){
+			ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
+			ctx.fillRect(-10000, -10000,100000,100000);
+		}
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
 		Camera.setTranslate(); 
@@ -108,6 +108,7 @@ setInterval(gameLoop, 15);
 
 sun = new light(10000, -10000, 100, 0.4);
 debug = 1;
+night = 0;
 
 function gameLoop() {
 	if (!Game.paused)
