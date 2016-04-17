@@ -26,7 +26,7 @@ function enemies() {
 					bloodCollection.add(this.array[i].x,this.array[i].y);
 				}
 				this.remove(i);
-				Game.setScreenshake(7);
+				Game.setScreenshake(8);
 			}
 		}
 	}
