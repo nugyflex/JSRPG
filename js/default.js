@@ -31,7 +31,7 @@ function game(){
 	this.screenShakex = 0;
 	this.screenShakey = 0;
 	this.shakeIntensity = 0;
-	this.shakeDecrementAmount = 0.2;
+	this.shakeDecrementAmount = 0.4;
 	this.addToPointArray = function(_x, _y)
 	{
 		this.pointArray[this.pointArray.length] = new Point(_x, _y);
