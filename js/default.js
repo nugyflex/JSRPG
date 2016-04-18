@@ -90,12 +90,8 @@ function draw() {
 			ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
 			ctx.fillRect(-10000, -10000,100000,100000);
 		}
-<<<<<<< HEAD
-		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
-=======
 		sun.draw();
 		ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
->>>>>>> origin/global-lighting
 		Camera.follow(player1);
 		Camera.setTranslate(); 
 	}, 1000 / fps);

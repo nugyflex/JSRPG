@@ -87,36 +87,63 @@ function light(x, y, z, intensity){
 			
 			//NOTE - This is unecessary, once the closest point in terms of angle is found it just loops through the dot array like normal and that is the sorted thing
 			//NOTE ON THE NOTE - However for shapes that have vertices which go "inside" themselves (like a star) it is important to actually use this method, but for rectangles this is unecessary and so inefficient
-			this.vArraySorted = this.vArray.slice(0);
-			this.vArraySorted.sort(function(a, b){ return a.deg - b.deg} );
-			if ((this.x < this.vArraySorted[0].x && this.x > this.vArraySorted[this.vArraySorted.length - 1].x) && this.y > this.vArraySorted[0].y){
-				this.vArraySorted.sort(
-					function(a, b){
-						result = a.x - b.x;
-						if (result == 0){
-							result = a.deg - b.deg;
-						}
-						return result;
+			if (pointCollide(this, object)){
+				ctx.moveTo(this.vArray[0].dest.x, this.vArray[0].dest.y);
+				for (j = 1; j < this.vArray.length; j++){
+					ctx.lineTo(this.vArray[j].dest.x, this.vArray[j].dest.y);
+				}
+				ctx.stroke();
+			}
+			else {
+				this.collFlag = 0;
+				for (i = 0; i < this.vArray.length; i++){
+					if (pointCollide(this.vArray[i].dest, object)){
+						this.collFlag = 1;
+						break;
 					}
-				)
+				}
+				this.vArraySorted = this.vArray.slice(0);
+				this.vArraySorted.sort(function(a, b){ return a.deg - b.deg} );
+				if ((this.x < this.vArraySorted[0].x && this.x > this.vArraySorted[this.vArraySorted.length - 1].x) && this.y > this.vArraySorted[0].y){
+					this.vArraySorted.sort(
+						function(a, b){
+							result = a.x - b.x;
+							if (result == 0){
+								result = a.deg - b.deg;
+							}
+							return result;
+						}
+					)
+				}
+				this.tempV = this.vArraySorted.splice(0, 1);
+				for (vs = 0; vs < this.vArraySorted.length; vs++){
+					this.vArraySorted[vs].deg = angle(this.tempV[0], this.vArraySorted[vs], this);
+					this.vArraySorted[vs].dest.deg = this.vArraySorted[vs].deg;
+				}
+				this.vArraySorted.sort(function(a, b){ return a.deg - b.deg} );
+				this.vArraySorted.splice(0, 0, this.tempV[0]);
+				
+				this.currIndex = 0;
+				this.iterCount = this.vArray.length - 1;
+				if (this.collFlag == 0){
+					this.iterCount++;
+				}
+				
+				ctx.beginPath()
+				ctx.moveTo(this.vArraySorted[0].x, this.vArraySorted[0].y);
+				for (i = 0; i < this.iterCount; i++){
+					ctx.lineTo(this.vArraySorted[i].dest.x, this.vArraySorted[i].dest.y);
+				}
+				//only piece of hard-coding, this applies solely to rectangles
+				if (this.collFlag == 0){
+					ctx.lineTo(this.vArraySorted[this.vArraySorted.length-1].x, this.vArraySorted[this.vArraySorted.length-1].y)
+				}
+				else {
+					ctx.lineTo(this.vArraySorted[this.vArraySorted.length - 2].x, this.vArraySorted[this.vArraySorted.length - 2].y);
+				}
+				ctx.stroke();
 			}
-			this.tempV = this.vArraySorted.splice(0, 1);
-			for (vs = 0; vs < this.vArraySorted.length; vs++){
-				this.vArraySorted[vs].deg = angle(this.tempV[0], this.vArraySorted[vs], this);
-				this.vArraySorted[vs].dest.deg = this.vArraySorted[vs].deg;
-			}
-			this.vArraySorted.sort(function(a, b){ return a.deg - b.deg} );
-			this.vArraySorted.splice(0, 0, this.tempV[0]);
 			
-			this.currIndex = 0;
-			
-			ctx.beginPath()
-			ctx.moveTo(this.vArraySorted[0].x, this.vArraySorted[0].y);
-			ctx.lineTo(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y);
-			for (i = 0; i < 3; i++){
-				//ctx.moveTo()
-			}
-			ctx.stroke();
 			/*this.collFlag = -1;
 			for (i = 0; i < this.vArray.length; i++){
 				if (pointCollide(this.vArray[i].dest, object)){
