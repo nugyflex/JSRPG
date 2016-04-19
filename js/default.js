@@ -137,15 +137,15 @@ draw()
 Camera = new camera(0,0);
 setInterval(gameLoop, 15);
 
-sun = new light(10000, -10000, 100, 0.4);
+sun = new light(10000, -10000, 10000, 0.4);
 debug = 1;
 night = 0;
 
 function gameLoop() {
 	if (!Game.paused)
 	{
-		sun.x = mouse.x;
-		sun.y = mouse.y;
+		//sun.x = mouse.x*100;
+		//sun.y = mouse.y*100;
 		enemyCollection.update();
 		player1.update();
 		projectileCollection.update();

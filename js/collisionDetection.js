@@ -560,3 +560,24 @@ function collisiondetection() {
 
 	}
 }
+function pointCollide(p, a){
+	if ((p.x > a.x && p.x < a.x + a.width) && (p.y > a.y && p.y < a.y + a.height)){
+		return true;
+	}
+	else {
+		return false;
+	}	
+}
+function distance(obj1, obj2, centre){
+	if (centre){
+		this.distx = (obj1.x + (obj1.width/2)) - (obj2.x + obj2.width/2);
+		this.disty = (obj1.y + (obj1.height/2)) - (obj2.y + (obj2.height/2));
+		this.dst = Math.sqrt((this.distx*this.distx) + (this.disty*this.disty));
+	}
+	else {
+		this.distx = (obj1.x) - (obj2.x);
+		this.disty = (obj1.y) - (obj2.y);
+		this.dst = Math.sqrt((this.distx*this.distx) + (this.disty*this.disty));
+	}
+	return dst;
+}

@@ -24,3 +24,10 @@ function rectangle(x, y, width, height)
 	this.width = width;
 	this.height = height;
 }
+function fillCircle(cx, cy, r, colour){
+	ctx.beginPath();
+	ctx.arc(cx, cy, r, 0, 2*Math.PI);
+	ctx.fillStyle = colour;
+	ctx.fill();
+	ctx.closePath();
+}

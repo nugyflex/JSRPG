@@ -26,7 +26,6 @@ function trans(obj1, obj2, deg){
 			bR: {x: bRx, y: bRy}, 
 			bL: {x: bLx, y: bLy}};
 }
-
 function convert(obj, deg, centre){
 	if (deg == 'default'){
 		deg = 0;
@@ -44,4 +43,71 @@ function convert(obj, deg, centre){
 			  three: {x1: c1.bR.x, y1: c1.bR.y, x2: c1.bL.x, y2: c1.bL.y}, 
 			  four:  {x1: c1.bL.x, y1: c1.bL.y, x2: c1.tL.x, y2: c1.tL.y}}
 	return lines1;
+}
+function lineCollision(line1, line2){
+	if (line1.x1 == line1.x2){
+		tx = line1.x1;
+	}
+	else if (line2.x1 == line2.x2){
+		tx = line2.x2
+	}
+	else {
+		tx = ((line1.x1 * line1.y2 - line1.y1 * line1.x2) * (line2.x1 - line2.x2) - (line1.x1 - line1.x2) * (line2.x1 * line2.y2 - line2.y1 * line2.x2)) / ((line1.x1 - line1.x2) * (line2.y1 - line2.y2) - (line1.y1 - line1.y2) * (line2.x1 - line2.x2));
+	}
+	if (line1.y1 == line1.y2){
+		ty = line1.y1;
+	}
+	else if (line2.y1 == line2.y2){
+		ty = line2.y1;
+	}
+	else{
+		ty = ((line1.x1 * line1.y2 - line1.y1 * line1.x2) * (line2.y1 - line2.y2) - (line1.y1 - line1.y2) * (line2.x1 * line2.y2 - line2.y1 * line2.x2)) / ((line1.x1 - line1.x2) * (line2.y1 - line2.y2) - (line1.y1 - line1.y2) * (line2.x1 - line2.x2));
+	}
+	//First line
+	//Positive line
+	if (line1.x1 <= line1.x2){
+		if (!(tx >= line1.x1 && tx <= line1.x2)){
+			return false;
+		}
+	}
+	else {
+		if (!(tx >= line1.x2 && tx <= line1.x1)){
+			return false;
+		}
+	}
+	//Negative line
+	if (line1.y1 <= line1.y2){
+		if (!(ty >= line1.y1 && ty <= line1.y2)){
+			return false;
+		}
+	}
+	else {
+		if (!(ty >= line1.y2 && ty <= line1.y1)){
+			return false;
+		}
+	}
+	//Second line
+	//Positive line
+	if (line2.x1 <= line2.x2){
+		if (!(tx >= line2.x1 && tx <= line2.x2)){
+			return false;
+		}
+	}
+	else {
+		if (!(tx >= line2.x2 && tx <= line2.x1)){
+			return false;
+		}
+	}
+	//Negative line
+	if (line2.y1 <= line2.y2){
+		if (!(ty >= line2.y1 && ty <= line2.y2)){
+			return false;
+		}
+	}
+	else {
+		if (!(ty >= line2.y2 && ty <= line2.y1)){
+			return false;
+		}
+	}
+	return {tx: tx, ty: ty};
 }

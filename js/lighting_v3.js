@@ -16,7 +16,7 @@ function light(x, y, z, intensity){
 		ctx.shadowOffsetX = 0;
 		ctx.shadowOffsetY = 0;
 		ctx.fillStyle = "yellow";
-		ctx.fillRect(this.x, this.y - this.z, 10, 10);
+		ctx.fillRect(this.x, this.y, 10, 10);
 		ctx.shadowColor = '#000000';
 		ctx.shadowBlur = 0;
 		ctx.shadowOffsetX = 0;
@@ -64,35 +64,31 @@ function light(x, y, z, intensity){
 				ctx.lineTo(this.vArray[0].x, this.vArray[0].y);
 				ctx.stroke();
 			}
+			//NOTES for calculating the offset
+			//NOTE - the vHeight referred to here assumes that all vertices are at the same height (that the object has a level 'top' face) - for future objects with varying heights, we will need to include those individual heights for the vertices
+			//NOTE - the 'y' value is adjusted based on the vHeight of the object because this is where the shadows are being cast from, so this is where the distance is calculated
+			//NOTE - this also assumes that the obect's base is on the ground, and object levitating for whatever reason would need a different method
+			//Have to make special case for when the light's z pos is less than the objects - should default to distance as a method of calculating how far to project the shadows
 			for (v = 0; v < this.vArray.length; v++){
-				var offset = distance(this.vArray[v], this) / (100/this.z);
-				this.vArray[v].dest = {x: this.vArray[v].x + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.y - this.vArray[v].y)}
+				//var offset = distance(this.vArray[v], this) / (100/this.z);
+				this.triHypot = Math.sqrt(Math.pow(this.x - this.vArray[v].x, 2) + Math.pow(this.y - (this.vArray[v].y - object.vHeight), 2) + Math.pow(this.z - object.vHeight, 2));
+				this.triHeight = this.z - object.vHeight;
+				this.theta = Math.acos(this.triHeight/this.triHypot);
+				this.shadowDist = object.vHeight * Math.tan(this.theta);
+				//this.vArray[v].dest = {x: this.vArray[v].x + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.y - this.vArray[v].y)}
+				this.vArray[v].dest = {x: this.vArray[v].x + -(this.shadowDist)/distance(this, this.vArray[v]) * (this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.shadowDist)/distance(this, this.vArray[v]) * (this.y - this.vArray[v].y)}
 				this.vArray[v].deg = angle(this, this.vArray[v], this);
 				this.vArray[v].dest.deg= this.vArray[v].deg;
 				this.vArray[v].dest.pNum = v;
 			}
-			
-			//NOTES for hypotDist
-			//NOTE - the vHeight referred to here assumes that all vertices are at the same height (that the object has a level 'top' face)
-			//NOTE - the 'y' value is adjusted based on the vHeight of the object because this is where the shadows are being cast from, so this is where the distance is calculated
-			/*for (v = 0; v < this.vArray.length; v++){
-				var hypotDist = Math.sqrt(Math.pow(this.x - this.vArray[v].x, 2) + Math.pow(this.y - (this.vArray[v].y - this.vArray[v].vHeight), 2) + Math.pow(this.z - this.object.vHeight, 2));
-				var theta = ;
-				var offset = ;
-				this.vArray[v].dest = {x: this.vArray[v].x + -(offSet)/distance(this, this.vArray[v])*(this.x - this.vArray[v].x), y: this.vArray[v].y + -(offset)/distance(this, this.vArray[v])*(this.y - this.vArray[v].y)}
-				this.vArray[v].deg = Math.atan2((this.vArray[v].y - this.y), (this.vArray[v].x - this.x));
-				this.vArray[v].dest.deg= this.vArray[v].deg;
-				this.vArray[v].dest.pNum = v;
-			}*/
-			
-			//NOTE - This is unecessary, once the closest point in terms of angle is found it just loops through the dot array like normal and that is the sorted thing
-			//NOTE ON THE NOTE - However for shapes that have vertices which go "inside" themselves (like a star) it is important to actually use this method, but for rectangles this is unecessary and so inefficient
 			if (pointCollide(this, object)){
 				ctx.moveTo(this.vArray[0].dest.x, this.vArray[0].dest.y);
 				for (j = 1; j < this.vArray.length; j++){
 					ctx.lineTo(this.vArray[j].dest.x, this.vArray[j].dest.y);
 				}
-				ctx.stroke();
+				ctx.closePath();
+				ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
+				ctx.fill();
 			}
 			else {
 				this.collFlag = 0;
@@ -126,7 +122,21 @@ function light(x, y, z, intensity){
 				this.currIndex = 0;
 				this.iterCount = this.vArray.length - 1;
 				if (this.collFlag == 0){
-					this.iterCount++;
+					this.lineCollFlag = 0;
+					var p = this.vArraySorted[this.vArray.length - 1];
+					this.line = {x1: p.x, y1: p.y, x2: p.dest.x, y2: p.dest.y};
+					this.lines = convert(object, 'default', 1);
+					if (!pointCollide(this.vArraySorted[this.vArray.length - 1].dest, object)){
+						for (key in this.lines){
+							this.lineCol = lineCollision(this.line, this.lines[key]);
+							if (this.lineCol && (this.lineCol.tx != p.x && this.lineCol.ty != p.y)){
+								this.lineCollFlag = 1;
+							}
+						}
+					}
+					if (this.lineCollFlag == 0){
+						this.iterCount++;
+					}
 				}
 				
 				ctx.beginPath()
@@ -136,12 +146,19 @@ function light(x, y, z, intensity){
 				}
 				//only piece of hard-coding, this applies solely to rectangles
 				if (this.collFlag == 0){
-					ctx.lineTo(this.vArraySorted[this.vArraySorted.length-1].x, this.vArraySorted[this.vArraySorted.length-1].y)
+					if (this.lineColl == 0){
+						ctx.lineTo(this.vArraySorted[this.iterCount].x, this.vArraySorted[this.iterCount].y)
+					}
+					else {
+						ctx.lineTo(this.vArraySorted[this.iterCount - 1].x, this.vArraySorted[this.iterCount - 1].y)
+					}
 				}
 				else {
 					ctx.lineTo(this.vArraySorted[this.vArraySorted.length - 2].x, this.vArraySorted[this.vArraySorted.length - 2].y);
 				}
-				ctx.stroke();
+				//ctx.stroke();
+				ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
+				ctx.fill();
 			}
 			
 			/*this.collFlag = -1;
@@ -249,11 +266,6 @@ function light(x, y, z, intensity){
 				//	fillCircle(this.vArray[this.collFlag].dest.x, this.vArray[this.collFlag].dest.y, 3, 'cyan');
 				//}
 			}
-			
-			//console.log(angle(mouse, this.vArray[0]));
-		//NOTES FOR IMPROVEMENT OF REALISM
-		//when there is no point collision the lines should be straight
-		//After using the hypotenuse to calculate the distance of the shadow this should be fixed to some extent
 		}
 	}
 }
