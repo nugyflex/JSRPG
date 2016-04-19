@@ -32,6 +32,7 @@ function game(){
 	this.screenShakey = 0;
 	this.shakeIntensity = 0;
 	this.shakeDecrementAmount = 0.4;
+	this.dayLength = 360;
 	this.addToPointArray = function(_x, _y)
 	{
 		this.pointArray[this.pointArray.length] = new Point(_x, _y);
@@ -75,22 +76,19 @@ function Point(_x, _y)
 }
 
 var fps = 60;
+var nightAlpha = 0.95;
 function draw() {
 	setTimeout(function () {
 		requestAnimationFrame(draw);
 		ctx.translate((Game.canvastranslatex) * -1, (Game.canvastranslatey) * -1);
-		ctx.clearRect(-10000, -10000,100000,100000);
+		ctx.clearRect(-10000, -10000,20000,20000);
 		ctx.fillStyle = "rgba(50,200,100, 1)";
-		ctx.fillRect(-10000, -10000,100000,100000);
+		ctx.fillRect(-10000, -10000,20000,20000);
 		bloodCollection.draw();
 		Renderer.execute();
-		sun.draw();
 		Game.manageScreenshake();
-		if (night == 1){
-			ctx.fillStyle = "rgba(0, 2, 30, 0.8)";
-			ctx.fillRect(-10000, -10000,100000,100000);
-		}
-		sun.draw();
+		ctx.fillStyle = "rgba(0, 2, 20," + gameTime.nightAlpha + ")";
+		ctx.fillRect(-10000, -10000,20000,20000);		
 		ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
 		Camera.follow(player1);
 		Camera.setTranslate(); 
@@ -137,11 +135,14 @@ draw()
 Camera = new camera(0,0);
 setInterval(gameLoop, 15);
 
-sun = new light(10000, -10000, 10000, 0.4);
+sun = new light(0, -10000, 10000, 0.4);
 debug = 1;
 night = 0;
 
+gameTime = new gameTimer(Game, 15);
+
 function gameLoop() {
+	gameTime.timer();
 	if (!Game.paused)
 	{
 		//sun.x = mouse.x*100;
@@ -154,13 +155,19 @@ function gameLoop() {
 		{
 			collisionDetection.stopplayer(player1, platformCollection.array[i]);
 		}
-		if (keypressed.r)
-		{
-			sun.z++;
-		}
-		if (keypressed.q)
-		{
-			sun.z--;
-		}
+		sun.x = gameTime.sunPos.x;
+		sun.y = gameTime.sunPos.y;
+		sun.z = gameTime.sunPos.z;
 	}
+	else {
+		gameTime.pause();
+	}
+	
+}
+function posOnCircle(cx, cy, r, angle){
+	angle *= Math.PI/180;
+	fx = cx + Math.cos(angle) * r;
+	fy = cy + Math.sin(angle) * r;
+	
+	return {x: fx, y: fy};
 }

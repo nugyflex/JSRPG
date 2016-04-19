@@ -6,26 +6,9 @@ function light(x, y, z, intensity){
 	this.height = 1;
 	this.intensity = intensity;
 	this.colours = ['red', 'white', 'blue', 'black'];
-	this.draw = function()
-	{
-		if (this.z > 0)
-		{
-
-		ctx.shadowColor = 'yellow';
-		ctx.shadowBlur = 60;
-		ctx.shadowOffsetX = 0;
-		ctx.shadowOffsetY = 0;
-		ctx.fillStyle = "yellow";
-		ctx.fillRect(this.x, this.y, 10, 10);
-		ctx.shadowColor = '#000000';
-		ctx.shadowBlur = 0;
-		ctx.shadowOffsetX = 0;
-		ctx.shadowOffsetY = 0;
-		}
-	}
 	//Later restrict the objects it loops through to those encompassed within the radius determined by its intensity
 	this.castShadows = function(object){
-		if (this.z > 0){
+		if (this.z > 0 && this.z > object.vHeight){
 			this.verts = trans(object, 'default', 'default');
 			this.vArray = [];
 			for (key in this.verts){
