@@ -32,7 +32,7 @@ function game(){
 	this.screenShakey = 0;
 	this.shakeIntensity = 0;
 	this.shakeDecrementAmount = 0.4;
-	this.dayLength = 360;
+	this.dayLength = 60;
 	this.addToPointArray = function(_x, _y)
 	{
 		this.pointArray[this.pointArray.length] = new Point(_x, _y);
@@ -76,7 +76,8 @@ function Point(_x, _y)
 }
 
 var fps = 60;
-var nightAlpha = 0.95;
+var testAlpha = 0;
+var dir = 1;
 function draw() {
 	setTimeout(function () {
 		requestAnimationFrame(draw);
@@ -86,10 +87,11 @@ function draw() {
 		ctx.fillRect(-10000, -10000,20000,20000);
 		bloodCollection.draw();
 		Renderer.execute();
-		Game.manageScreenshake();
+		//Game.manageScreenshake();
 		ctx.fillStyle = "rgba(0, 2, 20," + gameTime.nightAlpha + ")";
 		ctx.fillRect(-10000, -10000,20000,20000);		
-		ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
+		//ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
+		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
 		Camera.setTranslate(); 
 	}, 1000 / fps);
@@ -107,11 +109,11 @@ platformCollection = new platforms();
 bloodCollection = new bloods();
 //platformCollection.add(300, 100, 100, 100, "box50x50");
 platformCollection.add(100, 100, 100, 100, 0);
-//platformCollection.add(0, 500, 74, 6, 0);
-//platformCollection.add(74, 500, 74, 6, 0);
-//platformCollection.add(148, 500, 74, 6, 0);
-//platformCollection.add(500, 500, 74*3, 6, 0);
-//platformCollection.add(-100, 500, 74, 6, 0);
+platformCollection.add(0, 500, 74, 6, 0);
+platformCollection.add(74, 500, 74, 6, 0);
+platformCollection.add(148, 500, 74, 6, 0);
+platformCollection.add(500, 500, 74*3, 6, 0);
+platformCollection.add(-100, 500, 74, 6, 0);
 /*enemyCollection.add(0,0);
 enemyCollection.add(400,0);
 enemyCollection.add(0,400);
@@ -158,6 +160,11 @@ function gameLoop() {
 		sun.x = gameTime.sunPos.x;
 		sun.y = gameTime.sunPos.y;
 		sun.z = gameTime.sunPos.z;
+		//sun.intensity = 1 - gameTime.nightAlpha;
+		//if (sun.intensity > 0.5){
+		//	sun.intensity = 0.5;
+		//}
+		//console.log(gameTime.nightAlpha);
 	}
 	else {
 		gameTime.pause();

@@ -9,7 +9,8 @@ function gameTimer(game, loopSpeed){
 	this.days = 0;
 	this.nightAlphaMax = 0.95;
 	this.nightAlpha = 0;
-	this.sunPos = {x: 0, y: -10000, z: 10000};
+	this.sunPos = {x: 0, y: -50000, z: 100000};
+	this.sunTiming = {day: 1/3, night: 1/3, trans: 1/6};
 	//Pause the timer, used for when the game itself is paused so that players cannot pause the game, wait for their cool-downs to finish, and then resume
 	this.pause = function(){
 		this.paused = 1;
@@ -22,16 +23,22 @@ function gameTimer(game, loopSpeed){
 	//also the millisecond timer for skill cool-downs, which often have 2.5 second cool-downs or other decimals.
 	this.timer = function(){
 		if (this.paused == 0){
+			if (this.getDayTime() <= game.dayLength * this.sunTiming.night...UP TO HERE){
+				
+			}
+			/*
 			if (this.getDayTime() == 0 || this.getDayTime() / game.dayLength <= 1 / 3){
 				if (this.getDayTime() == 0){
 					this.nightAlpha = this.nightAlphaMax;
 				}
 				else {
 					this.nightAlpha = (1 - this.getDayTime() / (game.dayLength * 1 / 3)) * this.nightAlphaMax;
+					console.log('tick');
 				}
 			}
 			else if (this.getDayTime() / game.dayLength >= 2/3){
 				this.nightAlpha = (this.getDayTime() - game.dayLength * 2 / 3) / (game.dayLength * 1 / 3) * this.nightAlphaMax;
+				console.log('tick');
 			}
 			else {
 				this.nightAlpha = 0;
@@ -42,19 +49,19 @@ function gameTimer(game, loopSpeed){
 				this.mTime = 0;
 			}
 			if (this.getDayTime() == 0){
-				this.sunPos.x = -10000;
+				this.sunPos.x = -50000;
 				this.sunPos.z = 0;
 			}
 			else {
-				this.sunPos.x = this.getDayTime() / game.dayLength * 20000 - 10000;
+				this.sunPos.x = this.getDayTime() / game.dayLength * 100000 - 50000;
 				if (this.getDayTime() / game.dayLength  <= 1 / 2){
-					this.sunPos.z = this.getDayTime() / (game.dayLength * 1 / 2) * 10000; 
+					this.sunPos.z = this.getDayTime() / (game.dayLength * 1 / 2) * 100000;
 				}
 				else {
-					this.sunPos.z = (1 - (this.getDayTime() - game.dayLength * 1 / 2) / (game.dayLength * 1 / 2)) * 10000
+					this.sunPos.z = (1 - (this.getDayTime() - game.dayLength * 1 / 2) / (game.dayLength * 1 / 2)) * 100000
 				}
 			}
-			
+			*/
 			this.milliTime++;
 			this.dayTime++;
 			this.mTime++;

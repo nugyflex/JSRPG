@@ -70,7 +70,7 @@ function light(x, y, z, intensity){
 					ctx.lineTo(this.vArray[j].dest.x, this.vArray[j].dest.y);
 				}
 				ctx.closePath();
-				ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
+				ctx.fillStyle = 'rgba(0, 0, 0,' + this.intensity + ')';
 				ctx.fill();
 			}
 			else {
@@ -140,7 +140,7 @@ function light(x, y, z, intensity){
 					ctx.lineTo(this.vArraySorted[this.vArraySorted.length - 2].x, this.vArraySorted[this.vArraySorted.length - 2].y);
 				}
 				//ctx.stroke();
-				ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
+				ctx.fillStyle = 'rgba(0, 0, 0,' + this.intensity + ')';
 				ctx.fill();
 			}
 			
