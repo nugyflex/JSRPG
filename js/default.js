@@ -32,7 +32,7 @@ function game(){
 	this.screenShakey = 0;
 	this.shakeIntensity = 0;
 	this.shakeDecrementAmount = 0.4;
-	this.dayLength = 60;
+	this.dayLength = 360;
 	this.addToPointArray = function(_x, _y)
 	{
 		this.pointArray[this.pointArray.length] = new Point(_x, _y);

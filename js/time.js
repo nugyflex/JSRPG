@@ -5,12 +5,15 @@ function gameTimer(game, loopSpeed){
 	this.paused = 0;
 	this.time = 0;
 	this.speed = 1;
-	this.dayTime = 1 / 2 * game.dayLength;
+	this.dayTime = 0;
 	this.days = 0;
 	this.nightAlphaMax = 0.95;
 	this.nightAlpha = 0;
 	this.sunPos = {x: 0, y: -50000, z: 100000};
-	this.sunTiming = {day: 1/3, night: 1/3, trans: 1/6};
+	//Proportions based roughly on the idea that we have about 3 hours of dusk (partial sun), which is 1/8 of the day
+	this.sunTiming = {day: 3/8, night: 3/8, trans: 2/8};
+	this.sunTiming.trans /= 2;
+	this.dayState = 'night';
 	//Pause the timer, used for when the game itself is paused so that players cannot pause the game, wait for their cool-downs to finish, and then resume
 	this.pause = function(){
 		this.paused = 1;
@@ -23,8 +26,35 @@ function gameTimer(game, loopSpeed){
 	//also the millisecond timer for skill cool-downs, which often have 2.5 second cool-downs or other decimals.
 	this.timer = function(){
 		if (this.paused == 0){
-			if (this.getDayTime() <= game.dayLength * this.sunTiming.night...UP TO HERE){
-				
+			if (this.getDayTime() <= game.dayLength * this.sunTiming.night){
+				//night time
+				this.nightAlpha = this.nightAlphaMax;
+				this.dayState = 'night';
+			}
+			else if (this.getDayTime() >= game.dayLength * this.sunTiming.night && this.getDayTime() <= game.dayLength * this.sunTiming.night + game.dayLength * this.sunTiming.trans){
+				//transition from night to day
+				this.nightAlpha = (1 - (this.getDayTime() - game.dayLength * this.sunTiming.night)/(game.dayLength * this.sunTiming.trans)) * this.nightAlphaMax;
+				this.dayState = 'trans';
+			}
+			else if (this.getDayTime() >= game.dayLength * (1 - this.sunTiming.trans)){
+				//transition from day to night
+				this.nightAlpha = (this.getDayTime() - (game.dayLength - game.dayLength * this.sunTiming.trans))/(game.dayLength * this.sunTiming.trans) * this.nightAlphaMax;
+				this.dayState = 'trans';
+			}
+			else {
+				//day time
+				this.nightAlpha = 0;
+				this.dayState = 'day';
+			}
+			if (this.getDayTime() >= game.dayLength * this.sunTiming.night){
+				//add and then subtract 50,000 to allow us a negative portion of the sun's x position
+				this.sunPos.x = this.getDayTime() / game.dayLength * 100000 - 50000
+				if (this.getDayTime() <= game.dayLength * 1 / 2){
+					this.sunPos.z = this.getDayTime() / (game.dayLength * 1 / 2) * 100000
+				}
+				else {
+					this.sunPos.z = 
+				}
 			}
 			/*
 			if (this.getDayTime() == 0 || this.getDayTime() / game.dayLength <= 1 / 3){
