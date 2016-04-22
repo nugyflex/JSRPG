@@ -32,7 +32,7 @@ function game(){
 	this.screenShakey = 0;
 	this.shakeIntensity = 0;
 	this.shakeDecrementAmount = 0.4;
-	this.dayLength = 360;
+	this.dayLength = 10;
 	this.addToPointArray = function(_x, _y)
 	{
 		this.pointArray[this.pointArray.length] = new Point(_x, _y);
@@ -138,8 +138,8 @@ Camera = new camera(0,0);
 setInterval(gameLoop, 15);
 
 sun = new light(0, -10000, 10000, 0.4);
+sun2 = new light(0, 0, 0, 0.4);
 debug = 1;
-night = 0;
 
 gameTime = new gameTimer(Game, 15);
 
@@ -160,6 +160,9 @@ function gameLoop() {
 		sun.x = gameTime.sunPos.x;
 		sun.y = gameTime.sunPos.y;
 		sun.z = gameTime.sunPos.z;
+		sun2.x = sun.x * -1;
+		sun2.y = 30000;
+		sun2.z = sun.z;
 		//sun.intensity = 1 - gameTime.nightAlpha;
 		//if (sun.intensity > 0.5){
 		//	sun.intensity = 0.5;

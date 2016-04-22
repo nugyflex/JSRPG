@@ -9,7 +9,7 @@ function gameTimer(game, loopSpeed){
 	this.days = 0;
 	this.nightAlphaMax = 0.95;
 	this.nightAlpha = 0;
-	this.sunPos = {x: 0, y: -50000, z: 100000};
+	this.sunPos = {x: 0, y: -50000, z: 0};
 	//Proportions based roughly on the idea that we have about 3 hours of dusk (partial sun), which is 1/8 of the day
 	this.sunTiming = {day: 3/8, night: 3/8, trans: 2/8};
 	this.sunTiming.trans /= 2;
@@ -47,15 +47,26 @@ function gameTimer(game, loopSpeed){
 				this.dayState = 'day';
 			}
 			if (this.getDayTime() >= game.dayLength * this.sunTiming.night){
+				//console.log( 'psihdif');
 				//add and then subtract 50,000 to allow us a negative portion of the sun's x position
-				this.sunPos.x = this.getDayTime() / game.dayLength * 100000 - 50000
-				if (this.getDayTime() <= game.dayLength * 1 / 2){
-					this.sunPos.z = this.getDayTime() / (game.dayLength * 1 / 2) * 100000
+				this.sunPos.x = (this.getDayTime() - game.dayLength * this.sunTiming.night) / (game.dayLength - game.dayLength * this.sunTiming.night) * 100000 - 50000;
+				if (this.getDayTime() - game.dayLength * this.sunTiming.night <= (game.dayLength - game.dayLength * this.sunTiming.night) / 2){
+					this.sunPos.z = (this.getDayTime() - game.dayLength * this.sunTiming.night) / ((game.dayLength - game.dayLength * this.sunTiming.night) / 2) * 100000
 				}
 				else {
-					this.sunPos.z = 
+					this.sunPos.z = (1 - (this.getDayTime() - game.dayLength * this.sunTiming.night - (game.dayLength - game.dayLength * this.sunTiming.night) / 2) / ((game.dayLength - game.dayLength * this.sunTiming.night) / 2)) * 100000;
 				}
 			}
+			else {
+				this.sunPos.x = 0;
+				this.sunPos.z = 0;
+			}
+			if (this.sunPos.z == 0){
+				console.log('moey');
+			}
+			this.sunPos.x *= -1;
+			//console.log(this.getDayTime());
+			//console.log(Math.floor(this.sunPos.x), this.sunPos.y, this.sunPos.z);
 			/*
 			if (this.getDayTime() == 0 || this.getDayTime() / game.dayLength <= 1 / 3){
 				if (this.getDayTime() == 0){
