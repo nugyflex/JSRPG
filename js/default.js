@@ -162,7 +162,7 @@ function gameLoop() {
 		}
 		sun.x = gameTime.sunPos.x;
 		sun.y = gameTime.sunPos.y;
-		sun.z = Math.sqrt(50000 - gameTime.sunPos.x^2);
+		sun.z = gameTime.sunPos.z;
 		sun2.x = sun.x * -1;
 		sun2.y = 30000;
 		sun2.z = sun.z;
@@ -171,6 +171,12 @@ function gameLoop() {
 		//	sun.intensity = 0.5;
 		//}
 		//console.log(gameTime.nightAlpha);
+		if (keypressed.q){
+			gameTime.sunMaxY += 1000;
+		}
+		if (keypressed.e){
+			gameTime.sunMaxY -= 1000;
+		}
 	}
 	else {
 		gameTime.pause();

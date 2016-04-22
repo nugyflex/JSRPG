@@ -62,6 +62,9 @@ function light(x, y, z, intensity){
 				this.triHeight = this.z - object.vHeight;
 				this.theta = Math.acos(this.triHeight/this.triHypot);
 				this.shadowDist = object.vHeight * Math.tan(this.theta);
+				if (this.shadowDist > object.vHeight * 4){
+					this.shadowDist = object.vHeight * 4;
+				}
 				//this.vArray[v].dest = {x: this.vArray[v].x + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.intensity*offset)/distance(this, this.vArray[v])*(this.y - this.vArray[v].y)}
 				this.vArray[v].dest = {x: this.vArray[v].x + -(this.shadowDist)/distance(this, this.vArray[v]) * (this.x - this.vArray[v].x), y: this.vArray[v].y + -(this.shadowDist)/distance(this, this.vArray[v]) * (this.y - this.vArray[v].y)}
 				this.vArray[v].deg = angle(this, this.vArray[v], this);
