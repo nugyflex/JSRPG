@@ -149,7 +149,8 @@ function platforms() {
         return this.array.length;
     }
     this.array = [];
-    this.add = function (x, y, width, height, type) {
+	//later we should add a 'z' height, but for now the default z value is 0
+    this.add = function (x, y, width, height, vHeight, type) {
         var i = this.count();
 		if (type == "box50x50")
 		{
@@ -157,7 +158,7 @@ function platforms() {
 		}
 		else
 		{
-            this.array[i] = new platform(x, y, width, height, 0, 0, 0);
+            this.array[i] = new platform(x, y, width, height, vHeight, 0, 0, 0);
 		}
 	}
 	this.update = function()

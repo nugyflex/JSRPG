@@ -1,14 +1,15 @@
-function platform(_x, _y, _width, _height, image, ioffsetx, ioffsety)
+function platform(_x, _y, _width, _height, _vHeight, image, ioffsetx, ioffsety)
 {
 	this.x = _x;
 	this.y = _y;
+	this.z = 0;
 	this.width = _width;
 	this.height = _height;
 	this.type;
 	this.image = image;
 	this.ioffsetx = ioffsetx;
 	this.ioffsety = ioffsety;
-	this.vHeight = 40;
+	this.vHeight = _vHeight;
 	this.update = function()
 	{
 		
@@ -22,15 +23,15 @@ function platform(_x, _y, _width, _height, image, ioffsetx, ioffsety)
 		else
 		{
 		ctx.fillStyle = "grey";
-		ctx.fillRect(this.x, this.y-40, this.width, 40 + this.height);
+		ctx.fillRect(this.x, this.y-this.vHeight, this.width, this.vHeight + this.height);
 		ctx.fillStyle = "rgb(100, 100, 100)";
-		ctx.fillRect(this.x, this.y-40, this.width, this.height);
+		ctx.fillRect(this.x, this.y-this.vHeight, this.width, this.height);
 		ctx.fillStyle = "rgb(80, 80, 80)";
-		ctx.fillRect(this.x, this.y-40, 2, this.height+40);
-		ctx.fillRect(this.x+this.width-2, this.y-40, 2, this.height+40);
+		ctx.fillRect(this.x, this.y-this.vHeight, 2, this.height+this.vHeight);
+		ctx.fillRect(this.x+this.width-2, this.y-this.vHeight, 2, this.height+this.vHeight);
 		ctx.fillRect(this.x, this.y+this.height-2, this.width, 2);
-		ctx.fillRect(this.x, this.y-40, this.width, 2);
-		ctx.fillRect(this.x, this.y+this.height-40, this.width, 2);
+		ctx.fillRect(this.x, this.y-this.vHeight, this.width, 2);
+		ctx.fillRect(this.x, this.y+this.height-this.vHeight, this.width, 2);
 		}
 	}
 	this.drawShadow = function()

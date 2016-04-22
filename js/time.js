@@ -61,9 +61,6 @@ function gameTimer(game, loopSpeed){
 				this.sunPos.x = 0;
 				this.sunPos.z = 0;
 			}
-			if (this.sunPos.z == 0){
-				console.log('moey');
-			}
 			this.sunPos.x *= -1;
 			//console.log(this.getDayTime());
 			//console.log(Math.floor(this.sunPos.x), this.sunPos.y, this.sunPos.z);
