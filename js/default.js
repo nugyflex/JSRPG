@@ -161,7 +161,7 @@ function gameLoop() {
 		}
 		sun.x = gameTime.sunPos.x;
 		sun.y = gameTime.sunPos.y;
-		sun.z = gameTime.sunPos.z;
+		sun.z = Math.sqrt(50000 - gameTime.sunPos.x^2);
 		sun2.x = sun.x * -1;
 		sun2.y = 30000;
 		sun2.z = sun.z;
