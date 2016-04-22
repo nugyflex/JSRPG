@@ -7,6 +7,10 @@ function light(x, y, z, intensity){
 	this.intensity = intensity;
 	this.colours = ['red', 'white', 'blue', 'black'];
 	//Later restrict the objects it loops through to those encompassed within the radius determined by its intensity
+	this.draw = function(){
+		ctx.fillStyle = 'black';
+		ctx.fillRect(this.x, this.y - this.z, 10, 10);
+	}
 	this.castShadows = function(object){
 		if (this.z > 0 && this.z > object.vHeight){
 			this.verts = trans(object, 'default', 'default');

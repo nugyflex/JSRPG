@@ -89,11 +89,12 @@ function draw() {
 		Renderer.execute();
 		//Game.manageScreenshake();
 		ctx.fillStyle = "rgba(0, 2, 20," + gameTime.nightAlpha + ")";
-		ctx.fillRect(-10000, -10000,20000,20000);		
+		ctx.fillRect(-10000, -10000,20000,20000);
+		sun.draw();
 		//ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
-		Camera.setTranslate(); 
+		Camera.setTranslate();
 	}, 1000 / fps);
 }
 diagonalWall.prototype = Object.create(platform.prototype);
