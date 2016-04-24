@@ -11,7 +11,7 @@ function gameTimer(game, loopSpeed){
 	this.nightAlpha = 0;
 	this.sunPos = {x: 0, y: -50000, z: 0};
 	this.sunMaxX = 50000;
-	this.sunMaxZ = 50000;
+	this.sunMaxZ = 100000;
 	//Proportions based roughly on the idea that we have about 3 hours of dusk (partial sun), which is 1/8 of the day
 	this.sunTiming = {day: 3/8, night: 3/8, trans: 2/8};
 	this.sunTiming.trans /= 2;
@@ -52,56 +52,21 @@ function gameTimer(game, loopSpeed){
 				//console.log( 'psihdif');
 				//add and then subtract 50,000 to allow us a negative portion of the sun's x position
 				this.sunPos.x = (this.getDayTime() - game.dayLength * this.sunTiming.night) / (game.dayLength - game.dayLength * this.sunTiming.night) * this.sunMaxX * 2 - this.sunMaxX;
-				if (this.getDayTime() - game.dayLength * this.sunTiming.night <= (game.dayLength - game.dayLength * this.sunTiming.night) / 2){
-					this.sunPos.z = (this.getDayTime() - game.dayLength * this.sunTiming.night) / ((game.dayLength - game.dayLength * this.sunTiming.night) / 2) * this.sunMaxZ;
-				}
-				else {
-					this.sunPos.z = (1 - (this.getDayTime() - game.dayLength * this.sunTiming.night - (game.dayLength - game.dayLength * this.sunTiming.night) / 2) / ((game.dayLength - game.dayLength * this.sunTiming.night) / 2)) * this.sunMaxZ;
-				}
+				this.p0 = {x: this.sunPos.x, y: 0};
+				this.p1 = {x: this.sunPos.x, y: this.sunMaxZ/2};
+				this.p2 = {x: this.sunPos.x, y: this.sunMaxZ/2};
+				this.p3 = {x: this.sunPos.x, y: 0};
+				this.t = (this.getDayTime() - game.dayLength * this.sunTiming.night) / (game.dayLength - game.dayLength * this.sunTiming.night);
+				this.destPoint = bezierCurve(this.p0, this.p1, this.p2, this.p3, this.t);
+				this.sunPos.z = this.destPoint.y;
+				//console.log(this.sunPos.z);
 			}
 			else {
 				this.sunPos.x = 0;
 				this.sunPos.z = 0;
 			}
-			this.sunPos.x *= -1;
-			//console.log(this.getDayTime());
-			console.log(Math.floor(this.sunPos.x), this.sunPos.y, this.sunPos.z);
-			/*
-			if (this.getDayTime() == 0 || this.getDayTime() / game.dayLength <= 1 / 3){
-				if (this.getDayTime() == 0){
-					this.nightAlpha = this.nightAlphaMax;
-				}
-				else {
-					this.nightAlpha = (1 - this.getDayTime() / (game.dayLength * 1 / 3)) * this.nightAlphaMax;
-					console.log('tick');
-				}
-			}
-			else if (this.getDayTime() / game.dayLength >= 2/3){
-				this.nightAlpha = (this.getDayTime() - game.dayLength * 2 / 3) / (game.dayLength * 1 / 3) * this.nightAlphaMax;
-				console.log('tick');
-			}
-			else {
-				this.nightAlpha = 0;
-			}
-			if (this.mTime >= (1000/loopSpeed) / this.speed){
-				this.time += 1;
-				
-				this.mTime = 0;
-			}
-			if (this.getDayTime() == 0){
-				this.sunPos.x = -50000;
-				this.sunPos.z = 0;
-			}
-			else {
-				this.sunPos.x = this.getDayTime() / game.dayLength * 100000 - 50000;
-				if (this.getDayTime() / game.dayLength  <= 1 / 2){
-					this.sunPos.z = this.getDayTime() / (game.dayLength * 1 / 2) * 100000;
-				}
-				else {
-					this.sunPos.z = (1 - (this.getDayTime() - game.dayLength * 1 / 2) / (game.dayLength * 1 / 2)) * 100000
-				}
-			}
-			*/
+			//this.sunPos.x *= -1;
+			
 			this.milliTime++;
 			this.dayTime++;
 			this.mTime++;
@@ -135,4 +100,16 @@ function gameTimer(game, loopSpeed){
 		}
 	}
 }
+function bezierCurve(p0, p1, p2, p3, t){
+	var cx = 3 * (p1.x - p0.x)
+	var bx = 3 * (p2.x - p1.x) - cx;
+	var ax = p3.x - p0.x - cx - bx;
 
+	var cy = 3 * (p1.y - p0.y);
+	var by = 3 * (p2.y - p1.y) - cy;
+	var ay = p3.y - p0.y - cy - by;
+
+	var xt = ax*(t*t*t) + bx*(t*t) + cx*t + p0.x;
+	var yt = ay*(t*t*t) + by*(t*t) + cy*t + p0.y;
+	return {x: xt, y: yt};
+}

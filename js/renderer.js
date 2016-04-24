@@ -18,6 +18,21 @@ function renderer() {
     this.draw = function () {
         var currentmin;
         var currentmini;
+		if (gameTime.dayState != 'night'){
+			for (s = 0; s < platformCollection.array.length; s++){
+				sun.castShadows(platformCollection.array[s]);
+				var ts = platformCollection.array[s].shadow;
+				//ctx.strokeStyle = 'red';
+				ctx.beginPath();
+				ctx.moveTo(ts[0].x, ts[0].y);
+				for (t = 1; t < ts.length; t++){
+					ctx.lineTo(ts[t].x, ts[t].y);
+				}
+				//ctx.stroke();
+				ctx.fillStyle = 'rgba(0, 0, 0, ' + platformCollection.array[s].shadowAlpha + ')';
+				ctx.fill();
+			}
+		}
         for (i = 0; i < this.drawarray.length  ; i++) {
 			
             currentmin = 1000000000;
@@ -33,12 +48,8 @@ function renderer() {
                     case "platform":
 						if (debug == 1){
 							platformCollection.array[this.drawarray[currentmini].index].draw();
-							sun.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
-							//sun2.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
 						}
 						else {
-							sun.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
-							//sun2.castShadows(platformCollection.array[this.drawarray[currentmini].index]);
 							platformCollection.array[this.drawarray[currentmini].index].draw();
 						}						
                         break;						

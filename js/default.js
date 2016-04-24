@@ -1,6 +1,8 @@
 //setting up the canvas
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
+var sc = document.getElementById("shadows");
+var sctx = sc.getContext("2d");
 c.tabIndex = 1;
 c.focus();
 //loading in all the images
@@ -10,6 +12,8 @@ c.addEventListener("mousedown", mouseDown, true);
 c.addEventListener("mouseup", mouseUp, true);
 c.width = window.innerWidth-50;
 c.height = window.innerHeight-50;
+c.style.zIndex = 100;
+c.style.position = 'absolute';
 var mouse =
     {
         X: 0,
@@ -90,7 +94,6 @@ function draw() {
 		//Game.manageScreenshake();
 		ctx.fillStyle = "rgba(0, 2, 20," + gameTime.nightAlpha + ")";
 		ctx.fillRect(-10000, -10000,20000,20000);
-		sun.draw();
 		//ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
@@ -141,7 +144,7 @@ Camera = new camera(0,0);
 setInterval(gameLoop, 15);
 
 sun = new light(0, -10000, 10000, 0.4);
-sun2 = new light(0, 0, 0, 0.4);
+//sun2 = new light(0, 0, 0, 0.4);
 debug = 1;
 
 gameTime = new gameTimer(Game, 15);
@@ -163,9 +166,9 @@ function gameLoop() {
 		sun.x = gameTime.sunPos.x;
 		sun.y = gameTime.sunPos.y;
 		sun.z = gameTime.sunPos.z;
-		sun2.x = sun.x * -1;
+		/*sun2.x = sun.x * -1;
 		sun2.y = 30000;
-		sun2.z = sun.z;
+		sun2.z = sun.z;*/
 		//sun.intensity = 1 - gameTime.nightAlpha;
 		//if (sun.intensity > 0.5){
 		//	sun.intensity = 0.5;

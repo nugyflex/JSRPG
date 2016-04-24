@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <title>rpggame</title>
+	<style>
+		#myCanvas {
+			position: absolute;
+			z-index = 0
+		}
+		#shadows {
+			position: absolute;
+			z-index = 1;
+		}
+	</style>
 </head>
 <body>
     <canvas id="myCanvas" height="1400" width="2400" style="border: 10px solid rgb(50,50,50)"></canvas>
+	<canvas id="shadows" height="1400" width="2400" style="border: 10px solid rgb(50,50,50)"></canvas>
     <br />
     <script src="js/resources.js"></script>	
     <script src="js/renderer.js"></script>

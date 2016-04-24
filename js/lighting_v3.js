@@ -13,6 +13,7 @@ function light(x, y, z, intensity){
 	}
 	this.castShadows = function(object){
 		if (this.z > 0 && this.z > object.vHeight){
+			this.shadowPoints = [];
 			this.verts = trans(object, 'default', 'default');
 			this.vArray = [];
 			for (key in this.verts){
@@ -72,13 +73,10 @@ function light(x, y, z, intensity){
 				this.vArray[v].dest.pNum = v;
 			}
 			if (pointCollide(this, object)){
-				ctx.moveTo(this.vArray[0].dest.x, this.vArray[0].dest.y);
+				this.shadowPoints.push({x: this.vArray[0].dest.x, y: this.vArray[0].dest.y});
 				for (j = 1; j < this.vArray.length; j++){
-					ctx.lineTo(this.vArray[j].dest.x, this.vArray[j].dest.y);
+					this.shadowPoints.push({x: this.vArray[j].dest.x, y: this.vArray[j].dest.y});
 				}
-				ctx.closePath();
-				ctx.fillStyle = 'rgba(0, 0, 0,' + this.intensity + ')';
-				ctx.fill();
 			}
 			else {
 				this.collFlag = 0;
@@ -129,123 +127,22 @@ function light(x, y, z, intensity){
 					}
 				}
 				
-				ctx.beginPath()
-				ctx.moveTo(this.vArraySorted[0].x, this.vArraySorted[0].y);
+				this.shadowPoints.push({x: this.vArraySorted[0].x, y: this.vArraySorted[0].y})
 				for (i = 0; i < this.iterCount; i++){
-					ctx.lineTo(this.vArraySorted[i].dest.x, this.vArraySorted[i].dest.y);
+					this.shadowPoints.push({x: this.vArraySorted[i].dest.x, y: this.vArraySorted[i].dest.y});
 				}
-				//only piece of hard-coding, this applies solely to rectangles
 				if (this.collFlag == 0){
 					if (this.lineColl == 0){
-						ctx.lineTo(this.vArraySorted[this.iterCount].x, this.vArraySorted[this.iterCount].y)
+						this.shadowPoints.push({x: this.vArraySorted[this.iterCount].x, y: this.vArraySorted[this.iterCount].y});
 					}
 					else {
-						ctx.lineTo(this.vArraySorted[this.iterCount - 1].x, this.vArraySorted[this.iterCount - 1].y)
+						this.shadowPoints.push({x: this.vArraySorted[this.iterCount - 1].x, y: this.vArraySorted[this.iterCount - 1].y});
 					}
 				}
 				else {
-					ctx.lineTo(this.vArraySorted[this.vArraySorted.length - 2].x, this.vArraySorted[this.vArraySorted.length - 2].y);
-				}
-				//ctx.stroke();
-				ctx.fillStyle = 'rgba(0, 0, 0,' + this.intensity + ')';
-				ctx.fill();
-			}
-			
-			/*this.collFlag = -1;
-			for (i = 0; i < this.vArray.length; i++){
-				if (pointCollide(this.vArray[i].dest, object)){
-					this.index = i + 1;
-					if (i == this.vArray.length - 1){
-						this.index = 0;
-					}
-					this.vArray[i].dest = this.vArray[this.index];
-					this.collFlag = i;
-				}
-				ctx.fillStyle = 'orange';
-				if (debug == 1){
-					ctx.fillRect(this.vArray[i].dest.x - 3, this.vArray[i].dest.y - 3, 6, 6);
-				}
-			}*/
-			/*this.posFlag = 0;
-			if (this.collFlag == -1 && !pointCollide(this, object)){
-				ctx.beginPath();
-				if (this.y > object.y + object.height && (this.x > object.x && this.x < object.x + object.width)){
-					ctx.moveTo(this.vArraySorted[2].x , this.vArraySorted[2].y);
-					ctx.lineTo(this.vArraySorted[2].dest.x, this.vArraySorted[2].dest.y);
-					ctx.lineTo(this.vArraySorted[1].dest.x, this.vArraySorted[1].dest.y);
-					ctx.lineTo(this.vArraySorted[1].x, this.vArraySorted[1].y);
-					this.posFlag = 1;
-				}
-				else if ((this.y > object.y && this.y < object.y + object.height) && this.x > object.x + object.width){
-					ctx.moveTo(this.vArraySorted[0].x , this.vArraySorted[0].y);
-					ctx.lineTo(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y);
-					ctx.lineTo(this.vArraySorted[3].dest.x, this.vArraySorted[3].dest.y);
-					ctx.lineTo(this.vArraySorted[3].x, this.vArraySorted[3].y);
-					this.posFlag = 1;
-				}
-				else if ((this.y < object.y && (this.x > object.x && this.x < object.x + object.width)) || (this.x < object.x && (this.y > object.y && this.y < object.y + object.height))){
-					ctx.moveTo(this.vArraySorted[3].x, this.vArraySorted[3].y);
-					ctx.lineTo(this.vArraySorted[3].dest.x, this.vArraySorted[3].dest.y);
-					ctx.lineTo(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y);
-					ctx.lineTo(this.vArraySorted[0].x, this.vArraySorted[0].y);
-					this.posFlag = 1;
-				}
-				else {
-					ctx.moveTo(this.vArraySorted[0].x, this.vArraySorted[0].y);
-					ctx.lineTo(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y);
-				}
-				if (debug == 1){
-					ctx.stroke();
-				}
-				ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
-				ctx.fill();
-			}
-			ctx.beginPath();
-			if (this.collFlag >= 0){
-				ctx.moveTo(this.vArray[this.collFlag].dest.x, this.vArray[this.collFlag].dest.y);
-				ctx.lineTo(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y);
-				this.nextIndex = this.vArray.indexOf(this.vArraySorted[0]) + 1;
-				if (this.nextIndex > 3){
-					this.nextIndex = 0;
-				}
-				this.cap = 2;
-			}
-			else {
-				if (this.posFlag == 1 || pointCollide(this, object)){
-					ctx.moveTo(this.vArray[0].dest.x, this.vArray[0].dest.y);
-				}
-				else {
-					ctx.moveTo(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y);
-				}
-				this.nextIndex = 1;
-				this.cap = 3;
-				//if (this.posFlag == 0){
-				//	this.cap = 2;
-				//}
-			}
-			//make the first in arraySorted the reference point for the other angles
-			for (n = 0; n < this.cap; n++){
-				//if (this.collFlag >= 0 || pointCollide(this, object) || this.posFlag == 1){
-					ctx.lineTo(this.vArray[this.nextIndex].dest.x, this.vArray[this.nextIndex].dest.y);
-				//}
-				//else {
-				//	ctx.lineTo(this.vArraySorted[this.nextIndex].dest.x, this.vArraySorted[this.nextIndex].dest.y);
-				//}
-				this.nextIndex++;
-				if (this.nextIndex > 3){
-					this.nextIndex = 0;
+					this.shadowPoints.push({x: this.vArraySorted[this.vArraySorted.length - 2].x, y: this.vArraySorted[this.vArraySorted.length - 2].y});
 				}
 			}
-			if (this.collFlag >= 0){
-				ctx.lineTo(this.vArraySorted[3].x, this.vArraySorted[3].y);
-			}
-			if (debug == 1){
-				ctx.stroke();
-			}
-			
-			ctx.fillStyle = 'rgba(0, 0, 0,' + intensity + ')';
-			ctx.fill();
-			*/
 			if (debug == 1){
 				fillCircle(this.vArraySorted[0].dest.x, this.vArraySorted[0].dest.y, 3, 'yellow');
 				fillCircle(this.vArraySorted[1].dest.x, this.vArraySorted[1].dest.y, 3, 'cyan');
@@ -256,6 +153,8 @@ function light(x, y, z, intensity){
 				//	fillCircle(this.vArray[this.collFlag].dest.x, this.vArray[this.collFlag].dest.y, 3, 'cyan');
 				//}
 			}
+			object.shadow = this.shadowPoints;
+			object.shadowAlpha = this.intensity;
 		}
 	}
 }
@@ -291,8 +190,13 @@ function angle(from, to, light) {
 	var dy = from.y - to.y;
 	var dx = from.x - to.x;
 	var theta = 180 + 180 / Math.PI * Math.atan2(dx, -dy);
-	if (light.y > from.y && theta == 360){
-		theta = 0;
+	if (light){
+		if (light.y > from.y && theta == 360){
+			theta = 0;
+		}
+		return theta;
 	}
-	return theta;
+	else {
+		return theta;
+	}
 }
