@@ -92,8 +92,8 @@ function draw() {
 		bloodCollection.draw();
 		Renderer.execute();
 		//Game.manageScreenshake();
-		ctx.fillStyle = "rgba(0, 2, 20," + gameTime.nightAlpha + ")";
-		ctx.fillRect(-10000, -10000,20000,20000);
+		//ctx.fillStyle = "rgba(0, 2, 20," + gameTime.nightAlpha + ")";
+		//ctx.fillRect(-10000, -10000,20000,20000);
 		//ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
 		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
@@ -120,16 +120,15 @@ platformCollection.add(74, 500, 74, 6, 40, 0);
 platformCollection.add(148, 500, 74, 6, 40, 0);
 platformCollection.add(500, 500, 74*3, 6, 40, 0);
 platformCollection.add(-100, 500, 74, 6, 40, 0);
-/*enemyCollection.add(0,0);
+enemyCollection.add(0,0);
 enemyCollection.add(400,0);
 enemyCollection.add(0,400);
-enemyCollection.add(400,400);*/
+enemyCollection.add(400,400);
 projectileCollection = new projectiles();
 projectileCollection.add("fireBall", 30, 30);
 player1 = new Player(10, 10);
 collisionDetection = new collisiondetection();
 fireCollection = new fires();
-enemyCollection.add(0,0);
 Game.addExitToArray();
 var cheight = c.height;
 
@@ -153,8 +152,8 @@ function gameLoop() {
 	gameTime.timer();
 	if (!Game.paused)
 	{
-		//sun.x = mouse.x*100;
-		//sun.y = mouse.y*100;
+		sun.x = mouse.x*100;
+		sun.y = mouse.y*100;
 		enemyCollection.update();
 		player1.update();
 		projectileCollection.update();

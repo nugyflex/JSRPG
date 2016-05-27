@@ -315,6 +315,15 @@ function collisiondetection() {
             return false;
         }
     }
+    this.testcollisionep = function (object1, x, y, width, height) {
+		console.log(object1.x);
+         if (object1.x + object1.width > x && object1.x < x + width && object1.y + object1.height > y && object1.y < y + height) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     this.testcollisionenemy = function (object1, object2) {
         this.object1 = object1;
         this.object2 = object2;

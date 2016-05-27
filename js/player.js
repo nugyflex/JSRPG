@@ -21,6 +21,13 @@ function Player(_x, _y)
 	this.foffsety = 0;
 	this.fs = 0;
 	this.inAction = false;
+	this.damageBox = {
+		offsetx: 0,
+		offsety: 0,
+		width: 0,
+		height: 0,
+		active: false
+	}
 	this.update = function()
 	{
 		this.inputs();
@@ -34,6 +41,14 @@ function Player(_x, _y)
 	{
 		this.x += this.xVel;
 		this.y += this.yVel;
+	}
+	this.changeDamageBox = function(_x, _y, _w, _h)
+	{
+		this.damageBox.offsetx = _x;
+		this.damageBox.offsety = _y;
+		this.damageBox.width = _w;
+		this.damageBox.height = _h;
+		console.log("asdasd");
 	}
 	this.attack = function(x)
 	{
@@ -50,6 +65,7 @@ function Player(_x, _y)
 					case "up":
 						this.changeAnimation("half_spin_left");
 						this.lastDir = "right";
+						console.log("asdasd");
 						break;
 					case "down":
 						this.changeAnimation("half_spin_right");
@@ -64,13 +80,30 @@ function Player(_x, _y)
 						this.lastDir = "left";
 						break;
 				}
-				this.inflictDamage(30, 5);
+				this.changeDamageBox(-15, -15, 40, 40);
+				this.damageBox.active = true;
+				this.inflictDamage(5);
 				this.xVel = 0;
 				this.yVel = 0;
 				break;
 			case "sword_swing":
 				this.changeAnimation(this.getSheetByDirection(this.lastDir, "sword_swing"));
-				this.inflictDamage(20, 11);
+				switch(this.lastDir)
+				{
+					case "up":
+						this.changeDamageBox(-5, -15, 20, 14);
+						break;
+					case "down":
+						this.changeDamageBox(-5, 10, 20, 15);
+						break;
+					case "left":
+						this.changeDamageBox(-15, -5, 15, 20);
+						break;
+					case "right":
+						this.changeDamageBox(10, -5, 15, 20);
+						break;
+				}
+				this.inflictDamage(11);
 				this.xVel = 0;
 				this.yVel = 0;
 				break;				
@@ -88,15 +121,21 @@ function Player(_x, _y)
 		result = string + "_" + dir;
 		return result;
 	}
-	this.inflictDamage = function(range, damage)
+	this.inflictDamage = function(damage)
 	{
+		console.log(this.x + this.damageBox.offsetx + "," + this.y + this.damageBox.offsety + "," + this.damageBox.width + "," + this.damageBox.height)
 		for (i = 0; i < enemyCollection.array.length; i++)
 		{
-			if (collisionDetection.finddistance(this, enemyCollection.array[i]) < range)
+			if (collisionDetection.testcollisionep(enemyCollection.array[i], this.x + this.damageBox.offsetx, this.y + this.damageBox.offsety, this.damageBox.width, this.damageBox.height))
 			{
 				enemyCollection.array[i].health -= damage;
 			}
 		}	
+	}
+	this.drawDamageBox = function()
+	{
+		ctx.fillStyle = "rgba(200,50,50,0.4)";
+		ctx.fillRect(this.x + this.damageBox.offsetx, this.y + this.damageBox.offsety, this.damageBox.width, this.damageBox.height);
 	}
 	this.draw = function()
 	{
@@ -248,6 +287,7 @@ function Player(_x, _y)
 		{
 			this.xlatch = true;
 		}
+		this.drawDamageBox();
 	}
 	this.changeAnimation = function(x)
 	{
@@ -337,7 +377,7 @@ function Player(_x, _y)
 				this.fwidth = 42;
 				this.fheight = 48;
 				this.freset = true;
-				this.fs = 2;
+				this.fs = 3;
 				this.foffsetx = -22;
 				this.foffsety = -38;
 				break;
@@ -347,7 +387,7 @@ function Player(_x, _y)
 				this.fwidth = 42;
 				this.fheight = 48;
 				this.freset = true;
-				this.fs = 2;
+				this.fs = 3;
 				this.foffsetx = -10;
 				this.foffsety = -38;
 				break;
@@ -357,7 +397,7 @@ function Player(_x, _y)
 				this.fwidth = 36;
 				this.fheight = 50;
 				this.freset = true;
-				this.fs = 4;
+				this.fs = 3;
 				this.foffsetx = -16;
 				this.foffsety = -40;
 				break;
@@ -367,7 +407,7 @@ function Player(_x, _y)
 				this.fwidth = 36;
 				this.fheight = 50;
 				this.freset = true;
-				this.fs = 4;
+				this.fs = 3;
 				this.foffsetx = -10;
 				this.foffsety = -40;
 				break;

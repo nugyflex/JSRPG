@@ -17,7 +17,7 @@ function renderer() {
     }
     this.draw = function () {
         var currentmin;
-        var currentmini;
+        var currentmini;/*
 		if (gameTime.dayState != 'night'){
 			for (s = 0; s < platformCollection.array.length; s++){
 				sun.castShadows(platformCollection.array[s]);
@@ -32,7 +32,7 @@ function renderer() {
 				ctx.fillStyle = 'rgba(0, 0, 0, ' + platformCollection.array[s].shadowAlpha + ')';
 				ctx.fill();
 			}
-		}
+		}*/
         for (i = 0; i < this.drawarray.length  ; i++) {
 			
             currentmin = 1000000000;
