@@ -15,9 +15,7 @@ function renderer() {
         var i = this.count();
         this.drawarray[i] = new thing(index, type, y, height);
     }
-    this.draw = function () {
-        var currentmin;
-        var currentmini;/*
+	this.drawShadows = function(){
 		if (gameTime.dayState != 'night'){
 			for (s = 0; s < platformCollection.array.length; s++){
 				sun.castShadows(platformCollection.array[s]);
@@ -29,10 +27,16 @@ function renderer() {
 					ctx.lineTo(ts[t].x, ts[t].y);
 				}
 				//ctx.stroke();
-				ctx.fillStyle = 'rgba(0, 0, 0, ' + platformCollection.array[s].shadowAlpha + ')';
+				//ctx.fillStyle = 'rgba(0, 0, 0, ' + platformCollection.array[s].shadowAlpha + ')';
+				ctx.fillStyle = 'black';
 				ctx.fill();
 			}
-		}*/
+		}
+	}
+    this.draw = function () {
+        var currentmin;
+        var currentmini;
+		
         for (i = 0; i < this.drawarray.length  ; i++) {
 			
             currentmin = 1000000000;
