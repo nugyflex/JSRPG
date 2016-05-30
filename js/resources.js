@@ -41,3 +41,7 @@ var spiderup = new Image();
 spiderup.src = './Images/spider_up.png';
 var spiderdown = new Image();
 spiderdown.src = './Images/spider_down.png';
+var orblift = new Image();
+orblift.src = './Images/orb_lift_front.png';
+var pentagramfade = new Image();
+pentagramfade.src = './Images/pentagram_fade_in_2.png';

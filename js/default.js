@@ -25,8 +25,25 @@ window.onmousemove = function (e) {
     mouse.x = e.clientX + Game.canvastranslatex - bbox.left * (c.width / bbox.width) - 10;
     mouse.y = e.clientY + Game.canvastranslatey - bbox.top * (c.height / bbox.height) - 10;
 }
-
-
+function animation()
+{
+	this.currentSheet;
+	this.fheight = 0;
+	this.fwidth = 0;
+	this.fn = 0;
+	this.freset = false;
+	this.currentSheetName;
+	this.foffsetx = 0;
+	this.foffsety = 0;
+	this.fs = 0;
+	this.frame = 0;
+	this.isActive = false;
+	this.setToDefault = false;
+	this.increaseFrame = function()
+	{
+		this.frame++;
+	}
+}
 function game(){
 	this.pointArray = [];
 	this.paused = false;

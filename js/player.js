@@ -20,6 +20,9 @@ function Player(_x, _y)
 	this.foffsetx = 0;
 	this.foffsety = 0;
 	this.fs = 0;
+	this.animationSlots = [];
+	this.animationSlots[0] = new animation();
+	this.animationSlots[1] = new animation();
 	this.inAction = false;
 	this.damageBox = {
 		offsetx: 0,
@@ -57,26 +60,26 @@ function Player(_x, _y)
 		switch (x)
 		{
 			case "skeleton_sprite":
-				this.changeAnimation("walk_skel_down");
+				this.changeAnimation("walk_skel_down", 0, true);
 				break;
 			case "half_spin":
 				switch(this.lastDir)
 				{
 					case "up":
-						this.changeAnimation("half_spin_left");
+						this.changeAnimation("half_spin_left", 0, true);
 						this.lastDir = "right";
 						console.log("asdasd");
 						break;
 					case "down":
-						this.changeAnimation("half_spin_right");
+						this.changeAnimation("half_spin_right", 0, true);
 						this.lastDir = "left";
 						break;
 					case "left":
-						this.changeAnimation("half_spin_left");
+						this.changeAnimation("half_spin_left", 0, true);
 						this.lastDir = "right";
 						break;
 					case "right":
-						this.changeAnimation("half_spin_right");
+						this.changeAnimation("half_spin_right", 0, true);
 						this.lastDir = "left";
 						break;
 				}
@@ -87,7 +90,7 @@ function Player(_x, _y)
 				this.yVel = 0;
 				break;
 			case "sword_swing":
-				this.changeAnimation(this.getSheetByDirection(this.lastDir, "sword_swing"));
+				this.changeAnimation(this.getSheetByDirection(this.lastDir, "sword_swing"), 0, true);
 				switch(this.lastDir)
 				{
 					case "up":
@@ -108,11 +111,20 @@ function Player(_x, _y)
 				this.yVel = 0;
 				break;				
 			case "whirl_wind":
-				this.changeAnimation("whirl_wind");
+				this.changeAnimation("whirl_wind", 0, true);
 				this.xVel = 0;
 				this.yVel = 0;
-	
-				break;			
+				break;
+			case "orb_attack":
+				this.changeAnimation("orb_lift", 1, true);
+				this.changeAnimation("pentagram_fade", 0, false);
+				this.lastDir = "down";
+				this.xVel = 0;
+				this.yVel = 0;
+				this.changeDamageBox(-32, -28, 74, 66);
+				this.damageBox.active = true;
+				this.inflictDamage(10);
+				break;					
 		}
 
 	}
@@ -147,18 +159,17 @@ function Player(_x, _y)
 				{
 						if (this.lastDir == "down")
 						{
-							this.changeAnimation("walk_down_sword")
+							this.changeAnimation("walk_down_sword", 0, true)
 						}
 						else
 						{
 							if (this.lastDir == "right")
 							{
-								this.changeAnimation("walk_right_sword")
+								this.changeAnimation("walk_right_sword", 0, true)
 							}
 							else
 							{
-								this.changeAnimation("walk_down_sword")
-								this.changeAnimation("half_spin")
+								this.changeAnimation("walk_down_sword", 0, true)
 							}
 						}
 				}
@@ -166,24 +177,24 @@ function Player(_x, _y)
 				{
 					if (this.yVel == 0)
 					{
-						this.changeAnimation("walk_right_sword")
+						this.changeAnimation("walk_right_sword", 0, true)
 						this.lastDir = "right";
 					}
 					else
 					{
 						if (this.lastDir == "up")
 						{
-							this.changeAnimation("walk_up_sword")
+							this.changeAnimation("walk_up_sword", 0, true)
 						}
 						else
 						{
 							if (this.lastDir == "right")
 							{
-								this.changeAnimation("walk_right_sword")
+								this.changeAnimation("walk_right_sword", 0, true)
 							}
 							else
 							{
-								this.changeAnimation("walk_up_sword")
+								this.changeAnimation("walk_up_sword", 0, true)
 							}
 						}				
 					}					
@@ -195,7 +206,7 @@ function Player(_x, _y)
 				{
 					if (this.yVel > 0)
 					{
-						this.changeAnimation("walk_down_sword")
+						this.changeAnimation("walk_down_sword", 0, true)
 						this.lastDir = "down";
 					}
 					else
@@ -205,22 +216,22 @@ function Player(_x, _y)
 							switch(this.lastDir)
 							{
 								case "up":
-									this.changeAnimation("standing_sword_up");
+									this.changeAnimation("standing_sword_up", 0, true);
 									break;
 								case "down":
-									this.changeAnimation("standing_sword_down");
+									this.changeAnimation("standing_sword_down", 0, true);
 									break;
 								case "left":
-									this.changeAnimation("standing_sword_left");
+									this.changeAnimation("standing_sword_left", 0, true);
 									break;
 								case "right":
-									this.changeAnimation("standing_sword_right");
+									this.changeAnimation("standing_sword_right", 0, true);
 									break;
 							}
 						}
 						else
 						{
-							this.changeAnimation("walk_up_sword")
+							this.changeAnimation("walk_up_sword", 0, true)
 							this.lastDir = "up";					
 						}					
 					}	
@@ -231,17 +242,17 @@ function Player(_x, _y)
 					{
 						if (this.lastDir == "down")
 						{
-							this.changeAnimation("walk_down_sword")
+							this.changeAnimation("walk_down_sword", 0, true)
 						}
 						else
 						{
 							if (this.lastDir == "left")
 							{
-								this.changeAnimation("walk_left_sword")
+								this.changeAnimation("walk_left_sword", 0, true)
 							}
 							else
 							{
-								this.changeAnimation("walk_down_sword")
+								this.changeAnimation("walk_down_sword", 0, true)
 							}
 						}
 					}
@@ -250,23 +261,23 @@ function Player(_x, _y)
 						if (this.yVel == 0)
 						{
 							this.lastDir = "left";
-							this.changeAnimation("walk_left_sword")
+							this.changeAnimation("walk_left_sword", 0, true)
 						}
 						else
 						{
 							if (this.lastDir == "up")
 							{
-								this.changeAnimation("walk_up_sword")
+								this.changeAnimation("walk_up_sword", 0, true)
 							}
 							else
 							{
 								if (this.lastDir == "left")
 								{
-									this.changeAnimation("walk_left_sword")
+									this.changeAnimation("walk_left_sword", 0, true)
 								}
 								else
 								{
-									this.changeAnimation("walk_up_sword")
+									this.changeAnimation("walk_up_sword", 0, true)
 								}
 							}
 						}					
@@ -279,7 +290,7 @@ function Player(_x, _y)
 		{
 			if (this.xlatch)
 			{
-				this.frame = 0;
+				//this.animationSlots[i].frame = 0;
 			}
 			this.xlatch = false
 		}
@@ -287,9 +298,9 @@ function Player(_x, _y)
 		{
 			this.xlatch = true;
 		}
-		this.drawDamageBox();
+		//this.drawDamageBox();
 	}
-	this.changeAnimation = function(x)
+	this.changeAnimation = function(x, i, _setToDefault)
 	{
 		if (x == "default")
 		{
@@ -309,221 +320,261 @@ function Player(_x, _y)
 					break;
 			}
 		}
-		if (x !== this.currentSheetName)
+		this.animationSlots[i].setToDefault = _setToDefault;
+		if (x !== this.animationSlots[i].currentSheetName)
 		{
 		switch (x)
 		{
+			case "pentagram_fade":
+				this.animationSlots[i].currentSheet = pentagramfade;
+				this.animationSlots[i].fn = 6;
+				this.animationSlots[i].fwidth = 74;
+				this.animationSlots[i].fheight = 66;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].foffsetx = -32;
+				this.animationSlots[i].foffsety = -28;
+				this.animationSlots[i].fs = 40;
+				break;
+			case "orb_lift":
+				this.animationSlots[i].currentSheet = orblift;
+				this.animationSlots[i].fn = 8;
+				this.animationSlots[i].fwidth = 28;
+				this.animationSlots[i].fheight = 50;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].foffsetx = -8;
+				this.animationSlots[i].foffsety = -40;
+				this.animationSlots[i].fs = 6;
+				break;
 			case "walk_skel_down":
-				this.currentSheet = walkSkelDown;
-				this.fn = 8;
-				this.fwidth = 70;
-				this.fheight = 70;
-				this.freset = false;
-				this.foffsetx = -35;
-				this.foffsety = -35;
-				this.fs = 5;
+				this.animationSlots[i].currentSheet = walkSkelDown;
+				this.animationSlots[i].fn = 8;
+				this.animationSlots[i].fwidth = 70;
+				this.animationSlots[i].fheight = 70;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].foffsetx = -35;
+				this.animationSlots[i].foffsety = -35;
+				this.animationSlots[i].fs = 5;
 				break;
 			case "walk_right_sword":
-				this.currentSheet = walkrightsword;
-				this.fn = 4
-				this.fwidth = 34;
-				this.fheight = 50;
-				this.freset = false;
-				this.foffsetx = -6;
-				this.foffsety = -40;
-				this.fs = 6;
+				this.animationSlots[i].currentSheet = walkrightsword;
+				this.animationSlots[i].fn = 4
+				this.animationSlots[i].fwidth = 34;
+				this.animationSlots[i].fheight = 50;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].foffsetx = -6;
+				this.animationSlots[i].foffsety = -40;
+				this.animationSlots[i].fs = 6;
 				break;
 			case "walk_left_sword":
-				this.currentSheet = walkleftsword;
-				this.fn = 4
-				this.fwidth = 34;
-				this.fheight = 50;
-				this.freset = false;
-				this.foffsetx = -18;
-				this.foffsety = -40;
-				this.fs = 6;
+				this.animationSlots[i].currentSheet = walkleftsword;
+				this.animationSlots[i].fn = 4
+				this.animationSlots[i].fwidth = 34;
+				this.animationSlots[i].fheight = 50;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].foffsetx = -18;
+				this.animationSlots[i].foffsety = -40;
+				this.animationSlots[i].fs = 6;
 				break;
 			case "walk_down_sword":
-				this.currentSheet = walkdownsword;
-				this.fn = 4
-				this.fwidth = 24;
-				this.fheight = 50;
-				this.freset = false;
-				this.foffsetx = -4;
-				this.foffsety = -40;
-				this.fs = 10;
+				this.animationSlots[i].currentSheet = walkdownsword;
+				this.animationSlots[i].fn = 4
+				this.animationSlots[i].fwidth = 24;
+				this.animationSlots[i].fheight = 50;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].foffsetx = -4;
+				this.animationSlots[i].foffsety = -40;
+				this.animationSlots[i].fs = 10;
 				break;
 			case "walk_up_sword":
-				this.currentSheet = walkupsword;
-				this.fn = 4
-				this.fwidth = 24;
-				this.fheight = 50;
-				this.freset = false;
-				this.foffsetx = -10;
-				this.foffsety = -40;
-				this.fs = 10;
+				this.animationSlots[i].currentSheet = walkupsword;
+				this.animationSlots[i].fn = 4
+				this.animationSlots[i].fwidth = 24;
+				this.animationSlots[i].fheight = 50;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].foffsetx = -10;
+				this.animationSlots[i].foffsety = -40;
+				this.animationSlots[i].fs = 10;
 				break;
 			case "sword_stab":
-				this.currentSheet = swordstab;
-				this.fn = 6;
-				this.fwidth = 46;
-				this.fheight = 46;
-				this.freset = true;
-				this.fs = 6; 
+				this.animationSlots[i].currentSheet = swordstab;
+				this.animationSlots[i].fn = 6;
+				this.animationSlots[i].fwidth = 46;
+				this.animationSlots[i].fheight = 46;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].fs = 6; 
 				break;
 			case "sword_swing_left":
-				this.currentSheet = swordswingleft;
-				this.fn = 6;
-				this.fwidth = 42;
-				this.fheight = 48;
-				this.freset = true;
-				this.fs = 3;
-				this.foffsetx = -22;
-				this.foffsety = -38;
+				this.animationSlots[i].currentSheet = swordswingleft;
+				this.animationSlots[i].fn = 6;
+				this.animationSlots[i].fwidth = 42;
+				this.animationSlots[i].fheight = 48;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].fs = 3;
+				this.animationSlots[i].foffsetx = -22;
+				this.animationSlots[i].foffsety = -38;
 				break;
 			case "sword_swing_right":
-				this.currentSheet = swordswingright;
-				this.fn = 6;
-				this.fwidth = 42;
-				this.fheight = 48;
-				this.freset = true;
-				this.fs = 3;
-				this.foffsetx = -10;
-				this.foffsety = -38;
+				console.log(this.animationSlots[0]);
+				this.animationSlots[i].currentSheet = swordswingright;
+				this.animationSlots[i].fn = 6;
+				this.animationSlots[i].fwidth = 42;
+				this.animationSlots[i].fheight = 48;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].fs = 3;
+				this.animationSlots[i].foffsetx = -10;
+				this.animationSlots[i].foffsety = -38;
 				break;
 			case "sword_swing_down":
-				this.currentSheet = swordswingdown;
-				this.fn = 6;
-				this.fwidth = 36;
-				this.fheight = 50;
-				this.freset = true;
-				this.fs = 3;
-				this.foffsetx = -16;
-				this.foffsety = -40;
+				this.animationSlots[i].currentSheet = swordswingdown;
+				this.animationSlots[i].fn = 6;
+				this.animationSlots[i].fwidth = 36;
+				this.animationSlots[i].fheight = 50;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].fs = 3;
+				this.animationSlots[i].foffsetx = -16;
+				this.animationSlots[i].foffsety = -40;
 				break;
 			case "sword_swing_up":
-				this.currentSheet = swordswingup;
-				this.fn = 6;
-				this.fwidth = 36;
-				this.fheight = 50;
-				this.freset = true;
-				this.fs = 3;
-				this.foffsetx = -10;
-				this.foffsety = -40;
+				this.animationSlots[i].currentSheet = swordswingup;
+				this.animationSlots[i].fn = 6;
+				this.animationSlots[i].fwidth = 36;
+				this.animationSlots[i].fheight = 50;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].fs = 3;
+				this.animationSlots[i].foffsetx = -10;
+				this.animationSlots[i].foffsety = -40;
 				break;
 			case "standing_sword_down":
-				this.currentSheet = standingdown;
-				this.fn = 1;
-				this.fwidth = 34;
-				this.fheight = 50;
-				this.freset = false;
-				this.foffsetx = -2;
-				this.foffsety = -40;
+				this.animationSlots[i].currentSheet = standingdown;
+				this.animationSlots[i].fn = 1;
+				this.animationSlots[i].fwidth = 34;
+				this.animationSlots[i].fheight = 50;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].foffsetx = -2;
+				this.animationSlots[i].foffsety = -40;
 				break;
 			case "standing_sword_up":
-				this.currentSheet = standingup;
-				this.fn = 1;
-				this.fwidth = 22;
-				this.fheight = 50;
-				this.freset = false;
-				this.foffsetx = -10;
-				this.foffsety = -40;
+				this.animationSlots[i].currentSheet = standingup;
+				this.animationSlots[i].fn = 1;
+				this.animationSlots[i].fwidth = 22;
+				this.animationSlots[i].fheight = 50;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].foffsetx = -10;
+				this.animationSlots[i].foffsety = -40;
 				break;
 			case "standing_sword_left":
-				this.currentSheet = standingleft;
-				this.fn = 1;
-				this.fwidth = 34;
-				this.fheight = 46;
-				this.freset = false;
-				this.foffsetx = -18;
-				this.foffsety = -36;
+				this.animationSlots[i].currentSheet = standingleft;
+				this.animationSlots[i].fn = 1;
+				this.animationSlots[i].fwidth = 34;
+				this.animationSlots[i].fheight = 46;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].foffsetx = -18;
+				this.animationSlots[i].foffsety = -36;
 				break;
 			case "standing_sword_right":
-				this.currentSheet = standingright;
-				this.fn = 1;
-				this.fwidth = 34;
-				this.fheight = 46;
-				this.freset = false;
-				this.foffsetx = -6;
-				this.foffsety = -36;
+				this.animationSlots[i].currentSheet = standingright;
+				this.animationSlots[i].fn = 1;
+				this.animationSlots[i].fwidth = 34;
+				this.animationSlots[i].fheight = 46;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].foffsetx = -6;
+				this.animationSlots[i].foffsety = -36;
 				break;
 			case "half_spin_left":
-				this.currentSheet = halfspinleft;
-				this.fn = 9;
-				this.fwidth = 62;
-				this.fheight = 48;
-				this.freset = true;
-				this.foffsetx = -26;
-				this.foffsety = -38;
-				this.fs = 2;
+				this.animationSlots[i].currentSheet = halfspinleft;
+				this.animationSlots[i].fn = 9;
+				this.animationSlots[i].fwidth = 62;
+				this.animationSlots[i].fheight = 48;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].foffsetx = -26;
+				this.animationSlots[i].foffsety = -38;
+				this.animationSlots[i].fs = 2;
 				break;
 			case "half_spin_right":
-				this.currentSheet = halfspinright;
-				this.fn = 9;
-				this.fwidth = 62;
-				this.fheight = 48;
-				this.freset = true;
-				this.foffsetx = -26;
-				this.foffsety = -38;
-				this.fs = 2;
+				this.animationSlots[i].currentSheet = halfspinright;
+				this.animationSlots[i].fn = 9;
+				this.animationSlots[i].fwidth = 62;
+				this.animationSlots[i].fheight = 48;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].foffsetx = -26;
+				this.animationSlots[i].foffsety = -38;
+				this.animationSlots[i].fs = 2;
 				break;
 			case "whirl_wind":
-				this.currentSheet = whirlwind;
-				this.fn = 8;
-				this.fwidth = 116.3;
-				this.fheight = 116.3;
-				this.freset = true;
-				this.foffsetx = -116.2/2;
-				this.foffsety = -116.2/2;
-				this.fs = 2;
+				this.animationSlots[i].currentSheet = whirlwind;
+				this.animationSlots[i].fn = 8;
+				this.animationSlots[i].fwidth = 116.3;
+				this.animationSlots[i].fheight = 116.3;
+				this.animationSlots[i].freset = true;
+				this.animationSlots[i].foffsetx = -116.2/2;
+				this.animationSlots[i].foffsety = -116.2/2;
+				this.animationSlots[i].fs = 2;
 				break;
 			case "spider":
-				this.currentSheet = spider;
-				this.fn = 2;
-				this.fwidth = 20;
-				this.fheight = 14;
-				this.freset = false;
-				this.fs = 6;
+				this.animationSlots[i].currentSheet = spider;
+				this.animationSlots[i].fn = 2;
+				this.animationSlots[i].fwidth = 20;
+				this.animationSlots[i].fheight = 14;
+				this.animationSlots[i].freset = false;
+				this.animationSlots[i].fs = 6;
 				break;
 		}
-		this.currentSheetName = x;
-		this.frame = 0;
-		this.timer = 1;
+		this.animationSlots[i].currentSheetName = x;
+		this.animationSlots[i].frame = 0;
+		this.animationSlots[i].timer = 1;
 		}
+		this.animationSlots[i].isActive = true;
 		
 	}
 	this.runAnimations = function()
 	{
-
-		this.timer++;
-		if (this.timer>this.fs)
+		for (i = 0; i < this.animationSlots.length; i++)
 		{
-			this.timer = 0
-		}
-		if (this.timer == 0)
-		{
-			this.frame++;
-		}
-		if (this.frame > this.fn-1)
-		{
-			if (this.freset == true)
+			if (this.animationSlots[i].isActive)
 			{
-				this.changeAnimation("default");
-				this.inAction = false;
+				this.animationSlots[i].timer++;
+				if (this.animationSlots[i].timer>this.animationSlots[i].fs)
+				{
+					this.animationSlots[i].timer = 0
+				}
+				if (this.animationSlots[i].timer == 0)
+				{
+					this.animationSlots[i].increaseFrame();
+					
+				}
+				if (this.animationSlots[i].frame > this.animationSlots[i].fn-1)
+				{
+					console.log("ASD");
+					if (this.animationSlots[i].freset == true)
+					{
+						if (this.animationSlots[i].setToDefault)
+						{
+							this.changeAnimation("default", 0);
+							this.inAction = false;
+						}
+						else
+						{
+							this.animationSlots[i].isActive = false;
+						}
+						
+					}
+					this.animationSlots[i].frame = 0;
+					this.animationSlots[i].isActive = false;
+				}
+				ctx.beginPath();
+				ctx.arc(this.x + this.width/2, this.y + this.height/2, 10, 0, 2 * Math.PI, false);
+				ctx.fillStyle = "rgba(0,0,0,0.35)"
+				ctx.fill();
+				console.log(this.animationSlots[i].frame + "," + this.animationSlots[i].fn + "," + this.animationSlots[i].timer);
+				ctx.drawImage(this.animationSlots[i].currentSheet, this.animationSlots[i].frame * this.animationSlots[i].fwidth, 0, this.animationSlots[i].fwidth, this.animationSlots[i].fheight, this.x + this.animationSlots[i].foffsetx, this.y + this.animationSlots[i].foffsety, this.animationSlots[i].fwidth, this.animationSlots[i].fheight);
 			}
-			this.frame = 0;
 		}
-		ctx.beginPath();
-		ctx.arc(this.x + this.width/2, this.y + this.height/2, 10, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "rgba(0,0,0,0.35)"
-        ctx.fill();
-		ctx.drawImage(this.currentSheet, this.frame * this.fwidth, 0, this.fwidth, this.fheight, this.x + this.foffsetx, this.y + this.foffsety, this.fwidth, this.fheight);
 	}
 	this.shoot = function()
 	{
 		
 	}
-	this.changeAnimation("standing_sword_right");
+	this.changeAnimation("standing_sword_right", 0);
 	this.inputs = function()
 	{
 		if (!this.inAction)
@@ -585,7 +636,12 @@ function Player(_x, _y)
 			if (keypressed.z)
 			{
 				this.attack("sword_swing");
-			}/*
+			}
+			if (keypressed.c)
+			{
+				this.attack("orb_attack");
+			}			
+			/*
 			if (keypressed.r){
 				this.attack("skeleton_sprite");
 			}*/

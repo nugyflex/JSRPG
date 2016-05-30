@@ -63,6 +63,7 @@ function bloods() {
 		var vel = (Math.random()*1) -0.5;
 		var v1;
 		var v2;
+		var vyvel = -1*((Math.random()*1.5) + 2.33);
 		var theta = (Math.random()*2*Math.PI);
 		if ((Math.random()*2) -1 > 0) {
 				v1 = Math.sin(theta) * -vel;
@@ -72,7 +73,25 @@ function bloods() {
 			v1 = Math.sin(theta) * vel;
 			v2 = Math.cos(theta) * -vel;
 		}
-        this.array[i] = new blood(x, y, v1, v2, randsize, randsize);
+        this.array[i] = new blood(x, y, v1, v2, randsize, vyvel, -2);
+    }
+    this.addM = function (x, y, vy) {
+        var i = this.count();
+		var randsize = 2+Math.random()*4;
+		var vel = (Math.random()*1) -0.5;
+		var v1;
+		var v2;
+		var vyvel = -1*((Math.random()*1.5) + 2.33);
+		var theta = (Math.random()*2*Math.PI);
+		if ((Math.random()*2) -1 > 0) {
+				v1 = Math.sin(theta) * -vel;
+				v2 = Math.cos(theta) * vel;
+		}
+		else {
+			v1 = Math.sin(theta) * vel;
+			v2 = Math.cos(theta) * -vel;
+		}
+        this.array[i] = new blood(x, y, v1, v2, randsize, vyvel, vy);
     }
 	this.update = function()
 	{

@@ -1,12 +1,12 @@
-function blood(_x, _y, _yvel, _xvel, _size)
+function blood(_x, _y, _yvel, _xvel, _size, _vyvel, vheight)
 {
 	this.x = _x;
 	this.y = _y;
 	this.xvel = _xvel;
 	this.yvel = _yvel;
 	this.size = _size;
-	this.vheight =-2;
-	this.vyvel = -3;
+	this.vheight = vheight;
+	this.vyvel = _vyvel;
 	this.alpha = 1;
 	this.decreaseAlpha = Math.random()*0.008;
 	if (this.decreaseAlpha<0.003)

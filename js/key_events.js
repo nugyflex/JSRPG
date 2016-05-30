@@ -80,6 +80,10 @@ function onKeyDown(event) {
 			}
             break;
 
+        case 67:
+            keypressed.c = 1;
+            break;
+			
         case 69:
             keypressed.e = 1;
             break;
@@ -123,7 +127,11 @@ function onKeyUp(event) {
             keypressed.space = 0;
 
             break;
-
+			
+        case 67:
+            keypressed.c = 0;
+            break;
+			
         case 87:
             keypressed.w = 0;
             break;
