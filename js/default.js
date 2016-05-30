@@ -108,11 +108,11 @@ function draw() {
 		ctx.fillRect(-10000, -10000,20000,20000);
 		bloodCollection.draw();
 		Renderer.execute();
-		//Game.manageScreenshake();
+		Game.manageScreenshake();
 		//ctx.fillStyle = "rgba(0, 2, 20," + gameTime.nightAlpha + ")";
 		//ctx.fillRect(-10000, -10000,20000,20000);
-		//ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
-		ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
+		ctx.translate(Game.canvastranslatex + Game.screenShakex, Game.canvastranslatey + Game.screenShakey);
+		//ctx.translate(Game.canvastranslatex, Game.canvastranslatey);
 		Camera.follow(player1);
 		Camera.setTranslate();
 	}, 1000 / fps);

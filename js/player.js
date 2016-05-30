@@ -333,7 +333,7 @@ function Player(_x, _y)
 				this.animationSlots[i].freset = true;
 				this.animationSlots[i].foffsetx = -32;
 				this.animationSlots[i].foffsety = -28;
-				this.animationSlots[i].fs = 40;
+				this.animationSlots[i].fs = 8;
 				break;
 			case "orb_lift":
 				this.animationSlots[i].currentSheet = orblift;
