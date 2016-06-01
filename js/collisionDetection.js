@@ -227,7 +227,6 @@ function collisiondetection() {
             testvar = testvar + 128;
         }
         if (platform.width == 60) {
-            console.log(testvar);
         }
 
         switch (testvar) {
@@ -316,7 +315,6 @@ function collisiondetection() {
         }
     }
     this.testcollisionep = function (object1, x, y, width, height) {
-		console.log(object1.x);
          if (object1.x + object1.width > x && object1.x < x + width && object1.y + object1.height > y && object1.y < y + height) {
             return true;
         }

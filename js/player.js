@@ -51,7 +51,6 @@ function Player(_x, _y)
 		this.damageBox.offsety = _y;
 		this.damageBox.width = _w;
 		this.damageBox.height = _h;
-		console.log("asdasd");
 	}
 	this.attack = function(x)
 	{
@@ -94,16 +93,16 @@ function Player(_x, _y)
 				switch(this.lastDir)
 				{
 					case "up":
-						this.changeDamageBox(-5, -15, 20, 14);
+						this.changeDamageBox(-5, -25, 20, 25);
 						break;
 					case "down":
-						this.changeDamageBox(-5, 10, 20, 15);
+						this.changeDamageBox(-5, 10, 20, 25);
 						break;
 					case "left":
-						this.changeDamageBox(-15, -5, 15, 20);
+						this.changeDamageBox(-25, -5, 25, 20);
 						break;
 					case "right":
-						this.changeDamageBox(10, -5, 15, 20);
+						this.changeDamageBox(10, -5, 25, 20);
 						break;
 				}
 				this.inflictDamage(11);
@@ -124,6 +123,10 @@ function Player(_x, _y)
 				this.changeDamageBox(-32, -28, 74, 66);
 				this.damageBox.active = true;
 				this.inflictDamage(10);
+				for (i = 0; i < 20; i ++)
+				{
+					//smokeCollection.add(this.x, this.y);
+				}
 				break;					
 		}
 
@@ -135,7 +138,6 @@ function Player(_x, _y)
 	}
 	this.inflictDamage = function(damage)
 	{
-		console.log(this.x + this.damageBox.offsetx + "," + this.y + this.damageBox.offsety + "," + this.damageBox.width + "," + this.damageBox.height)
 		for (i = 0; i < enemyCollection.array.length; i++)
 		{
 			if (collisionDetection.testcollisionep(enemyCollection.array[i], this.x + this.damageBox.offsetx, this.y + this.damageBox.offsety, this.damageBox.width, this.damageBox.height))
@@ -414,7 +416,6 @@ function Player(_x, _y)
 				this.animationSlots[i].foffsety = -38;
 				break;
 			case "sword_swing_right":
-				console.log(this.animationSlots[0]);
 				this.animationSlots[i].currentSheet = swordswingright;
 				this.animationSlots[i].fn = 6;
 				this.animationSlots[i].fwidth = 42;
@@ -544,7 +545,6 @@ function Player(_x, _y)
 				}
 				if (this.animationSlots[i].frame > this.animationSlots[i].fn-1)
 				{
-					console.log("ASD");
 					if (this.animationSlots[i].freset == true)
 					{
 						if (this.animationSlots[i].setToDefault)
@@ -565,7 +565,6 @@ function Player(_x, _y)
 				ctx.arc(this.x + this.width/2, this.y + this.height/2, 10, 0, 2 * Math.PI, false);
 				ctx.fillStyle = "rgba(0,0,0,0.35)"
 				ctx.fill();
-				console.log(this.animationSlots[i].frame + "," + this.animationSlots[i].fn + "," + this.animationSlots[i].timer);
 				ctx.drawImage(this.animationSlots[i].currentSheet, this.animationSlots[i].frame * this.animationSlots[i].fwidth, 0, this.animationSlots[i].fwidth, this.animationSlots[i].fheight, this.x + this.animationSlots[i].foffsetx, this.y + this.animationSlots[i].foffsety, this.animationSlots[i].fwidth, this.animationSlots[i].fheight);
 			}
 		}

@@ -22,9 +22,9 @@ function platform(_x, _y, _width, _height, _vHeight, image, ioffsetx, ioffsety)
 		}
 		else
 		{
-		ctx.fillStyle = "grey";
-		ctx.fillRect(this.x, this.y-this.vHeight, this.width, this.vHeight + this.height);
 		ctx.fillStyle = "rgb(100, 100, 100)";
+		ctx.fillRect(this.x, this.y-this.vHeight, this.width, this.vHeight + this.height);
+		ctx.fillStyle = "grey";
 		ctx.fillRect(this.x, this.y-this.vHeight, this.width, this.height);
 		ctx.fillStyle = "rgb(80, 80, 80)";
 		ctx.fillRect(this.x, this.y-this.vHeight, 2, this.height+this.vHeight);

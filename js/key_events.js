@@ -76,7 +76,7 @@ function onKeyDown(event) {
 				debug = 0;
 			}
 			else {
-				debug = 1;
+				//debug = 1; //diabled temporarily because its anoying as fuck
 			}
             break;
 

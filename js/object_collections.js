@@ -5,7 +5,7 @@ function enemies() {
     this.array = [];
     this.add = function (x, y) {
         var i = this.count();
-            this.array[i] = new enemy(x, y);
+            this.array[i] = new skull(x, y);
     }
 	this.update = function()
 	{
@@ -50,6 +50,37 @@ function enemies() {
             }
 
         }
+    }
+}
+function smokes() {
+    this.count = function () {
+        return this.array.length;
+    }
+    this.array = [];
+    this.add = function (x, y) {
+		var i = this.count();
+        this.array[i] = new smoke(x, y, 10, Math.random()*2*Math.PI);
+    }
+	this.update = function()
+	{
+		for (i = 0; i < this.count(); i++)
+		{
+			this.array[i].update();
+			if (this.array[i].vHeight>200)
+			{
+				this.remove(i);
+			}
+		}
+	}
+	this.draw = function()
+	{
+		for (i = 0; i < this.count(); i++)
+		{
+			this.array[i].draw();
+		}		
+	}
+    this.remove = function (index) {
+		this.array.splice(i, 1);
     }
 }
 function bloods() {
