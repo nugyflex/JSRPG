@@ -61,6 +61,7 @@ function light(x, y, z, intensity){
 				//var offset = distance(this.vArray[v], this) / (100/this.z);
 				this.triHypot = Math.sqrt(Math.pow(this.x - this.vArray[v].x, 2) + Math.pow(this.y - (this.vArray[v].y - object.vHeight), 2) + Math.pow(this.z - object.vHeight, 2));
 				this.triHeight = this.z - object.vHeight;
+				//Stupid piece of shit, this should be asin, opposite on hypotenuse motherfucker
 				this.theta = Math.acos(this.triHeight/this.triHypot);
 				this.shadowDist = object.vHeight * Math.tan(this.theta);
 				if (this.shadowDist > object.vHeight * 4){
